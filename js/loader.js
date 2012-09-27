@@ -14,9 +14,9 @@ function loadScript(url, callback) {
 }
 //loadScript('http://code.jquery.com/jquery-latest.min.js');
 if (account() == 'contractor') {
-  loadScript(chrome.extension.getURL('js/job-search-filter-panel.js'));
-  loadScript(chrome.extension.getURL('js/job-search-processing.js'));
-  loadScript(chrome.extension.getURL('js/job-search-search-area.js'));
+  loadScript(chrome.extension.getURL('js/job-search/filter-panel.js'));
+  loadScript(chrome.extension.getURL('js/job-search/processing.js'));
+  loadScript(chrome.extension.getURL('js/job-search/search-area.js'));
   loadScript(chrome.extension.getURL('js/my_jobs.js'));
   /*loadScript(chrome.extension.getURL('js/job-application.js'));*/
 }
