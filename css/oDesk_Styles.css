@@ -1,0 +1,717 @@
+*{
+    font-family:Arial, Helvetica, Sans-serif !important;
+}
+a{
+  color:#588BC8;
+}
+a:hover{
+  color: #3F94FC;
+  text-decoration: none;
+}
+.sprite{
+  background-image:url('chrome-extension://__MSG_@@extension_id__/images/odesk-sprites-01.png') !important;
+}
+#searchInfo #jobSearchForm input.formButton,
+#moreOptionsContainer a.switchToAdvanced,
+.btn{
+  padding:0 10px;
+  margin:0;
+  background-image:-webkit-linear-gradient(bottom,#EBEBEB 0%,#FDFDFD 100%);
+  border:1px solid #B0B0B0;
+  color:#818181;
+  border-radius: 3px;
+  line-height: 30px;
+  font-size: 14px;
+  text-align: center;
+}
+.navigation.v2{
+    margin:0 0 16px 0;
+}
+#mainBody.layout2 #col1{
+  width:720px;
+}
+#pageTitle{
+  display:none;
+}
+div.backLink{
+  margin:0 auto;
+  width:970px;
+  height:0;
+  opacity: 0;
+  overflow:hidden;
+  -webkit-transition:height 1s,opacity 1s;
+}
+div.backLink[formated]{
+  height:50px;
+  opacity: 1;
+}
+  div.backLink .container{
+    margin:8px 0 0 0;
+    padding:0;
+    float: left;
+    display: none;
+  }
+  div.backLink[formated] .container{
+    display: block;
+  }
+div.backLink[formated] #pageTitle{
+  display: block;
+}
+    .find_work_list .backLink a.root{
+        line-height:42px;
+        font-weight:bold;
+        font-size:16px;
+        float:left;
+    }
+    .find_work_list .backLink .arrow{
+      width: 16px;
+      height: 16px;
+      background-position: -16px -32px;
+      float: left;
+      margin: 12px 6px;
+    }
+    .find_work_list div.backLink span.left_arrow{
+        display:none;
+    }
+    .find_work_list .backLink #pageTitle{
+        float:left;
+        width:582px;
+        line-height:42px;
+    }
+    .find_work_list .backLink #pageTitle h1{
+        margin:0;
+        padding:0;
+        font-size:16px;
+        font-family:Arial, Helvetica, Sans-serif;
+        line-height:42px;
+        float:left;
+    }
+    #jobSearchForm .resultDescription{
+        display:none;
+    }
+#pageTitle{
+    margin-bottom:0;
+    padding:0;
+}
+.paginator_wrapper,
+.paginator {
+  display: none;
+}
+#searchInfo{
+    float:left;
+    width: 100%;
+    border-bottom:none;
+    margin:0 0 15px;
+}
+  /* Search Results */
+  #searchInfo .wrapper{
+      background:white;
+      border:none;
+      border-bottom:1px solid #E5E5E4;
+      border-radius:0px;
+      padding:0;
+  }
+        #searchResults.jobResults div.searchResult .content{
+          padding:0;
+          border-width:0;
+          border-radius: 0;
+          float: left;
+        }
+        #searchResults.jobResults div.searchResult:hover .content{
+          background:white;
+          border-color:none;
+          box-shadow: none;
+        }
+        #searchResults.jobResults div.searchResult p.hasMore{
+          float: left;
+          overflow: visible;
+        }
+          #searchResults.jobResults div.searchResult p.hasMore .moreBtn,
+          #searchResults.jobResults div.searchResult .fullDesc .lessBtn{
+            display: inline-block;
+            position: relative;
+            left: 2px;
+            padding: 0 5px;
+            border: 1px solid #C7C7C7;
+            border-radius: 3px;
+            line-height: 15px;
+            color: #A0A09F;
+            background: #F0F0EF;
+          }
+    #jobSearchForm fieldset .keywordsCheckbox label[for="filter-q"]{
+      display:none;
+    }
+    #searchInfo a.saveSearchLink {
+      line-height:30px;
+      float:left;
+      margin:25px 0 0;
+      text-align: center;
+      font-size:12px;
+      border-radius:3px;
+      position: relative;
+      font-size: 14px;
+    }
+    #searchInfo #totalJobsCriteria {
+      float:left;
+      line-height:30px;
+      margin:25px 0 20px;
+      font-size:18px;
+      color:#60605F;
+    }
+        #searchInfo #jobSearchForm label,
+        #searchInfo #jobSearchForm td.skillsLabel{
+          line-height:25px;
+          font-size:14px;
+          margin:0 10px 0 0;
+        }
+        #searchInfo #basicFilter{
+            float:left;
+            width:100%;
+        }
+        #searchInfo #basicFilter #jobSearchForm{
+            float:left;
+            width:100%;
+            padding-bottom:15px;
+        }
+            #searchInfo #basicFilter #jobSearchForm fieldset{
+                float:left;
+                clear:both;
+                border:none;
+                padding:0;
+                margin: 0;
+                width:100%;
+                vertical-align:text-top;
+                clear:none;
+            }
+            #searchInfo #basicFilter #jobSearchForm .submitSearchContainer{
+                float:right;
+                margin:0;
+            }
+                #searchInfo #basicFilter #jobSearchForm .submitSearchContainer input{
+                    margin:0;
+                }
+                #searchInfo #basicFilter #jobSearchForm .submitSearchContainer .switchToAdvanced{
+                    display:block;
+                    width:100%;
+                    text-align: center;
+                    margin:0;
+                    line-height: 55px;
+                }
+            #searchInfo #basicFilter #jobSearchForm fieldset > legend{
+                float:left;
+                font-size:14px;
+                width:185px;
+            }
+            #searchInfo #basicFilter #jobSearchForm fieldset .show-more{
+                float:right;
+                margin:0;
+                width:108px;
+                text-decoration: none;
+                line-height: 21px;
+                color:#A1A1A0;
+                position: relative;
+                font-size: 14px;
+            }
+            #searchInfo #basicFilter #jobSearchForm fieldset .show-more .less-label{
+              display:none;
+            }
+            #searchInfo #basicFilter #jobSearchForm fieldset .show-more span{
+              float: left;
+              margin:0 3px 0 0;
+            }
+            #searchInfo #basicFilter #jobSearchForm fieldset .show-more.more .less-label{
+              display:block;
+            }
+            #searchInfo #basicFilter #jobSearchForm fieldset .show-more.more .more-label{
+              display:none;
+            }
+            #searchInfo #basicFilter #jobSearchForm fieldset .show-more .arrow{
+              width:16px;
+              height:16px;
+              background-position: -16px 0;
+              position: absolute;
+              right:0;
+              top:5px;
+            }
+            #searchInfo #basicFilter #jobSearchForm fieldset .show-more.more .arrow{
+              background-position: -16px -16px;
+            }
+            /*Inside the job container*/
+            #moreOptionsContainer{
+              height: 0;
+              float: left;
+              width:100%;
+              overflow:hidden;
+              opacity:0;
+              -webkit-transition:height 0.3s,opacity 0.4s,margin 0.3s;
+            }
+            #moreOptionsContainer.more{
+              height: auto;
+              opacity:1;
+              border-top:1px solid #EDEDEC;
+              margin:11px 0 0 0;
+              padding:20px 0 6px 0;
+            }
+            #moreOptionsContainer #skillsHolder {
+              height:auto;
+            }
+                #moreOptionsContainer #skillsHolder .tokenizer li {
+                  height:auto;
+                }
+            #moreOptionsContainer input#filter-qt,
+            #moreOptionsContainer #skillsHolder input.ac_input{
+              line-height: 30px;
+              padding:0 10px;
+              border:1px solid #C8C8C7;
+              font-size: 14px;
+              float: left;
+              width:331px;
+            }
+            #moreOptionsContainer input#filter-qt{
+              margin:0 14px 20px 0;
+            }
+            #moreOptionsContainer #skillsHolder input.ac_input{
+              margin:1px 0 20px 0;
+            }
+            #moreOptionsContainer ul.skillsOptions{
+              float: left;
+              width: 353px;
+            }
+              #moreOptionsContainer ul.skillsOptions *{
+                padding:0;
+                margin:0;
+                overflow: visible;
+              }
+                #moreOptionsContainer ul.skillsOptions table{
+                  border-collapse: collapse;
+                }
+              #moreOptionsContainer a.switchToAdvanced{
+                margin: 21px 0 0;
+                width: 89px;
+              }
+            #searchInfo #basicFilter #jobSearchForm fieldset > legend a{
+                float:right;
+                font-size:14px;
+                margin:0 0 0 10px;
+            }
+            #searchInfo #basicFilter #jobSearchForm fieldset .description{
+                float:left;
+                width:365px;
+                margin:0;
+            }
+            #searchInfo #basicFilter #jobSearchForm fieldset .jobStatusCheckbox{
+                float:left;
+            }
+            #searchInfo #basicFilter #jobSearchForm fieldset .keywordsCheckbox{
+                margin:0 0 16px;
+                float:left;
+            }
+                #searchInfo #basicFilter #jobSearchForm fieldset .keywordsCheckbox #filter-q{
+                    width:580px;
+                    font-size: 14px;
+                    padding: 0 10px;
+                    line-height: 30px;
+                    margin:0;
+                    border-radius: 4px;
+                    border-color:#C9C9C9;
+                }
+                #searchInfo #basicFilter #jobSearchForm fieldset select{
+                    font-size:14px;
+                    margin:0;
+                    width:275px;
+                    padding:2px;
+                }
+                    #searchInfo #basicFilter #jobSearchForm fieldset #skillsHolder ul.tokenizer{
+                        border:none;
+                    }
+                      #searchInfo #basicFilter #jobSearchForm fieldset #skillsHolder ul.tokenizer li{
+                          padding:0 !important;
+                          margin:0 !important;
+                      }
+            #searchInfo #basicFilter #jobSearchForm fieldset .keepFiltersCheckbox{
+                float:left;
+                margin:0;
+            }  
+                #searchInfo #basicFilter #jobSearchForm fieldset .keepFiltersCheckbox input{
+                    margin:5px 5px 0 0;
+                }
+                #search-more-container {
+                  float: left;
+                  width: 100%;
+                }
+#searchResults{
+    float: left;
+    padding:0;
+}
+#basicFilter .more{
+  display: block;
+}
+.categorySelect {
+  width: 202px;
+  margin: 5px 9px;
+  padding: 2px;
+}
+.actionSidebar h2{
+    font-size:13px;
+    color:#88A6B4 !important;
+    line-height:25px;
+    padding:0 7px;
+}
+#allFilters {
+  padding-top: 0;
+}
+#allFilters legend {
+  float: left;
+  width: 100%;
+  margin: 5px 4px;
+  padding: 0 !important;
+  font-size: 13px !important;
+  font-weight: normal;
+  line-height: 14px;
+}
+#allFilters a.controlPlusMinus {
+  display: none;
+}
+#allFilters ul.filters {
+  float: left !important;
+  margin: 5px 0 0 18px;
+}
+#allFilters li.group {
+  margin: 0 !important;
+  padding: 4px 0 !important;
+  border-bottom: 1px solid #C8E4F1 !important;
+}
+#allFilters li.group:last-child {
+  border-bottom: none !important;
+}
+
+.actionSidebar {
+  width: 223px;
+}
+
+li.group legend .collapse {
+  display: inline-block;
+  float: left;
+  width: 12px;
+  height: 12px;
+  margin: 0 7px 0 5px;
+  border: 1px solid #AEAEAE;
+  border-radius: 7px;
+  background: white;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+li.group legend .collapse .arrow {
+  float: left;
+  margin: 5px 0 0 3px;
+  border: 3px solid transparent;
+  border-top-color: #969696;
+}
+
+li.group.expand legend .collapse .arrow {
+  margin: 3px 0 0 5px;
+  border: 3px solid transparent;
+  border-left-color: #969696;
+}
+.searchResult{
+  margin:15px 0;
+  float: left;
+  width: 100%;
+}
+.searchResult.applied.collapsed{
+  background-image:-webkit-linear-gradient(bottom,rgba(0,0,0,0) 20%,#E9E9E9 20%,#E9E9E9 80%,rgba(0,0,0,0) 80%);
+  padding:3px;
+}
+.searchResult .content .resultStatus{
+    position: absolute;
+    top:5px;
+    right:40px;
+}
+.searchResult .resultHeader{
+    width:100%;
+}
+    .searchResult .resultHeader h3{
+        line-height:28px;
+        margin:0 0 15px 0;
+        font-size:18px;
+        line-height: 19px;
+    }
+      .searchResult.applied .resultHeader h3 a{
+        color:#A1A1A0;
+      }
+      .searchResult .resultHeader h3 .extraInfo{
+        width:31px;
+        height:16px;
+        position: absolute;
+        top:2px;
+        right:0px;
+      }
+        .searchResult .resultHeader h3 .extraInfo .icon{
+          background-repeat: no-repeat;
+          background-position: 0 0;
+          width:16px;
+          height:16px;
+          overflow: hidden;
+          float:right;
+        }
+        .searchResult .resultHeader h3 .extraInfo.yellowWarning .icon{
+          background-position: 0 -32px;
+          color:#fff;
+          line-height: 16px;
+          font-size:10px;
+          text-align: center;
+        }
+        .searchResult .resultHeader h3 .extraInfo.applied .icon{
+          background-position: 0 -16px;
+        }
+        .searchResult .resultHeader h3 .extraInfo.applied.yellowWarning .icon{
+          background-position: 0 -48px;
+        }
+        .searchResult .resultHeader h3 .extraInfo div.arrow{
+          border:3px solid transparent;
+          border-top-color:#4F89E4;
+          width:0;
+          height:0;
+          margin:7px 0 0 4px;
+          float:left;
+        }
+        .searchResult .resultHeader h3 .extraInfo .dataContainer{
+          display:none;
+          position: absolute;
+          border:1px solid #C8C8C7;
+          border-radius: 5px;
+          left:-160px;
+          z-index: 2;
+          margin:20px 0 0 0;
+        }
+        .searchResult .resultHeader h3 .extraInfo:hover .dataContainer{
+          display:block;
+        }
+          .searchResult .resultHeader h3 .extraInfo .dataContainer .arrow{
+            content:"";
+            width:18px;
+            height:10px;
+            margin:-18px 0 0 146px;
+            float:left;
+            background-position:-32px -54px;
+            border:none;
+          }
+          .searchResult .resultHeader h3 .extraInfo .dataContainer .tableContainer{
+            padding: 8px 12px;
+            background: #FFFFFF;
+            border-radius: 6px;
+          }
+          .searchResult .resultHeader h3 .extraInfo .dataContainer table{
+            width: 300px;
+            margin: 0;
+            font-size: 12px;
+            font-weight: normal;
+            clear:both;
+          }
+            .searchResult .resultHeader h3 .extraInfo .dataContainer table th{
+              text-align: left;
+              width:0px;
+              min-width:110px;
+              margin:0;
+            }
+            .searchResult .resultHeader h3 .extraInfo .dataContainer table td{
+              text-align: left;
+              margin:0;
+            }
+            .searchResult .resultHeader h3 .extraInfo .dataContainer table th,
+            .searchResult .resultHeader h3 .extraInfo .dataContainer table td{
+              line-height:24px;
+            }
+            .searchResult .resultHeader h3 .extraInfo .dataContainer dl.labelsAndData dt.portfolio{
+              width:100%;
+              text-align: center;
+              margin:10px 0 5px;
+            }
+            .searchResult .resultHeader h3 .extraInfo .dataContainer tr.yellowWarning th,
+            .searchResult .resultHeader h3 .extraInfo .dataContainer tr.yellowWarning td{
+              color:#CA4D22;
+            }
+            .searchResult .resultHeader h3 .extraInfo .oHelpDotHover{
+              background: #BED6E8;
+              width:12px;
+              height:12px;
+              float:right;
+              border-radius: 6px;
+            }
+              .searchResult .resultHeader h3 .extraInfo .oHelpDotHover .oHelpTip{
+                width:100px;
+                height:20px;
+                line-height: 20px;
+                font-size: 14px;
+                font-weight: normal;
+                display:none;
+              }
+              .searchResult .resultHeader h3 .extraInfo .oHelpDotHover:hover .oHelpTip{
+                display:block;
+              }
+  .searchResult .resultHeader dl{
+    font-size:12px;
+    color:#A1A1A0;
+    float: left;
+  }
+    .searchResult .resultHeader dt.type{
+      color:#5B84C3;
+    }
+  .searchResult .resultHeader .timezone{
+    float: right;
+    font-size:12px;
+    color:#A1A1A0;
+    position: relative;
+    width:90px;
+    text-align: right;
+  }
+    .searchResult .resultHeader .timezone p.country{
+      position: absolute;
+      top:0px;
+      right:0;
+      float: right;
+      font-size:11px;
+      color:#A1A1A0;
+      border:1px solid #E5E5E4;
+      background: #fff;
+      text-align: center;
+      opacity: 0;
+      line-height: 14px;
+      width:100%;
+      -webkit-transition:opacity 0.5s;
+    }
+    .searchResult .resultHeader .timezone:hover p.country{
+      opacity: 1;
+    }
+.searchResult.applied.collapsed .content{
+  display:none;
+}
+.searchResult.jobClosed{
+    opacity: 0.5;
+}
+    .searchResult.jobClosed .resultStatus{
+        position: absolute;
+        right: 50px;
+        top: 8px;
+        text-align: right;
+    }
+.searchResult p[name],
+.searchResult div.fullDesc{
+  margin:10px 0;
+  font-size: 14px;
+}
+.searchResult dl.details{
+  margin:10px 0 0;
+  float: left;
+}
+.searchResult dl.skills{
+  margin:10px 0 0;
+  float: left;
+  width:400px;
+}
+  .searchResult dl.skills dt{
+    float: left;
+    line-height: 16px;
+    width: 45px;
+  }
+  .searchResult dl.skills dd.skill{
+    float: left;
+  }
+  .searchResult dl.skills .extra-skills-container{
+    float: left;
+    width:20px;
+    position: relative;
+  }
+    .searchResult dl.skills .extra-skills-container .skills-count{
+      float: left;
+      padding: 1px 5px;
+      color: #111E30;
+      border: 1px solid #D3E8FA;
+      border-radius: 4px;
+      background-color: #D3E8FA;
+      width:20px;
+      position: relative;
+    }
+      .searchResult dl.skills .extra-skills-container .skills-count .arrow{
+        position: absolute;
+        right:3px;
+        top:5px;
+        border:3px solid transparent;
+        border-left-color:#5B84C3;
+      }
+    .searchResult dl.skills .extra-skills-container .extra-skills-dropdown{
+      float: right;
+      width:295px;
+      opacity: 0;
+      display:none;
+      position: absolute;
+      -webkit-transition:opacity 0.5s;
+    }
+    .searchResult dl.skills .extra-skills-container:hover .extra-skills-dropdown {
+      display:block;
+      opacity: 1;
+    }
+
+#processWheel{
+  width:100%;
+  height:0;
+  position: relative;
+  float: right;
+  margin: -34px 0 0;
+}
+  #processWheel .spinner{
+    width:16px;
+    height:16px;
+    margin:auto;
+    position: relative;
+    border:6px solid #EDEDEC;
+    border-radius: 18px;
+    position: relative;
+    top:10px;
+    -webkit-transition: border 0.3s;
+  }
+  #processWheel.processing .spinner{
+    -webkit-animation-name: processWheel;
+    -webkit-animation-duration: 15s;
+    -webkit-animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+  }
+@-webkit-keyframes processWheel{
+  0%{
+      -webkit-transform: rotate(0deg);
+  }
+  3%{
+    border-right-color:#6DACE0;
+  }
+  20%{
+    border-right-color:#6DACE0;
+  }
+  40%{
+    border-color:#CADCF7;
+    border-right-color:#FA5458;
+  }
+  80%{
+    border-color:#FF5559;
+    border-right-color:#C7050B;
+  }
+  100%{
+    -webkit-transform: rotate(11520deg);
+  }
+}
+.jobResults .searchResult .resultButtons {
+  position: absolute;
+  right:10px;
+}
+div#l3_navWrapper{
+  margin:44px 0 0 0;
+}
+/* Apply Module */
+#app-box {
+  width:600px;
+  margin:auto;
+}
+#searchCount {
+  font-size: 17px;
+  color: #A0A09F;
+  float: left;
+}

@@ -1,0 +1,38 @@
+{
+  // Required
+  "name": "oDesk Injection",
+  "version": "0.5",
+  "manifest_version": 2,
+  // Recommended
+  "description": "A content injection script to change the appearance and enhance usability of oDesk",
+  "icons": {
+    "16": "/images/plugin-icon/odesk-icon_16x16.png",
+    "48": "/images/plugin-icon/odesk-icon_48x48.png",
+    "128": "/images/plugin-icon/odesk-icon_128x128.png"
+    },
+  //Taken from http://stackoverflow.com/a/9645435/1529598
+  // User name Rob W
+  "permissions": ["management"],
+  // Pick one (or none)
+  "content_scripts": [
+    {
+      "matches": ["https://www.odesk.com/*"],
+      /*"css": ["css/oDesk_Styles.css"],*/
+      "js": ["js/jquery.js","js/loader.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    "images/odesk-sprites-01.png",
+    "css/oDesk_Styles.css",
+    "css/header.css",
+    "js/job-search-search-area.js",
+    "js/job-search-filter-panel.js",
+    "js/job-search-processing.js",
+    "js/job-application.js",
+    "js/provider-messaging.js",
+    "js/css_inject.js",
+    "js/find-work.js",
+    "js/header.js",
+    "js/my_jobs.js"
+  ]
+}
