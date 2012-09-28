@@ -162,30 +162,49 @@ if ($('#searchResults').size() > 0) {
           }
         })
         /* More text */
-        var jobDesc = el.find('p[name]');
-        if (jobDesc.find('.more_link').size() > 0) {
-          jobDesc.find('.more_link').remove();
-          var jobStr    = jobDesc.html(),
-              jobLen    = jobStr.length,
-              moreBtn   = $('<span class="toggleDesc moreBtn">»</span>'),
-              lessBtn   = $('<span class="toggleDesc lessBtn">«</span>'),
-              fullDesc  = $('<div class="fullDesc" style="display: none;"></div>'),
-              fullText  = cache.find('.oMain.break article div.pam:first');
-          jobDesc
-            .addClass('hasMore')
-            .append(moreBtn)
-            .after(fullDesc)
-            .find('a').remove()
-            .html(jobStr.substring(0,jobLen - 3));
-          fullDesc.append(fullText);
-          fullText.append(lessBtn);
-          el.find('.toggleDesc').each(function(){
-            $(this).bind('click',function(){
-              jobDesc.toggle();
-              fullDesc.toggle();
-            });
-          });
+        var jobDesc     = el.find('p[name]'),
+            moreBtn     = $('<span class="toggleDesc moreBtn">»</span>'),
+            lessBtn     = $('<span class="toggleDesc lessBtn">«</span>'),
+            fullDescStr = cache.find('.oMain.break article div.pam:first').html();
+            fullDesc     = $('<p name class="job-description"></p>'),
+            maxLen      = 200;
+        function formatDesc(e) {
+          if (e.length > maxLen) {
+            var arr = $.trim(e).split(' '),
+                str = [],
+                temp,
+                moreContainer = $('<span class="moreText"></span>'),
+                moreCreated = false;
+            for (i = 0;i < arr.length;i++) {
+              /* Temporarily close all br tags */
+              str.push(arr[i]);
+              temp = str.join(' ');
+              if (moreCreated == false) {
+                var opentag = (temp.split('<').length-1) - (temp.split('>').length-1);
+                if (temp.length >= maxLen && opentag < 1) {
+                  moreCreated = true;
+                  var less = $('<span class="less">' + temp + ' </span>');
+                  less.append(moreBtn);
+                  fullDesc.append(less);
+                  str = [];
+                }
+              }
+            }
+            moreContainer.append(temp);
+            moreContainer.append(lessBtn);
+            fullDesc.append(moreContainer);
+          }
+          else { fullDesc.append(e); }
         }
+        formatDesc(fullDescStr);
+        /*fullDesc.append(lessBtn);*/
+        jobDesc.after(fullDesc);
+        jobDesc.remove();
+        el.find('.toggleDesc').each(function(){
+          $(this).bind('click',function(){
+            el.find('p.job-description').toggleClass('show-all');
+          });
+        });
         /* Duration of Jobs */
         var time = cache.find('header.phs hgroup p.oText:first');
         el.find('.resultHeader dl:first').remove();
@@ -249,9 +268,9 @@ if ($('#searchResults').size() > 0) {
   function getNextPage(nextPageURL,searchResults){
     /* Process Wheel */
     $(searchResults).trigger('nextInit');
-    console.log('oDesk Plus: Initiating getting of next page');
+    console.log('oDesk+: Initiating getting of next page');
     $.getJSON(nextPageURL,function(data){
-      console.log('oDesk Plus: Next page JSON loaded');
+      console.log('oDesk+: Next page JSON loaded');
       var items = [];
       $.each(data, function(key, val) {
         if (val != '[object Object]') {
@@ -298,12 +317,14 @@ if ($('#searchResults').size() > 0) {
   }
   
   function formatModules(){
+    console.log('oDesk+: Formating Main modules');
     jobsCriteria();
     checkClosedJobs();
     formatJobResults();
   }
   /* Fire functions that require post processing */
   $('#searchResults').bind('processend',function(){
+    console.log('oDesk+: oDesk default job processing complete');
     formatModules();
     process($(this));
   });
@@ -312,6 +333,7 @@ if ($('#searchResults').size() > 0) {
   */
   setTimeout(function(){
     if ($('#searchResults').attr('format') != 'true') {
+      console.log('oDesk+: oDesk default job processing did not complete, running timeout tasks');
       formatModules();
     }
   },600);

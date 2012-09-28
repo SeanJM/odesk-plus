@@ -252,7 +252,7 @@ div.backLink[formated] #pageTitle{
               #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .oHelpDotHover:hover .oHelpTip{
                 display:block;
               }
-      /* Extra Info Dropdown */
+      /* End Extra Info Dropdown */
       #searchResults.jobResults .searchResult .resultHeader p.oText{
         float: left;
         line-height: 17px;
@@ -268,8 +268,8 @@ div.backLink[formated] #pageTitle{
           float: left;
           overflow: visible;
         }
-          #searchResults.jobResults div.searchResult p.hasMore .moreBtn,
-          #searchResults.jobResults div.searchResult .fullDesc .lessBtn{
+          #searchResults.jobResults div.searchResult .moreBtn,
+          #searchResults.jobResults div.searchResult .lessBtn{
             display: inline-block;
             position: relative;
             left: 2px;
@@ -280,18 +280,44 @@ div.backLink[formated] #pageTitle{
             color: #A0A09F;
             background: #F0F0EF;
           }
+          #searchResults.jobResults .searchResult p[name]{
+            float: left;
+            margin: 10px 0;
+            font-size: 14px;
+            width: 100%;
+          }
+            #searchResults.jobResults .searchResult p[name] br{
+              display: none;
+            }
+            #searchResults.jobResults .searchResult p[name].show-all br{
+              display: inline;
+            }
+            #searchResults.jobResults .searchResult p[name] .less {
+            }
+            #searchResults.jobResults .searchResult p[name] .moreText{
+              display:none;
+              opacity: 0;
+              -webkit-transition: opacity 0.3s;
+            }
+            #searchResults.jobResults .searchResult p[name].show-all .moreText{
+              opacity: 1;
+              display: inline;
+            }
+            #searchResults.jobResults .searchResult p[name].show-all .moreBtn{
+              display:none;
+            }
     #jobSearchForm fieldset .keywordsCheckbox label[for="filter-q"]{
       display:none;
     }
     #searchInfo a.saveSearchLink {
-      line-height:30px;
-      float:left;
-      margin:25px 0 0;
-      text-align: center;
-      font-size:12px;
-      border-radius:3px;
+      float: left;
       position: relative;
+      margin: 25px 0 0;
+      border-radius: 3px;
+      text-align: center;
+      font-size: 12px;
       font-size: 14px;
+      line-height: 30px;
     }
     #searchInfo #totalJobsCriteria {
       float:left;
@@ -615,11 +641,6 @@ li.group.expand legend .collapse .arrow {
         top: 8px;
         text-align: right;
     }
-.searchResult p[name],
-.searchResult div.fullDesc{
-  margin:10px 0;
-  font-size: 14px;
-}
 .searchResult dl.details{
   margin:10px 0 0;
   float: left;
