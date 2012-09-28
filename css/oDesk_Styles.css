@@ -36,7 +36,7 @@ a:hover{
 div.backLink{
   margin:0 auto;
   width:970px;
-  height:0;
+  height:0px;
   opacity: 0;
   overflow:hidden;
   -webkit-transition:height 1s,opacity 1s;
@@ -111,17 +111,159 @@ div.backLink[formated] #pageTitle{
       border-radius:0px;
       padding:0;
   }
-        #searchResults.jobResults div.searchResult .content{
-          padding:0;
-          border-width:0;
-          border-radius: 0;
-          float: left;
+  /* Search results content */
+  #searchResults.jobResults div.searchResult .content{
+    padding:0;
+    border-width:0;
+    border-radius: 0;
+    float: left;
+    width: 100%;
+  }
+  #searchResults.jobResults div.searchResult:hover .content{
+    background:white;
+    border-color:none;
+    box-shadow: none;
+  }
+  /* Begin Result Header */
+  #searchResults.jobResults .searchResult .resultHeader{
+    padding:0;
+    border-width:0;
+    border-radius: 0;
+    float: left;
+    width: 100%;
+  }
+    #searchResults.jobResults .searchResult .resultHeader h3{
+        line-height:28px;
+        margin:0 0 15px 0;
+        font-size:18px;
+        line-height: 19px;
+    }
+      #searchResults.jobResults .searchResult.applied .resultHeader h3 a{
+        color:#A1A1A0;
+      }
+      /* Extra Info Dropdown */
+      #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo{
+        width:31px;
+        height:16px;
+        position: absolute;
+        top:2px;
+        right:0px;
+      }
+        #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .icon{
+          background-repeat: no-repeat;
+          background-position: 0 0;
+          width:16px;
+          height:16px;
+          overflow: hidden;
+          float:right;
         }
-        #searchResults.jobResults div.searchResult:hover .content{
-          background:white;
-          border-color:none;
-          box-shadow: none;
+        #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo.yellowWarning .icon{
+          background-position: 0 -32px;
+          color:#fff;
+          line-height: 16px;
+          font-size:10px;
+          text-align: center;
         }
+        #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo.applied .icon{
+          background-position: 0 -16px;
+        }
+        #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo.applied.yellowWarning .icon{
+          background-position: 0 -48px;
+        }
+        #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo div.arrow{
+          border:3px solid transparent;
+          border-top-color:#4F89E4;
+          width:0;
+          height:0;
+          margin:7px 0 0 4px;
+          float:left;
+        }
+        #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .dataContainer{
+          display:none;
+          position: absolute;
+          border:1px solid #C8C8C7;
+          border-radius: 5px;
+          left:-160px;
+          z-index: 2;
+          margin:20px 0 0 0;
+        }
+        #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo:hover .dataContainer{
+          display:block;
+        }
+          #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .dataContainer .arrow{
+            content:"";
+            width:18px;
+            height:10px;
+            margin:-18px 0 0 146px;
+            float:left;
+            background-position:-32px -54px;
+            border:none;
+          }
+          #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .dataContainer .tableContainer{
+            padding: 8px 12px;
+            background: #FFFFFF;
+            border-radius: 6px;
+          }
+          #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .dataContainer table{
+            width: 300px;
+            margin: 0;
+            font-size: 12px;
+            font-weight: normal;
+            clear:both;
+          }
+            #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .dataContainer table th{
+              text-align: left;
+              width:0px;
+              min-width:110px;
+              margin:0;
+            }
+            #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .dataContainer table td{
+              text-align: left;
+              margin:0;
+            }
+            #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .dataContainer table th,
+            #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .dataContainer table td{
+              line-height:24px;
+            }
+            #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .dataContainer dl.labelsAndData dt.portfolio{
+              width:100%;
+              text-align: center;
+              margin:10px 0 5px;
+            }
+            #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .dataContainer tr.yellowWarning th,
+            #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .dataContainer tr.yellowWarning td{
+              color:#CA4D22;
+            }
+            #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .oHelpDotHover{
+              background: #BED6E8;
+              width:12px;
+              height:12px;
+              float:right;
+              border-radius: 6px;
+            }
+              #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .oHelpDotHover .oHelpTip{
+                width:100px;
+                height:20px;
+                line-height: 20px;
+                font-size: 14px;
+                font-weight: normal;
+                display:none;
+              }
+              #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .oHelpDotHover:hover .oHelpTip{
+                display:block;
+              }
+      /* Extra Info Dropdown */
+      #searchResults.jobResults .searchResult .resultHeader p.oText{
+        float: left;
+        line-height: 17px;
+        margin: 0;
+        color: #A0A09F;
+        font-size: 13px;
+      }
+      #searchResults.jobResults .searchResult .resultHeader p.oText strong{
+        float: left;
+      }
+    /* End Result Header */
         #searchResults.jobResults div.searchResult p.hasMore{
           float: left;
           overflow: visible;
@@ -427,128 +569,6 @@ li.group.expand legend .collapse .arrow {
     top:5px;
     right:40px;
 }
-.searchResult .resultHeader{
-    width:100%;
-}
-    .searchResult .resultHeader h3{
-        line-height:28px;
-        margin:0 0 15px 0;
-        font-size:18px;
-        line-height: 19px;
-    }
-      .searchResult.applied .resultHeader h3 a{
-        color:#A1A1A0;
-      }
-      .searchResult .resultHeader h3 .extraInfo{
-        width:31px;
-        height:16px;
-        position: absolute;
-        top:2px;
-        right:0px;
-      }
-        .searchResult .resultHeader h3 .extraInfo .icon{
-          background-repeat: no-repeat;
-          background-position: 0 0;
-          width:16px;
-          height:16px;
-          overflow: hidden;
-          float:right;
-        }
-        .searchResult .resultHeader h3 .extraInfo.yellowWarning .icon{
-          background-position: 0 -32px;
-          color:#fff;
-          line-height: 16px;
-          font-size:10px;
-          text-align: center;
-        }
-        .searchResult .resultHeader h3 .extraInfo.applied .icon{
-          background-position: 0 -16px;
-        }
-        .searchResult .resultHeader h3 .extraInfo.applied.yellowWarning .icon{
-          background-position: 0 -48px;
-        }
-        .searchResult .resultHeader h3 .extraInfo div.arrow{
-          border:3px solid transparent;
-          border-top-color:#4F89E4;
-          width:0;
-          height:0;
-          margin:7px 0 0 4px;
-          float:left;
-        }
-        .searchResult .resultHeader h3 .extraInfo .dataContainer{
-          display:none;
-          position: absolute;
-          border:1px solid #C8C8C7;
-          border-radius: 5px;
-          left:-160px;
-          z-index: 2;
-          margin:20px 0 0 0;
-        }
-        .searchResult .resultHeader h3 .extraInfo:hover .dataContainer{
-          display:block;
-        }
-          .searchResult .resultHeader h3 .extraInfo .dataContainer .arrow{
-            content:"";
-            width:18px;
-            height:10px;
-            margin:-18px 0 0 146px;
-            float:left;
-            background-position:-32px -54px;
-            border:none;
-          }
-          .searchResult .resultHeader h3 .extraInfo .dataContainer .tableContainer{
-            padding: 8px 12px;
-            background: #FFFFFF;
-            border-radius: 6px;
-          }
-          .searchResult .resultHeader h3 .extraInfo .dataContainer table{
-            width: 300px;
-            margin: 0;
-            font-size: 12px;
-            font-weight: normal;
-            clear:both;
-          }
-            .searchResult .resultHeader h3 .extraInfo .dataContainer table th{
-              text-align: left;
-              width:0px;
-              min-width:110px;
-              margin:0;
-            }
-            .searchResult .resultHeader h3 .extraInfo .dataContainer table td{
-              text-align: left;
-              margin:0;
-            }
-            .searchResult .resultHeader h3 .extraInfo .dataContainer table th,
-            .searchResult .resultHeader h3 .extraInfo .dataContainer table td{
-              line-height:24px;
-            }
-            .searchResult .resultHeader h3 .extraInfo .dataContainer dl.labelsAndData dt.portfolio{
-              width:100%;
-              text-align: center;
-              margin:10px 0 5px;
-            }
-            .searchResult .resultHeader h3 .extraInfo .dataContainer tr.yellowWarning th,
-            .searchResult .resultHeader h3 .extraInfo .dataContainer tr.yellowWarning td{
-              color:#CA4D22;
-            }
-            .searchResult .resultHeader h3 .extraInfo .oHelpDotHover{
-              background: #BED6E8;
-              width:12px;
-              height:12px;
-              float:right;
-              border-radius: 6px;
-            }
-              .searchResult .resultHeader h3 .extraInfo .oHelpDotHover .oHelpTip{
-                width:100px;
-                height:20px;
-                line-height: 20px;
-                font-size: 14px;
-                font-weight: normal;
-                display:none;
-              }
-              .searchResult .resultHeader h3 .extraInfo .oHelpDotHover:hover .oHelpTip{
-                display:block;
-              }
   .searchResult .resultHeader dl{
     font-size:12px;
     color:#A1A1A0;
