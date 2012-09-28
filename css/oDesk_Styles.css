@@ -280,30 +280,31 @@ div.backLink[formated] #pageTitle{
             color: #A0A09F;
             background: #F0F0EF;
           }
-          #searchResults.jobResults .searchResult p[name]{
+          #searchResults.jobResults .searchResult p[name],
+          #searchResults.jobResults .searchResult p.job-description{
             float: left;
             margin: 10px 0;
             font-size: 14px;
             width: 100%;
           }
-            #searchResults.jobResults .searchResult p[name] br{
+            #searchResults.jobResults .searchResult p.job-description br{
               display: none;
             }
-            #searchResults.jobResults .searchResult p[name].show-all br{
+            #searchResults.jobResults .searchResult p.job-description.show-all br{
               display: inline;
             }
-            #searchResults.jobResults .searchResult p[name] .less {
+            #searchResults.jobResults .searchResult p.job-description .less {
             }
-            #searchResults.jobResults .searchResult p[name] .moreText{
+            #searchResults.jobResults .searchResult p.job-description .moreText{
               display:none;
               opacity: 0;
               -webkit-transition: opacity 0.3s;
             }
-            #searchResults.jobResults .searchResult p[name].show-all .moreText{
+            #searchResults.jobResults .searchResult p.job-description.show-all .moreText{
               opacity: 1;
               display: inline;
             }
-            #searchResults.jobResults .searchResult p[name].show-all .moreBtn{
+            #searchResults.jobResults .searchResult p.job-description.show-all .moreBtn{
               display:none;
             }
     #jobSearchForm fieldset .keywordsCheckbox label[for="filter-q"]{

@@ -43,8 +43,7 @@ function setupSearchInfo() {
         advancedSearch        = $('#jobSearchForm .switchToAdvanced'),
         moreOptionsContainer  = $('<div id="moreOptionsContainer" />'),
         moreOptionsBtn        = $('<div class="show-more"><span class="more-label">More</span><span class="less-label">Less</span> Options<span class="sprite arrow"></span></div>'),
-        jobTitle              = fieldset.find('#filter-qt'),
-        saveSearch            = $('#searchInfo .saveSearchLink');
+        jobTitle              = fieldset.find('#filter-qt');
 
     searchBtn.addClass('btn');
     advancedSearch
@@ -88,7 +87,15 @@ function setupSearchInfo() {
     moreOptionsContainer.insertAfter(fieldset.find('.keepFiltersCheckbox'));
     moreOptionsBtn.insertBefore(moreOptionsContainer);
     
-    saveSearch.appendTo(moreOptionsContainer);
+    /* Fixing delayed search link appearance */
+    var checkSearchLink = setInterval(function(){
+      saveSearch = $('#searchInfo .saveSearchLink');
+      if (saveSearch.size() > 0) {
+        saveSearch.appendTo(moreOptionsContainer);
+        clearInterval(checkSearchLink);
+      }
+    },100);
+
     keywordSearch.attr('placeholder','Keywords').wrap('<div class="keywordsCheckbox"></div>');
     
     setTimeout(function() { 
@@ -120,7 +127,7 @@ if ($('#searchResults').size() > 0) {
       dropdown.before(totalEl);
     }
   }
-  function JobResultsQualifications(el) {
+  function SearchResultsFormatting(el) {
     if (!el.attr('format')) {
       var jobLink           = el.find('h3 a').attr('href'),
         link              = jobLink + ' #main',
@@ -165,41 +172,38 @@ if ($('#searchResults').size() > 0) {
         var jobDesc     = el.find('p[name]'),
             moreBtn     = $('<span class="toggleDesc moreBtn">»</span>'),
             lessBtn     = $('<span class="toggleDesc lessBtn">«</span>'),
-            fullDescStr = cache.find('.oMain.break article div.pam:first').html();
+            fullDescStr = cache.find('.oMain.break article div.pam:first').html(),
             fullDesc     = $('<p name class="job-description"></p>'),
-            maxLen      = 200;
-        function formatDesc(e) {
-          if (e.length > maxLen) {
-            var arr = $.trim(e).split(' '),
-                str = [],
-                temp,
-                moreContainer = $('<span class="moreText"></span>'),
-                moreCreated = false;
-            for (i = 0;i < arr.length;i++) {
-              /* Temporarily close all br tags */
-              str.push(arr[i]);
-              temp = str.join(' ');
-              if (moreCreated == false) {
-                var opentag = (temp.split('<').length-1) - (temp.split('>').length-1);
-                if (temp.length >= maxLen && opentag < 1) {
-                  moreCreated = true;
-                  var less = $('<span class="less">' + temp + ' </span>');
-                  less.append(moreBtn);
-                  fullDesc.append(less);
-                  str = [];
-                }
+            maxLen      = 400;
+        if (fullDescStr.length > maxLen) {
+          var arr = $.trim(fullDescStr).split(' '),
+              str = [],
+              temp,
+              moreContainer = $('<span class="moreText"></span>'),
+              moreCreated = false;
+          for (i = 0;i < arr.length;i++) {
+            /* Temporarily close all br tags */
+            str.push(arr[i]);
+            temp = str.join(' ');
+            if (moreCreated == false) {
+              var opentag = (temp.split('<').length-1) - (temp.split('>').length-1);
+              if (temp.length >= maxLen && opentag < 1) {
+                moreCreated = true;
+                var less = $('<span class="less">' + temp + ' </span>');
+                less.append(moreBtn);
+                fullDesc.append(less);
+                str = [];
               }
             }
-            moreContainer.append(temp);
-            moreContainer.append(lessBtn);
-            fullDesc.append(moreContainer);
           }
-          else { fullDesc.append(e); }
+          moreContainer.append(temp);
+          moreContainer.append(lessBtn);
+          fullDesc.append(moreContainer);
         }
-        formatDesc(fullDescStr);
-        /*fullDesc.append(lessBtn);*/
+        else { fullDesc.append(fullDescStr); }
         jobDesc.after(fullDesc);
         jobDesc.remove();
+        /* End More Text */
         el.find('.toggleDesc').each(function(){
           $(this).bind('click',function(){
             el.find('p.job-description').toggleClass('show-all');
@@ -230,7 +234,7 @@ if ($('#searchResults').size() > 0) {
     
     $('.searchResult .resultButtons').each(function() { $(this).remove() });
     $('.searchResult').each(function(i){
-      if (i >= n) { JobResultsQualifications($(this)); }
+      if (i >= n) { SearchResultsFormatting($(this)); }
     });
   }
 
