@@ -29,7 +29,6 @@ function backLink() {
 
 function setupSearchInfo() {
   var jobSearchForm = $('#jobSearchForm');
-  console.log('run');
   if (jobSearchForm.attr('format') != 'true') {
 
     var fieldset              = $('#jobSearchForm fieldset'),
@@ -189,7 +188,6 @@ if ($('#searchResults').size() > 0) {
         }
         /* Duration of Jobs */
         var time = cache.find('header.phs hgroup p.oText:first');
-        console.log(time.html());
         el.find('.resultHeader dl:first').remove();
         /* Sometimes these are loading twice, this will prevent that */
         if (el.find('.resultHeader p.oText').size() < 1) { 
@@ -235,20 +233,25 @@ if ($('#searchResults').size() > 0) {
     $('#searchCount .total').html(total);
   }
 
-  function process(elem){
-    $('#processWheel').toggleClass('processing');
+  function process(par){
+    elem = $('#searchResults');
     if ($('#processWheel').size() < 1) {
       var process = $('<div id="processWheel"><div class="spinner"></div></div>');
       elem.after(process);
+    }
+    else {
+      if (par == 'start') { $('#processWheel').addClass('processing'); }
+      if (par == 'end') { $('#processWheel').removeClass('processing'); }
     }
     jobCount(elem);
   }
 
   function getNextPage(nextPageURL,searchResults){
     /* Process Wheel */
-    process(searchResults);
+    $(searchResults).trigger('nextInit');
+    console.log('oDesk Plus: Initiating getting of next page');
     $.getJSON(nextPageURL,function(data){
-      process(searchResults);
+      console.log('oDesk Plus: Next page JSON loaded');
       var items = [];
       $.each(data, function(key, val) {
         if (val != '[object Object]') {
@@ -264,23 +267,32 @@ if ($('#searchResults').size() > 0) {
       $('.moreResults > .content').appendTo('#searchResults');
       // Remove Apply Button
       $('.moreResults').remove();
-      formatJobResults();
-      checkClosedJobs();
+      $(searchResults).trigger('nextLoaded');
     });
   }
-
+  /* After the next page is loaded */
+  $('#searchResults').bind('nextInit',function(){
+      process('start');
+  });
+  $('#searchResults').bind('nextLoaded',function(){
+      formatJobResults();
+      checkClosedJobs();
+      process('end');
+  });
   function searchResultsScroll(){
     if($(window).scrollTop() + $(window).height() == $(document).height()) {
       if ($('.find_work_list').length) {
-        var searchResults = $('.find_work_list #searchResults');
-        var paginator = searchResults.find('ul.paginator:last');
-        var nextPage = paginator.find('.currentPage').removeClass('currentPage').next();
-        nextPage.addClass('currentPage');
-        var pagLast = $('.paginator:last');
-        var currentPageNumber =  pagLast.find('li.currentPage').text();
-        var lastPageNumber = pagLast.find('li:last').prev().text();
-        searchResults.append('<div class="moreList" />');
-        getNextPage(nextPage.find('a').attr('href'),searchResults);
+        if (!$('#processWheel').hasClass('processing')) {
+          var searchResults = $('.find_work_list #searchResults');
+          var paginator = searchResults.find('ul.paginator:last');
+          var nextPage = paginator.find('.currentPage').removeClass('currentPage').next();
+          nextPage.addClass('currentPage');
+          var pagLast = $('.paginator:last');
+          var currentPageNumber =  pagLast.find('li.currentPage').text();
+          var lastPageNumber = pagLast.find('li:last').prev().text();
+          searchResults.append('<div class="moreList" />');
+          getNextPage(nextPage.find('a').attr('href'),searchResults);
+        }
       }
     }
   }
