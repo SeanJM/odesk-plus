@@ -1,7 +1,3 @@
-/*
-  Contractor Search Area Comprising all elements inside the first column
-*/
-
 function jobsCriteria() {
   
   var searchInfo    = $('#searchInfo'),
@@ -125,16 +121,13 @@ if ($('#searchResults').size() > 0) {
         Search Results
   ------------------------------ */
   function skillsFormat(el){
-    var total = el.find('dd.skill').size();
-    if (total > 3 && el.find('.extra-skills-container').size() < 1) {
-      var container   = $('<div class="extra-skills-container"/>'),
-          dropdown    = $('<div class="extra-skills-dropdown" />'),
-          extra       = el.find('dd').filter(':gt(2)'),
-          extraTotal  = dropdown.find('dd.skill').size(),
-          totalEl = $('<div class="skills-count">' + extraTotal + '<div class="arrow"></div></div>');
-      extra.appendTo(dropdown);
-      dropdown.appendTo(container);
-      el.append(container);
+    var total = el.find('dd.skill').size(),
+        max   = 3;
+    if (total > max && el.find('.extra-skills-container').size() < 1) {
+      var container   = $('<div class="extra-skills-container"/>').appendTo(el),
+          dropdown    = $('<div class="extra-skills-dropdown" />').appendTo(container),
+          extra       = el.find('dd').filter(':gt(' + (max-1) + ')').appendTo(dropdown),
+          totalEl = $('<div class="skills-count">' + (total-max) + '<div class="arrow"></div></div>');
       dropdown.before(totalEl);
     }
   }
@@ -228,7 +221,10 @@ if ($('#searchResults').size() > 0) {
           el.find('.resultHeader h3').after(time);
         }
       });
+      
       skillsFormat(el.find('dl.skills'));
+      
+      /* Format the header */
       var heading         = el.find('.resultHeader h3 a'),
           headingShort    = heading.html(),
           maxHeadingLen   = 70;
@@ -281,21 +277,28 @@ if ($('#searchResults').size() > 0) {
   }
 
   function getNextPage(nextPageURL,searchResults){
-    $(searchResults).trigger('nextInit');
-    console.log('oDesk+: Initiating getting of next page');
-    $.getJSON(nextPageURL,function(data){
-      console.log('oDesk+: Next page JSON loaded');
-      var items = [];
-      $.each(data, function(key, val) {
-        if (val != '[object Object]') {
-          var output = '<div class="' + key + '">' + val + '</div>';
-          if (key == 'paginator_wrapper') { output = '<div class="' + key + '" style="display:none;">' + val + '</div>' }
-          if (key != 'jobs_count' && key != 'query_string' && key != 'where_filter' && key != 'sub_cat') { items.push(output); }
-        }
+    if (!$('#processWheel').hasClass('processing')) {
+      $(searchResults).trigger('nextInit');
+      
+      console.log('oDesk+: Initiating getting of next page');
+      
+      $.getJSON(nextPageURL,function(data){
+        console.log('oDesk+: Next page JSON loaded');
+        var items = [];
+        
+        $.each(data, function(key, val) {
+          if (val != '[object Object]') {
+            var output = '<div class="' + key + '">' + val + '</div>';
+            if (key == 'paginator_wrapper') { output = '<div class="' + key + '" style="display:none;">' + val + '</div>' }
+            if (key != 'jobs_count' && key != 'query_string' && key != 'where_filter' && key != 'sub_cat') { items.push(output); }
+          }
+        });
+        
+        $(items.join('')).appendTo('#searchResults');
+        
+        $(searchResults).trigger('nextLoaded');
       });
-      $(items.join('')).appendTo('#searchResults');
-      $(searchResults).trigger('nextLoaded');
-    });
+    }
   }
   /* After the next page is loaded */
   $('#searchResults').bind('nextInit',function(){
@@ -346,4 +349,3 @@ if ($('#searchResults').size() > 0) {
   });
 }
 });
-/* */

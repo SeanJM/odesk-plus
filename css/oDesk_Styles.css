@@ -28,7 +28,7 @@ a:hover{
     margin:0 0 16px 0;
 }
 #mainBody.layout2 #col1{
-  width:720px;
+  width:710px;
 }
 #pageTitle{
   display:none;
@@ -423,6 +423,7 @@ div.backLink[formated] #pageTitle{
             }
             #moreOptionsContainer #skillsHolder {
               height:auto;
+              width:100%;
             }
                 #moreOptionsContainer #skillsHolder .tokenizer li {
                   height:auto;
@@ -434,13 +435,14 @@ div.backLink[formated] #pageTitle{
               border:1px solid #C8C8C7;
               font-size: 14px;
               float: left;
-              width:331px;
+              width:321px;
             }
             #moreOptionsContainer input#filter-qt{
               margin:0 14px 20px 0;
             }
             #moreOptionsContainer #skillsHolder input.ac_input{
-              margin:1px 0 20px 0;
+              margin:1px 0 0 0;
+              float: right;
             }
             #moreOptionsContainer ul.skillsOptions{
               float: left;
@@ -476,7 +478,7 @@ div.backLink[formated] #pageTitle{
                 float:left;
             }
                 #searchInfo #basicFilter #jobSearchForm fieldset .keywordsCheckbox #filter-q{
-                    width:580px;
+                    width:570px;
                     font-size: 14px;
                     padding: 0 10px;
                     line-height: 30px;
@@ -487,11 +489,27 @@ div.backLink[formated] #pageTitle{
                 #searchInfo #basicFilter #jobSearchForm fieldset select{
                     font-size:14px;
                     margin:0;
-                    width:275px;
+                    width:265px;
                     padding:2px;
                 }
+                    #searchInfo #basicFilter #jobSearchForm fieldset #skillsHolder table.more,
+                    #searchInfo #basicFilter #jobSearchForm fieldset #skillsHolder table.more tbody,
+                    #searchInfo #basicFilter #jobSearchForm fieldset #skillsHolder table.more tbody tr,
+                    #searchInfo #basicFilter #jobSearchForm fieldset #skillsHolder table.more tbody tr td{
+                      float: right;
+                      width: 100%;
+                      position: relative;
+                    }
+                    #searchInfo #basicFilter #jobSearchForm fieldset #skillsHolder table.more tbody tr td #babelSkillsWidget{
+                      position: absolute;
+                      right: 159px;
+                    }
                     #searchInfo #basicFilter #jobSearchForm fieldset #skillsHolder ul.tokenizer{
                         border:none;
+                        float: right;
+                        width: 100%;
+                        position: absolute;
+                        right:0;
                     }
                       #searchInfo #basicFilter #jobSearchForm fieldset #skillsHolder ul.tokenizer li{
                           padding:0 !important;
