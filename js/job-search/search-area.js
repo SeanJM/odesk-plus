@@ -1,33 +1,40 @@
+/*
+  Contractor Search Area Comprising all elements inside the first column
+*/
 
 function jobsCriteria() {
-  var searchInfo = $('#searchInfo');
-  var resultDesc = searchInfo.find('#jobSearchForm .resultDescription');
-  var headingTotal = $('#pageTitle h1 .total');
-  var totalJobs = $('#totalJobs').html();
-  resultDesc.hide();
-  if (headingTotal.size() < 1) {
-    var total = $('<span class="total"></span>');
-    $('#pageTitle h1').append(total);
-  }
+  
+  var searchInfo    = $('#searchInfo'),
+      headingTotal  = $('#pageTitle h1 .total'),
+      resultDesc    = searchInfo.find('#jobSearchForm .resultDescription').hide(),
+      total         = $('<span class="total"></span>'),
+      totalJobs     = $('#totalJobs').html();
+  
+  if (headingTotal.size() < 1) { $('#pageTitle h1').append(total); }
   $('#pageTitle h1 .total').html(' (' + totalJobs + ')');
 }
 
 function backLink() {
-  var backLink = $('.backLink');
-  var container = $('<div class="container" />');
-  var arrow = $('<span class="arrow sprite"/>');
+  
+  var backLink    = $('.backLink'),
+      container   = $('<div class="container" />'),
+      arrow       = $('<span class="arrow sprite"/>');
+  
   if (backLink.find('#pageTitle').size() < 1) {
+    
     backLink.children('a').appendTo(container).addClass('root');
+    
     $('#pageTitle').appendTo(container);
     $('.backLink').attr('formated','true');
-    container.children('a').each(function() {
-      $(this).after(arrow);
-    });
+    
+    container.children('a').each(function() { $(this).after(arrow); });
+    
     backLink.append(container);
   }
 }
 
 function setupSearchInfo() {
+
   var jobSearchForm = $('#jobSearchForm');
   if (jobSearchForm.attr('format') != 'true') {
 
@@ -76,6 +83,7 @@ function setupSearchInfo() {
       jobStatusCheckbox.toggle();
       advancedSearch.toggle();
       moreOptionsContainer.toggleClass('more');
+
       $(this).toggleClass('more');
     });
 
@@ -87,7 +95,10 @@ function setupSearchInfo() {
     moreOptionsContainer.insertAfter(fieldset.find('.keepFiltersCheckbox'));
     moreOptionsBtn.insertBefore(moreOptionsContainer);
     
-    /* Fixing delayed search link appearance */
+    /* 
+    Check to make sure the save search link is on the page 
+    before appending it 
+    */
     var checkSearchLink = setInterval(function(){
       saveSearch = $('#searchInfo .saveSearchLink');
       if (saveSearch.size() > 0) {
@@ -116,24 +127,24 @@ if ($('#searchResults').size() > 0) {
   function skillsFormat(el){
     var total = el.find('dd.skill').size();
     if (total > 3 && el.find('.extra-skills-container').size() < 1) {
-      var container = $('<div class="extra-skills-container"/>');
-      var extra = el.find('dd').filter(':gt(2)');
-      var dropdown = $('<div class="extra-skills-dropdown" />');
+      var container   = $('<div class="extra-skills-container"/>'),
+          dropdown    = $('<div class="extra-skills-dropdown" />'),
+          extra       = el.find('dd').filter(':gt(2)'),
+          extraTotal  = dropdown.find('dd.skill').size(),
+          totalEl = $('<div class="skills-count">' + extraTotal + '<div class="arrow"></div></div>');
       extra.appendTo(dropdown);
       dropdown.appendTo(container);
       el.append(container);
-      var extraTotal = dropdown.find('dd.skill').size();
-      var totalEl = $('<div class="skills-count">' + extraTotal + '<div class="arrow"></div></div>');
       dropdown.before(totalEl);
     }
   }
   function SearchResultsFormatting(el) {
     if (!el.attr('format')) {
       var jobLink           = el.find('h3 a').attr('href'),
-        link              = jobLink + ' #main',
-        extraInfo         = $('<div class="extraInfo"><div class="icon sprite"></div><div class="extraContent"></div></div>'),
-        extraInfoContent  = extraInfo.find('.extraContent'),
-        cache             = $('<div></div>');
+          link              = jobLink + ' #main',
+          extraInfo         = $('<div class="extraInfo"><div class="icon sprite"></div><div class="extraContent"></div></div>'),
+          extraInfoContent  = extraInfo.find('.extraContent'),
+          cache             = $('<div></div>');
       cache.load(link,function(){
         el.attr('format','');
         // ---- Qualifications ---- //
