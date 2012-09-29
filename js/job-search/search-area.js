@@ -31,8 +31,7 @@ function backLink() {
 
 function setupSearchInfo() {
 
-  var jobSearchForm = $('#jobSearchForm');
-  if (jobSearchForm.attr('format') != 'true') {
+  if ($('#jobSearchForm').attr('format') != 'true') {
 
     var fieldset              = $('#jobSearchForm fieldset'),
         jobStatusCheckbox     = $('<div class="jobStatusCheckbox" />'),
@@ -106,7 +105,7 @@ function setupSearchInfo() {
     keywordSearch.attr('placeholder','Keywords').wrap('<div class="keywordsCheckbox"></div>');
     
     setTimeout(function() { 
-      jobSearchForm.attr('format','true'); 
+      $('#jobSearchForm').attr('format','true'); 
     },300);
     backLink();
   }
@@ -131,30 +130,45 @@ if ($('#searchResults').size() > 0) {
       dropdown.before(totalEl);
     }
   }
+
+  function SearchResultsQualifications(object) {
+    var cache             = object['cache'],
+        job               = object['job'],
+        qualifications    = cache.find('.col.col1of2:first table.oDescTable'),
+        yellowWarning     = qualifications.find('.oWarningIcon'),
+        warningNum        = yellowWarning.size(),
+        extraInfo         = $('<div class="extraInfo"><div class="icon sprite"></div><div class="extraContent"></div></div>'),
+        extraInfoContent  = extraInfo.find('.extraContent'),
+        dataContainer     = $('<div class="dataContainer"><div class="tableContainer"><div class="arrow sprite"></div></div></div>');
+    
+    if (qualifications.size() > 0) {
+      
+      extraInfoContent.prepend('<div class="arrow"></div>');
+      dataContainer.find('.tableContainer').append(qualifications);
+      
+      if (warningNum > 0) {
+        
+        extraInfo.addClass('yellowWarning');
+        yellowWarning.each(function(){ $(this).parents('tr').addClass('yellowWarning'); });
+        extraInfo.find('.icon').html(warningNum);
+
+      }
+    }
+    extraInfoContent.append(dataContainer);
+    job.find('.resultHeader h3').append(extraInfo);
+  }
+  
   function SearchResultsFormatting(el) {
     if (!el.attr('format')) {
       var jobLink           = el.find('h3 a').attr('href'),
           link              = jobLink + ' #main',
-          extraInfo         = $('<div class="extraInfo"><div class="icon sprite"></div><div class="extraContent"></div></div>'),
-          extraInfoContent  = extraInfo.find('.extraContent'),
           cache             = $('<div></div>');
       cache.load(link,function(){
         el.attr('format','');
         // ---- Qualifications ---- //
-        var qualifications  = cache.find('.col.col1of2:first table.oDescTable');
-        if (qualifications.size() > 0) {
-          extraInfoContent.prepend('<div class="arrow"></div>');
-          /* build the data container */
-          var dataContainer = $('<div class="dataContainer"><div class="tableContainer"><div class="arrow sprite"></div></div></div>'),
-              yellowWarning = qualifications.find('.oWarningIcon');
-              warningNum    = yellowWarning.size();
-          dataContainer.find('.tableContainer').append(qualifications);
-          if (warningNum > 0) {
-            extraInfo.addClass('yellowWarning');
-            yellowWarning.each(function(){ $(this).parents('tr').addClass('yellowWarning'); });
-            extraInfo.find('.icon').html(warningNum);
-          }
-        }
+        
+        SearchResultsQualifications({'cache':cache,'job':el});
+        
         var jobApply = cache.find('.oMsgSuccess');
         if (jobApply.size()) {
           extraInfo.addClass('applied');
@@ -162,8 +176,6 @@ if ($('#searchResults').size() > 0) {
         }
         var timestr = cache.find('.oSide .oSideSection .ptl:first').text().split('(');
         var timeZone = $('<div class="timezone"><p class="country">' + timestr[0] + '</p>' + ' (' + timestr[1] + '</div>');
-        extraInfoContent.append(dataContainer);
-        el.find('.resultHeader h3').append(extraInfo);
         if (el.find('.timezone').size() < 1) {
           el.find('.resultHeader').append(timeZone);
         }
