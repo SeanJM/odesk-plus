@@ -511,6 +511,7 @@ div.backLink[formated] #pageTitle{
 #searchResults{
     float: left;
     padding:0;
+    width: 100%;
 }
 #basicFilter .more{
   display: block;

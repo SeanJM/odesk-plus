@@ -281,7 +281,6 @@ if ($('#searchResults').size() > 0) {
   }
 
   function getNextPage(nextPageURL,searchResults){
-    /* Process Wheel */
     $(searchResults).trigger('nextInit');
     console.log('oDesk+: Initiating getting of next page');
     $.getJSON(nextPageURL,function(data){
@@ -291,16 +290,10 @@ if ($('#searchResults').size() > 0) {
         if (val != '[object Object]') {
           var output = '<div class="' + key + '">' + val + '</div>';
           if (key == 'paginator_wrapper') { output = '<div class="' + key + '" style="display:none;">' + val + '</div>' }
-          items.push(output);
+          if (key != 'jobs_count' && key != 'query_string' && key != 'where_filter' && key != 'sub_cat') { items.push(output); }
         }
       });
-      $('<div/>', {
-        'class': 'moreResults',
-        html: items.join('')
-      }).appendTo('#searchResults');
-      $('.moreResults > .content').appendTo('#searchResults');
-      // Remove Apply Button
-      $('.moreResults').remove();
+      $(items.join('')).appendTo('#searchResults');
       $(searchResults).trigger('nextLoaded');
     });
   }
@@ -315,18 +308,11 @@ if ($('#searchResults').size() > 0) {
   });
   function searchResultsScroll(){
     if($(window).scrollTop() + $(window).height() == $(document).height()) {
-      if ($('.find_work_list').length) {
-        if (!$('#processWheel').hasClass('processing')) {
-          var searchResults = $('.find_work_list #searchResults');
-          var paginator = searchResults.find('ul.paginator:last');
-          var nextPage = paginator.find('.currentPage').removeClass('currentPage').next();
-          nextPage.addClass('currentPage');
-          var pagLast = $('.paginator:last');
-          var currentPageNumber =  pagLast.find('li.currentPage').text();
-          var lastPageNumber = pagLast.find('li:last').prev().text();
-          searchResults.append('<div class="moreList" />');
-          getNextPage(nextPage.find('a').attr('href'),searchResults);
-        }
+      if (!$('#processWheel').hasClass('processing')) {
+        var searchResults       = $('#searchResults').append('<div class="moreList />'),
+            paginator           = searchResults.find('.paginator:last'),
+            nextPage            = paginator.find('.currentPage').removeClass('currentPage').next().addClass('currentPage').find('a').attr('href');
+        getNextPage(nextPage,searchResults);
       }
     }
   }
@@ -350,6 +336,7 @@ if ($('#searchResults').size() > 0) {
     if ($('#searchResults').attr('format') != 'true') {
       console.log('oDesk+: oDesk default job processing did not complete, running timeout tasks');
       formatModules();
+      process($(this));
     }
   },600);
 
