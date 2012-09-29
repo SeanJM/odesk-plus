@@ -227,6 +227,24 @@ $(function () {
       
       jobDesc.after(fullDesc);
       jobDesc.remove();
+
+      job.find('.toggleDesc').each(function(){
+        $(this).bind('click',function(){
+          job.find('p.job-description').toggleClass('show-all');
+        });
+      });
+    }
+
+    function SearchResultsStatusLine(object) {
+      var cache   = object['cache'],
+          job     = object['job'],
+          time    = cache.find('header.phs hgroup p.oText:first');
+      job.find('.resultHeader dl:first').remove();
+      
+      if (job.find('.resultHeader p.oText').size() < 1) { 
+        job.find('.resultHeader h3').after(time);
+      }
+
     }
 
     function SearchResultsFormatting(el) {
@@ -236,26 +254,15 @@ $(function () {
             cache    = $('<div />');
         
         cache.load(link,function(){
+          
           el.attr('format','');
           
           SearchResultsQualifications({'cache':cache,'job':el});
           SearchResultsApplyBool({'cache':cache, 'job': el});
           SearchResultsTimezoneTip({'cache':cache, 'job': el});
           SearchResultsMoreText({'cache':cache, 'job': el});
-          
-          /* End More Text */
-          el.find('.toggleDesc').each(function(){
-            $(this).bind('click',function(){
-              el.find('p.job-description').toggleClass('show-all');
-            });
-          });
-          /* Duration of Jobs */
-          var time = cache.find('header.phs hgroup p.oText:first');
-          el.find('.resultHeader dl:first').remove();
-          /* Sometimes these are loading twice, this will prevent that */
-          if (el.find('.resultHeader p.oText').size() < 1) { 
-            el.find('.resultHeader h3').after(time);
-          }
+          SearchResultsStatusLine({'cache':cache, 'job': el});
+
         });
         
         skillsFormat(el.find('dl.skills'));
