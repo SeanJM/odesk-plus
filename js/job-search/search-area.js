@@ -112,266 +112,266 @@ function setupSearchInfo() {
 }
 
 $(function () {
-if ($('#searchResults').size() > 0) {
-  
-  setupSearchInfo();
-
-  /* ---------------------------
-        Search Results
-  ------------------------------ */
-  function skillsFormat(el){
-    var total = el.find('dd.skill').size(),
-        max   = 3;
-    if (total > max && el.find('.extra-skills-container').size() < 1) {
-      var container   = $('<div class="extra-skills-container"/>').appendTo(el),
-          dropdown    = $('<div class="extra-skills-dropdown" />').appendTo(container),
-          extra       = el.find('dd').filter(':gt(' + (max-1) + ')').appendTo(dropdown),
-          totalEl = $('<div class="skills-count">' + (total-max) + '<div class="arrow"></div></div>');
-      dropdown.before(totalEl);
-    }
-  }
-
-  function SearchResultsQualifications(object) {
-    var cache             = object['cache'],
-        job               = object['job'],
-        qualifications    = cache.find('.col.col1of2:first table.oDescTable'),
-        yellowWarning     = qualifications.find('.oWarningIcon'),
-        warningNum        = yellowWarning.size(),
-        extraInfo         = $('<div class="extraInfo"><div class="icon sprite"></div><div class="extraContent"></div></div>'),
-        extraInfoContent  = extraInfo.find('.extraContent'),
-        dataContainer     = $('<div class="dataContainer"><div class="tableContainer"><div class="arrow sprite"></div></div></div>');
+  if ($('#searchResults').size() > 0) {
     
-    if (qualifications.size() > 0) {
-      
-      extraInfoContent.prepend('<div class="arrow"></div>');
-      dataContainer.find('.tableContainer').append(qualifications);
-      
-      if (warningNum > 0) {
-        
-        extraInfo.addClass('yellowWarning');
-        yellowWarning.each(function(){ $(this).parents('tr').addClass('yellowWarning'); });
-        extraInfo.find('.icon').html(warningNum);
+    setupSearchInfo();
 
+    /* ---------------------------
+          Search Results
+    ------------------------------ */
+    function skillsFormat(el){
+      var total = el.find('dd.skill').size(),
+          max   = 3;
+      if (total > max && el.find('.extra-skills-container').size() < 1) {
+        var container   = $('<div class="extra-skills-container"/>').appendTo(el),
+            dropdown    = $('<div class="extra-skills-dropdown" />').appendTo(container),
+            extra       = el.find('dd').filter(':gt(' + (max-1) + ')').appendTo(dropdown),
+            totalEl = $('<div class="skills-count">' + (total-max) + '<div class="arrow"></div></div>');
+        dropdown.before(totalEl);
       }
     }
-    extraInfoContent.append(dataContainer);
-    job.find('.resultHeader h3').append(extraInfo);
-  }
-  
-  function SearchResultsFormatting(el) {
-    if (!el.attr('format')) {
-      var jobLink           = el.find('h3 a').attr('href'),
-          link              = jobLink + ' #main',
-          cache             = $('<div></div>');
-      cache.load(link,function(){
-        el.attr('format','');
-        // ---- Qualifications ---- //
+
+    function SearchResultsQualifications(object) {
+      var cache             = object['cache'],
+          job               = object['job'],
+          qualifications    = cache.find('.col.col1of2:first table.oDescTable'),
+          yellowWarning     = qualifications.find('.oWarningIcon'),
+          warningNum        = yellowWarning.size(),
+          extraInfo         = $('<div class="extraInfo"><div class="icon sprite"></div><div class="extraContent"></div></div>'),
+          extraInfoContent  = extraInfo.find('.extraContent'),
+          dataContainer     = $('<div class="dataContainer"><div class="tableContainer"><div class="arrow sprite"></div></div></div>');
+      
+      if (qualifications.size() > 0) {
         
-        SearchResultsQualifications({'cache':cache,'job':el});
+        extraInfoContent.prepend('<div class="arrow"></div>');
+        dataContainer.find('.tableContainer').append(qualifications);
         
-        var jobApply = cache.find('.oMsgSuccess');
-        if (jobApply.size()) {
-          extraInfo.addClass('applied');
-          el.addClass('applied').addClass('collapsed');
+        if (warningNum > 0) {
+          
+          extraInfo.addClass('yellowWarning');
+          yellowWarning.each(function(){ $(this).parents('tr').addClass('yellowWarning'); });
+          extraInfo.find('.icon').html(warningNum);
+
         }
-        var timestr = cache.find('.oSide .oSideSection .ptl:first').text().split('(');
-        var timeZone = $('<div class="timezone"><p class="country">' + timestr[0] + '</p>' + ' (' + timestr[1] + '</div>');
-        if (el.find('.timezone').size() < 1) {
-          el.find('.resultHeader').append(timeZone);
-        }
-        el.bind('click',function(){
-          if ($(this).hasClass('applied')) {
-            $(this).toggleClass('collapsed');
+      }
+      extraInfoContent.append(dataContainer);
+      job.find('.resultHeader h3').append(extraInfo);
+    }
+
+    function SearchResultsFormatting(el) {
+      if (!el.attr('format')) {
+        
+        var link     = el.find('h3 a').attr('href') + ' #main',
+            cache    = $('<div />');
+        
+        cache.load(link,function(){
+          el.attr('format','');
+          
+          SearchResultsQualifications({'cache':cache,'job':el});
+          
+          var jobApply = cache.find('.oMsgSuccess');
+          if (jobApply.size()) {
+            extraInfo.addClass('applied');
+            el.addClass('applied').addClass('collapsed');
           }
-        })
-        /* More text */
-        var jobDesc     = el.find('p[name]'),
-            moreBtn     = $('<span class="toggleDesc moreBtn">»</span>'),
-            lessBtn     = $('<span class="toggleDesc lessBtn">«</span>'),
-            fullDescStr = cache.find('.oMain.break article div.pam:first').html(),
-            fullDesc     = $('<p name class="job-description"></p>'),
-            maxLen      = 400;
-        if (fullDescStr.length > maxLen) {
-          var arr = $.trim(fullDescStr).split(' '),
-              str = [],
-              temp,
-              moreContainer = $('<span class="moreText"></span>'),
-              moreCreated = false;
-          for (i = 0;i < arr.length;i++) {
-            /* Temporarily close all br tags */
-            str.push(arr[i]);
-            temp = str.join(' ');
-            if (moreCreated == false) {
-              var opentag = (temp.split('<').length-1) - (temp.split('>').length-1);
-              if (temp.length >= maxLen && opentag < 1) {
-                moreCreated = true;
-                var less = $('<span class="less">' + temp + ' </span>');
-                less.append(moreBtn);
-                fullDesc.append(less);
-                str = [];
+          var timestr = cache.find('.oSide .oSideSection .ptl:first').text().split('(');
+          var timeZone = $('<div class="timezone"><p class="country">' + timestr[0] + '</p>' + ' (' + timestr[1] + '</div>');
+          if (el.find('.timezone').size() < 1) {
+            el.find('.resultHeader').append(timeZone);
+          }
+          el.bind('click',function(){
+            if ($(this).hasClass('applied')) {
+              $(this).toggleClass('collapsed');
+            }
+          })
+          /* More text */
+          var jobDesc     = el.find('p[name]'),
+              moreBtn     = $('<span class="toggleDesc moreBtn">»</span>'),
+              lessBtn     = $('<span class="toggleDesc lessBtn">«</span>'),
+              fullDescStr = cache.find('.oMain.break article div.pam:first').html(),
+              fullDesc     = $('<p name class="job-description"></p>'),
+              maxLen      = 400;
+          if (fullDescStr.length > maxLen) {
+            var arr = $.trim(fullDescStr).split(' '),
+                str = [],
+                temp,
+                moreContainer = $('<span class="moreText"></span>'),
+                moreCreated = false;
+            for (i = 0;i < arr.length;i++) {
+              /* Temporarily close all br tags */
+              str.push(arr[i]);
+              temp = str.join(' ');
+              if (moreCreated == false) {
+                var opentag = (temp.split('<').length-1) - (temp.split('>').length-1);
+                if (temp.length >= maxLen && opentag < 1) {
+                  moreCreated = true;
+                  var less = $('<span class="less">' + temp + ' </span>');
+                  less.append(moreBtn);
+                  fullDesc.append(less);
+                  str = [];
+                }
               }
             }
+            moreContainer.append(temp);
+            moreContainer.append(lessBtn);
+            fullDesc.append(moreContainer);
           }
-          moreContainer.append(temp);
-          moreContainer.append(lessBtn);
-          fullDesc.append(moreContainer);
-        }
-        else { fullDesc.append(fullDescStr); }
-        jobDesc.after(fullDesc);
-        jobDesc.remove();
-        /* End More Text */
-        el.find('.toggleDesc').each(function(){
-          $(this).bind('click',function(){
-            el.find('p.job-description').toggleClass('show-all');
+          else { fullDesc.append(fullDescStr); }
+          jobDesc.after(fullDesc);
+          jobDesc.remove();
+          /* End More Text */
+          el.find('.toggleDesc').each(function(){
+            $(this).bind('click',function(){
+              el.find('p.job-description').toggleClass('show-all');
+            });
           });
-        });
-        /* Duration of Jobs */
-        var time = cache.find('header.phs hgroup p.oText:first');
-        el.find('.resultHeader dl:first').remove();
-        /* Sometimes these are loading twice, this will prevent that */
-        if (el.find('.resultHeader p.oText').size() < 1) { 
-          el.find('.resultHeader h3').after(time);
-        }
-      });
-      
-      skillsFormat(el.find('dl.skills'));
-      
-      /* Format the header */
-      var heading         = el.find('.resultHeader h3 a'),
-          headingShort    = heading.html(),
-          maxHeadingLen   = 70;
-      if (headingShort.length > maxHeadingLen) { 
-        headingShort = headingShort.substring(0, maxHeadingLen) + "...";
-      }
-      heading.html(headingShort);
-      el.find('.skills .qualifications').parent().remove();
-    }
-  }
-
-  function formatJobResults(){
-    var n = $('.searchResult .resultHeader .extraInfo').size();
-    
-    $('.searchResult .resultButtons').each(function() { $(this).remove() });
-    $('.searchResult').each(function(i){
-      if (i >= n) { SearchResultsFormatting($(this)); }
-    });
-  }
-
-  function checkClosedJobs(){
-    $('.searchResult .resultStatus').each(function(){
-      if ($(this).html() == 'Closed') { $(this).parents('.searchResult').addClass('jobClosed'); }
-    });
-  }
-
-  /* Inifite Scroll Jobs */
-  function jobCount(el) {
-    var count = $('.searchResult').size(),
-        searchCount = $('<div id="searchCount"><p>Viewing <span class="count"></span> of <span class="total"></span></p></div>'),
-        total = $('#totalJobs').html(),
-        totalArr = total.split(''),
-        totalLen = totalArr.length,
-        pro = [],
-        orp = [];
-    if ($('#searchCount').size() <= 0) {
-      el.after(searchCount);
-    }
-    if (totalLen > 3) {
-      for (i = 0;i <= totalLen;i++) {
-        pro.push(totalArr[totalLen - i]);
-        if ((i % 3) == 0 && i > 0) { pro.push(','); }
-      }
-      for (i = 0;i <= pro.length;i++) {
-        orp.push(pro[pro.length - i]);
-      }
-      total = orp.join('');
-    }
-    $('#searchCount .count').html(count);
-    $('#searchCount .total').html(total);
-  }
-
-  function process(par){
-    elem = $('#searchResults');
-    if ($('#processWheel').size() < 1) {
-      var process = $('<div id="processWheel"><div class="spinner"></div></div>');
-      elem.after(process);
-    }
-    else {
-      if (par == 'start') { $('#processWheel').addClass('processing'); }
-      if (par == 'end') { $('#processWheel').removeClass('processing'); }
-    }
-    jobCount(elem);
-  }
-
-  function getNextPage(nextPageURL,searchResults){
-    if (!$('#processWheel').hasClass('processing')) {
-      $(searchResults).trigger('nextInit');
-      
-      console.log('oDesk+: Initiating getting of next page');
-      
-      $.getJSON(nextPageURL,function(data){
-        console.log('oDesk+: Next page JSON loaded');
-        var items = [];
-        
-        $.each(data, function(key, val) {
-          if (val != '[object Object]') {
-            var output = '<div class="' + key + '">' + val + '</div>';
-            if (key == 'paginator_wrapper') { output = '<div class="' + key + '" style="display:none;">' + val + '</div>' }
-            if (key != 'jobs_count' && key != 'query_string' && key != 'where_filter' && key != 'sub_cat' && key != 'group') { items.push(output); }
+          /* Duration of Jobs */
+          var time = cache.find('header.phs hgroup p.oText:first');
+          el.find('.resultHeader dl:first').remove();
+          /* Sometimes these are loading twice, this will prevent that */
+          if (el.find('.resultHeader p.oText').size() < 1) { 
+            el.find('.resultHeader h3').after(time);
           }
         });
         
-        $(items.join('')).appendTo('#searchResults');
+        skillsFormat(el.find('dl.skills'));
         
-        $(searchResults).trigger('nextLoaded');
-      });
-    }
-  }
-  /* After the next page is loaded */
-  $('#searchResults').bind('nextInit',function(){
-      process('start');
-  });
-  $('#searchResults').bind('nextLoaded',function(){
-      formatJobResults();
-      checkClosedJobs();
-      process('end');
-  });
-  function searchResultsScroll(){
-    if($(window).scrollTop() + $(window).height() == $(document).height()) {
-      if (!$('#processWheel').hasClass('processing')) {
-        var searchResults       = $('#searchResults').append('<div class="moreList />'),
-            paginator           = searchResults.find('.paginator:last'),
-            nextPage            = paginator.find('.currentPage').removeClass('currentPage').next().addClass('currentPage').find('a').attr('href');
-        getNextPage(nextPage,searchResults);
+        /* Format the header */
+        var heading         = el.find('.resultHeader h3 a'),
+            headingShort    = heading.html(),
+            maxHeadingLen   = 70;
+        if (headingShort.length > maxHeadingLen) { 
+          headingShort = headingShort.substring(0, maxHeadingLen) + "...";
+        }
+        heading.html(headingShort);
+        el.find('.skills .qualifications').parent().remove();
       }
     }
-  }
-  
-  function formatModules(){
-    console.log('oDesk+: Formating Main modules');
-    jobsCriteria();
-    checkClosedJobs();
-    formatJobResults();
-  }
-  /* Fire functions that require post processing */
-  $('#searchResults').bind('processend',function(){
-    console.log('oDesk+: oDesk default job processing complete');
-    formatModules();
-    process($(this));
-  });
-  /* When the page newly loads, it doesn't trigger a process 
-    so run these after one second if no processing has occurred
-  */
-  setTimeout(function(){
-    if ($('#searchResults').attr('format') != 'true') {
-      console.log('oDesk+: oDesk default job processing did not complete, running timeout tasks');
+
+    function formatJobResults(){
+      var n = $('.searchResult .resultHeader .extraInfo').size();
+      
+      $('.searchResult .resultButtons').each(function() { $(this).remove() });
+      $('.searchResult').each(function(i){
+        if (i >= n) { SearchResultsFormatting($(this)); }
+      });
+    }
+
+    function checkClosedJobs(){
+      $('.searchResult .resultStatus').each(function(){
+        if ($(this).html() == 'Closed') { $(this).parents('.searchResult').addClass('jobClosed'); }
+      });
+    }
+
+    /* Inifite Scroll Jobs */
+    function jobCount(el) {
+      var count = $('.searchResult').size(),
+          searchCount = $('<div id="searchCount"><p>Viewing <span class="count"></span> of <span class="total"></span></p></div>'),
+          total = $('#totalJobs').html(),
+          totalArr = total.split(''),
+          totalLen = totalArr.length,
+          pro = [],
+          orp = [];
+      if ($('#searchCount').size() <= 0) {
+        el.after(searchCount);
+      }
+      if (totalLen > 3) {
+        for (i = 0;i <= totalLen;i++) {
+          pro.push(totalArr[totalLen - i]);
+          if ((i % 3) == 0 && i > 0) { pro.push(','); }
+        }
+        for (i = 0;i <= pro.length;i++) {
+          orp.push(pro[pro.length - i]);
+        }
+        total = orp.join('');
+      }
+      $('#searchCount .count').html(count);
+      $('#searchCount .total').html(total);
+    }
+
+    function process(par){
+      elem = $('#searchResults');
+      if ($('#processWheel').size() < 1) {
+        var process = $('<div id="processWheel"><div class="spinner"></div></div>');
+        elem.after(process);
+      }
+      else {
+        if (par == 'start') { $('#processWheel').addClass('processing'); }
+        if (par == 'end') { $('#processWheel').removeClass('processing'); }
+      }
+      jobCount(elem);
+    }
+
+    function getNextPage(nextPageURL,searchResults){
+      if (!$('#processWheel').hasClass('processing')) {
+        $(searchResults).trigger('nextInit');
+        
+        console.log('oDesk+: Initiating getting of next page');
+        
+        $.getJSON(nextPageURL,function(data){
+          console.log('oDesk+: Next page JSON loaded');
+          var items = [];
+          
+          $.each(data, function(key, val) {
+            if (val != '[object Object]') {
+              var output = '<div class="' + key + '">' + val + '</div>';
+              if (key == 'paginator_wrapper') { output = '<div class="' + key + '" style="display:none;">' + val + '</div>' }
+              if (key != 'jobs_count' && key != 'query_string' && key != 'where_filter' && key != 'sub_cat' && key != 'group') { items.push(output); }
+            }
+          });
+          
+          $(items.join('')).appendTo('#searchResults');
+          
+          $(searchResults).trigger('nextLoaded');
+        });
+      }
+    }
+    /* After the next page is loaded */
+    $('#searchResults').bind('nextInit',function(){
+        process('start');
+    });
+    $('#searchResults').bind('nextLoaded',function(){
+        formatJobResults();
+        checkClosedJobs();
+        process('end');
+    });
+    function searchResultsScroll(){
+      if($(window).scrollTop() + $(window).height() == $(document).height()) {
+        if (!$('#processWheel').hasClass('processing')) {
+          var searchResults       = $('#searchResults').append('<div class="moreList />'),
+              paginator           = searchResults.find('.paginator:last'),
+              nextPage            = paginator.find('.currentPage').removeClass('currentPage').next().addClass('currentPage').find('a').attr('href');
+          getNextPage(nextPage,searchResults);
+        }
+      }
+    }
+    
+    function formatModules(){
+      console.log('oDesk+: Formating Main modules');
+      jobsCriteria();
+      checkClosedJobs();
+      formatJobResults();
+    }
+    /* Fire functions that require post processing */
+    $('#searchResults').bind('processend',function(){
+      console.log('oDesk+: oDesk default job processing complete');
       formatModules();
       process($(this));
-    }
-  },600);
+    });
+    /* When the page newly loads, it doesn't trigger a process 
+      so run these after one second if no processing has occurred
+    */
+    setTimeout(function(){
+      if ($('#searchResults').attr('format') != 'true') {
+        console.log('oDesk+: oDesk default job processing did not complete, running timeout tasks');
+        formatModules();
+        process($(this));
+      }
+    },600);
 
-  /* Window Scroll Events */
-  $(window).scroll(function() {
-    searchResultsScroll();
-  });
-}
+    /* Window Scroll Events */
+    $(window).scroll(function() {
+      searchResultsScroll();
+    });
+  }
 });
