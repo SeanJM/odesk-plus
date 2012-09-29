@@ -254,10 +254,24 @@ if ($('#searchResults').size() > 0) {
   /* Inifite Scroll Jobs */
   function jobCount(el) {
     var count = $('.searchResult').size(),
-        total = $('#totalJobs').html();
+        searchCount = $('<div id="searchCount"><p>Viewing <span class="count"></span> of <span class="total"></span></p></div>'),
+        total = $('#totalJobs').html(),
+        totalArr = total.split(''),
+        totalLen = totalArr.length,
+        pro = [],
+        orp = [];
     if ($('#searchCount').size() <= 0) {
-      var searchCount = $('<div id="searchCount"><p>Viewing <span class="count"></span> of <span class="total"></span></p></div>');
       el.after(searchCount);
+    }
+    if (totalLen > 3) {
+      for (i = 0;i <= totalLen;i++) {
+        pro.push(totalArr[totalLen - i]);
+        if ((i % 3) == 0 && i > 0) { pro.push(','); }
+      }
+      for (i = 0;i <= pro.length;i++) {
+        orp.push(pro[pro.length - i]);
+      }
+      total = orp.join('');
     }
     $('#searchCount .count').html(count);
     $('#searchCount .total').html(total);
@@ -290,7 +304,7 @@ if ($('#searchResults').size() > 0) {
           if (val != '[object Object]') {
             var output = '<div class="' + key + '">' + val + '</div>';
             if (key == 'paginator_wrapper') { output = '<div class="' + key + '" style="display:none;">' + val + '</div>' }
-            if (key != 'jobs_count' && key != 'query_string' && key != 'where_filter' && key != 'sub_cat') { items.push(output); }
+            if (key != 'jobs_count' && key != 'query_string' && key != 'where_filter' && key != 'sub_cat' && key != 'group') { items.push(output); }
           }
         });
         
