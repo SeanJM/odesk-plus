@@ -158,6 +158,77 @@ $(function () {
       job.find('.resultHeader h3').append(extraInfo);
     }
 
+    function SearchResultsApplyBool(object) {
+      var cache     = object['cache'],
+          job       = object['job'],
+          jobApply  = cache.find('.oMsgSuccess');
+          
+      if (jobApply.size()) {
+        job.addClass('applied').addClass('collapsed');
+      }
+
+      job.bind('click',function(){
+        if ($(this).hasClass('applied')) {
+          $(this).toggleClass('collapsed');
+        }
+      });
+    }
+
+    function SearchResultsTimezoneTip(object) {
+      var cache     = object['cache'],
+          job       = object['job'];
+          timestr = cache.find('.oSide .oSideSection .ptl:first').text().split('('),
+          timeZone = $('<div class="timezone"><p class="country">' + timestr[0] + '</p>' + ' (' + timestr[1] + '</div>');
+
+      if (job.find('.timezone').size() < 1) {
+        job.find('.resultHeader').append(timeZone);
+      }
+    }
+
+    function SearchResultsMoreText(object) {
+      var cache         = object['cache'],
+          job           = object['job'],
+          jobDesc       = job.find('p[name]'),
+          moreBtn       = $('<span class="toggleDesc moreBtn">»</span>'),
+          moreContainer = $('<span class="moreText"></span>'),
+          lessBtn       = $('<span class="toggleDesc lessBtn">«</span>'),
+          fullDescStr   = cache.find('.oMain.break article div.pam:first').html(),
+          fullDesc      = $('<p name class="job-description"></p>'),
+          moreCreated   = false,
+          maxLen        = 400;
+
+      if (fullDescStr.length > maxLen) {
+        var arr = $.trim(fullDescStr).split(' '),
+            str = [],
+            temp;
+
+        for (i = 0;i < arr.length;i++) {
+          str.push(arr[i]);
+          temp = str.join(' ');
+          if (moreCreated == false) {
+            var opentag = (temp.split('<').length-1) - (temp.split('>').length-1);
+            if (temp.length >= maxLen && opentag < 1) {
+              moreCreated = true;
+              var less = $('<span class="less">' + temp + ' </span>');
+              less.append(moreBtn);
+              fullDesc.append(less);
+              str = [];
+            }
+          }
+        }
+
+        moreContainer.append(temp);
+        moreContainer.append(lessBtn);
+        fullDesc.append(moreContainer);
+
+      }
+
+      else { fullDesc.append(fullDescStr); }
+      
+      jobDesc.after(fullDesc);
+      jobDesc.remove();
+    }
+
     function SearchResultsFormatting(el) {
       if (!el.attr('format')) {
         
@@ -168,57 +239,10 @@ $(function () {
           el.attr('format','');
           
           SearchResultsQualifications({'cache':cache,'job':el});
+          SearchResultsApplyBool({'cache':cache, 'job': el});
+          SearchResultsTimezoneTip({'cache':cache, 'job': el});
+          SearchResultsMoreText({'cache':cache, 'job': el});
           
-          var jobApply = cache.find('.oMsgSuccess');
-          if (jobApply.size()) {
-            extraInfo.addClass('applied');
-            el.addClass('applied').addClass('collapsed');
-          }
-          var timestr = cache.find('.oSide .oSideSection .ptl:first').text().split('(');
-          var timeZone = $('<div class="timezone"><p class="country">' + timestr[0] + '</p>' + ' (' + timestr[1] + '</div>');
-          if (el.find('.timezone').size() < 1) {
-            el.find('.resultHeader').append(timeZone);
-          }
-          el.bind('click',function(){
-            if ($(this).hasClass('applied')) {
-              $(this).toggleClass('collapsed');
-            }
-          })
-          /* More text */
-          var jobDesc     = el.find('p[name]'),
-              moreBtn     = $('<span class="toggleDesc moreBtn">»</span>'),
-              lessBtn     = $('<span class="toggleDesc lessBtn">«</span>'),
-              fullDescStr = cache.find('.oMain.break article div.pam:first').html(),
-              fullDesc     = $('<p name class="job-description"></p>'),
-              maxLen      = 400;
-          if (fullDescStr.length > maxLen) {
-            var arr = $.trim(fullDescStr).split(' '),
-                str = [],
-                temp,
-                moreContainer = $('<span class="moreText"></span>'),
-                moreCreated = false;
-            for (i = 0;i < arr.length;i++) {
-              /* Temporarily close all br tags */
-              str.push(arr[i]);
-              temp = str.join(' ');
-              if (moreCreated == false) {
-                var opentag = (temp.split('<').length-1) - (temp.split('>').length-1);
-                if (temp.length >= maxLen && opentag < 1) {
-                  moreCreated = true;
-                  var less = $('<span class="less">' + temp + ' </span>');
-                  less.append(moreBtn);
-                  fullDesc.append(less);
-                  str = [];
-                }
-              }
-            }
-            moreContainer.append(temp);
-            moreContainer.append(lessBtn);
-            fullDesc.append(moreContainer);
-          }
-          else { fullDesc.append(fullDescStr); }
-          jobDesc.after(fullDesc);
-          jobDesc.remove();
           /* End More Text */
           el.find('.toggleDesc').each(function(){
             $(this).bind('click',function(){
