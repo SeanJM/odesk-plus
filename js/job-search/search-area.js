@@ -259,8 +259,8 @@ $(function () {
       }
     }
     function SearchResultsHeading(object) {
-      var cache   = object['cache'],
-          job     = object['job'],
+      var cache           = object['cache'],
+          job             = object['job'],
           heading         = job.find('.resultHeader h3 a'),
           headingShort    = heading.html(),
           maxHeadingLen   = 70;
@@ -313,13 +313,13 @@ $(function () {
 
     /* Inifite Scroll Jobs */
     function jobCount(el) {
-      var count = $('.searchResult').size(),
-          searchCount = $('<div id="searchCount"><p>Viewing <span class="count"></span> of <span class="total"></span></p></div>'),
-          total = $('#totalJobs').html(),
-          totalArr = total.split(''),
-          totalLen = totalArr.length,
-          pro = [],
-          orp = [];
+      var count         = $('.searchResult').size(),
+          searchCount   = $('<div id="searchCount"><p>Viewing <span class="count"></span> of <span class="total"></span></p></div>'),
+          total         = $('#totalJobs').html(),
+          totalArr      = total.split(''),
+          totalLen      = totalArr.length,
+          pro           = [],
+          orp           = [];
       if ($('#searchCount').size() <= 0) {
         el.after(searchCount);
       }
