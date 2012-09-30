@@ -172,6 +172,8 @@ $(function () {
           $(this).toggleClass('collapsed');
         }
       });
+
+      job.find('.skills .qualifications').parent().remove();
     }
 
     function SearchResultsTimezoneTip(object) {
@@ -185,6 +187,17 @@ $(function () {
       }
     }
 
+    function stripRedirect(text) {
+      var links = $(text).find('a');
+      if (links.size() > 0) {
+        links.each(function(){
+          var href = 'http://' + $(this).attr('href').replace('https://www.odesk.com/leaving_odesk.php?ref=http%253A%252F%252F','');
+          $(this).attr('href',href).html();
+        });
+      }
+      return text.html();
+    }
+
     function SearchResultsMoreText(object) {
       var cache         = object['cache'],
           job           = object['job'],
@@ -192,7 +205,7 @@ $(function () {
           moreBtn       = $('<span class="toggleDesc moreBtn">»</span>'),
           moreContainer = $('<span class="moreText"></span>'),
           lessBtn       = $('<span class="toggleDesc lessBtn">«</span>'),
-          fullDescStr   = cache.find('.oMain.break article div.pam:first').html(),
+          fullDescStr   = stripRedirect(cache.find('.oMain.break article div.pam:first')),
           fullDesc      = $('<p name class="job-description"></p>'),
           moreCreated   = false,
           maxLen        = 400;
@@ -244,38 +257,42 @@ $(function () {
       if (job.find('.resultHeader p.oText').size() < 1) { 
         job.find('.resultHeader h3').after(time);
       }
-
+    }
+    function SearchResultsHeading(object) {
+      var cache   = object['cache'],
+          job     = object['job'],
+          heading         = job.find('.resultHeader h3 a'),
+          headingShort    = heading.html(),
+          maxHeadingLen   = 70;
+      if (headingShort.length > maxHeadingLen) { 
+        headingShort = headingShort.substring(0, maxHeadingLen) + "...";
+      }
+      heading.html(headingShort);
     }
 
     function SearchResultsFormatting(el) {
       if (!el.attr('format')) {
         
         var link     = el.find('h3 a').attr('href') + ' #main',
-            cache    = $('<div />');
+            cache    = $('<div />'),
+            object   = {'cache':cache,'job':el};
         
         cache.load(link,function(){
           
           el.attr('format','');
           
-          SearchResultsQualifications({'cache':cache,'job':el});
-          SearchResultsApplyBool({'cache':cache, 'job': el});
-          SearchResultsTimezoneTip({'cache':cache, 'job': el});
-          SearchResultsMoreText({'cache':cache, 'job': el});
-          SearchResultsStatusLine({'cache':cache, 'job': el});
+          SearchResultsQualifications(object);
+          SearchResultsApplyBool(object);
+          SearchResultsTimezoneTip(object);
+          SearchResultsMoreText(object);
+          SearchResultsStatusLine(object);
+          SearchResultsHeading(object);
 
         });
         
         skillsFormat(el.find('dl.skills'));
-        
+         
         /* Format the header */
-        var heading         = el.find('.resultHeader h3 a'),
-            headingShort    = heading.html(),
-            maxHeadingLen   = 70;
-        if (headingShort.length > maxHeadingLen) { 
-          headingShort = headingShort.substring(0, maxHeadingLen) + "...";
-        }
-        heading.html(headingShort);
-        el.find('.skills .qualifications').parent().remove();
       }
     }
 
