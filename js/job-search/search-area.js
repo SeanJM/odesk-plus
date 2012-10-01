@@ -141,6 +141,7 @@ $(function () {
           extraInfoContent  = extraInfo.find('.extraContent'),
           dataContainer     = $('<div class="dataContainer"><div class="tableContainer"><div class="arrow sprite"></div></div></div>');
       
+      
       if (qualifications.size() > 0) {
         
         extraInfoContent.prepend('<div class="arrow"></div>');
@@ -155,6 +156,7 @@ $(function () {
         }
       }
       extraInfoContent.append(dataContainer);
+      job.find('.resultButtons').remove();
       job.find('.resultHeader h3').append(extraInfo);
     }
 
@@ -358,6 +360,7 @@ $(function () {
         
         $.getJSON(nextPageURL,function(data){
           console.log('oDesk+: Next page JSON loaded');
+          var cache = $('<div/>');
           var items = [];
           
           $.each(data, function(key, val) {
@@ -368,9 +371,23 @@ $(function () {
             }
           });
           
-          $(items.join('')).appendTo('#searchResults');
+          var preformated = $(items.join('')).appendTo(cache);
           
-          $(searchResults).trigger('nextLoaded');
+          preformated.find('.searchResult').each(function(){
+            SearchResultsFormatting($(this));
+          });
+
+          var checkFormat = setInterval(function() {
+            if (cache.find('.searchResult[format]').size() >= cache.find('.searchResult').size()) {
+              
+              cache.appendTo('#searchResults');
+              cache.replaceWith(cache.contents());
+              $(searchResults).trigger('nextLoaded');
+
+              clearInterval(checkFormat);
+            }
+          },200);
+
         });
       }
     }
@@ -379,7 +396,6 @@ $(function () {
         process('start');
     });
     $('#searchResults').bind('nextLoaded',function(){
-        formatJobResults();
         checkClosedJobs();
         process('end');
     });

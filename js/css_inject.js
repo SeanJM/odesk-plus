@@ -11,7 +11,7 @@ $(function(){
       // Find Jobs Home
       $('body').addClass('find_work_home');
     }
-    if ($('body > .backLink a[href="/find-work-home/"]').length) {
+    if ($('body .backLink a[href="/find-work-home/"]').length) {
       // Find Jobs Listing
       $('body').addClass('find_work_list');
     }
