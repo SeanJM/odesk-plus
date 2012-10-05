@@ -279,8 +279,12 @@ $(function () {
             cache    = $('<div />'),
             object   = {'cache':cache,'job':el};
         
-        cache.load(link,function(){
+        cache.load(link,function(response, status, xhr){
           
+          if (status == 'error') {
+            console.log('oDesk+: There was an error formating a job');
+          }
+
           el.attr('format','');
           
           SearchResultsQualifications(object);
