@@ -67,11 +67,11 @@ div.backLink[formated] #pageTitle{
         float:left;
     }
     div.backLink[formated] .arrow{
-      width: 16px;
-      height: 16px;
-      background-position: -16px -32px;
+      width: 20px;
+      height: 20px;
+      background-position: -20px -40px;
       float: left;
-      margin: 12px 6px;
+      margin: 10px 6px;
     }
     div.backLink[formated] span.left_arrow{
         display:none;
@@ -110,30 +110,36 @@ div.backLink[formated] #pageTitle{
       padding:0;
   }
   /* Search results content */
+  #searchResults{
+    margin-bottom: 33px;
+  }
   #searchResults.jobResults div.searchResult .content{
-    padding:0;
-    border-width:0;
+    float        : left;
+    position     : relative;
+    width        : 100%;
+    padding      : 0;
+    border-width : 0;
     border-radius: 0;
-    float: left;
-    width: 100%;
   }
   #searchResults.jobResults div.searchResult:hover .content{
-    background:white;
-    border-color:none;
-    box-shadow: none;
+    border-color: none;
+    background  : white;
+    box-shadow  : none;
   }
   /* Begin Result Header */
   #searchResults.jobResults .searchResult .resultHeader{
-    padding:0;
-    border-width:0;
+    float        : left;
+    width        : 100%;
+    margin-bottom: 10px;
+    padding      : 0;
+    border-width : 0;
     border-radius: 0;
-    float: left;
-    width: 100%;
   }
     #searchResults.jobResults .searchResult .resultHeader h3{
-        line-height:28px;
-        margin:0 0 15px 0;
-        font-size:18px;
+        width      : 675px;
+        margin     : 0 0 18px 0;
+        font-size  : 20px;
+        line-height: 28px;
         line-height: 19px;
     }
       #searchResults.jobResults .searchResult.applied .resultHeader h3 a{
@@ -141,40 +147,44 @@ div.backLink[formated] #pageTitle{
       }
       /* Extra Info Dropdown */
       #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo{
-        width:31px;
-        height:16px;
         position: absolute;
-        top:2px;
-        right:0px;
+        top     : 2px;
+        right   : 0;
+        width   : 45px;
+        height  : 20px;
       }
         #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .icon{
-          background-repeat: no-repeat;
+          float              : right;
+          width              : 20px;
+          height             : 20px;
+          overflow           : hidden;
           background-position: 0 0;
-          width:16px;
-          height:16px;
-          overflow: hidden;
-          float:right;
+          background-repeat  : no-repeat;
         }
         #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo.yellowWarning .icon{
           background-position: 0 -32px;
           color:#fff;
-          line-height: 16px;
+          line-height: 20px;
           font-size:10px;
           text-align: center;
         }
         #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo.applied .icon{
-          background-position: 0 -16px;
+          background-position: 0 -20px;
         }
         #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo.applied.yellowWarning .icon{
           background-position: 0 -48px;
         }
+        #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .extraContent {
+          position: relative;
+        }
         #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo div.arrow{
-          border:3px solid transparent;
-          border-top-color:#4F89E4;
-          width:0;
-          height:0;
-          margin:7px 0 0 4px;
-          float:left;
+          float : left;
+          width : 20px;
+          height: 20px;
+          margin: 7px 0 0 4px;
+          background-position: -20px 0px;
+          position: absolute;
+          top: -6px;
         }
         #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .dataContainer{
           display:none;
@@ -250,6 +260,17 @@ div.backLink[formated] #pageTitle{
               #searchResults.jobResults .searchResult .resultHeader h3 .extraInfo .oHelpDotHover:hover .oHelpTip{
                 display:block;
               }
+            #searchResults.jobResults div.searchResult .content .similarJobs{ 
+              top: inherit;
+              bottom: -3px;
+              right: 0;
+              font-size: 14px;
+              opacity: 0.3;
+              -webkit-transition:all 0.2s;
+            }
+            #searchResults.jobResults div.searchResult:hover .content .similarJobs{ 
+              opacity: 1;
+            }
       /* End Extra Info Dropdown */
       #searchResults.jobResults .searchResult .resultHeader p.oText{
         float: left;
@@ -282,8 +303,9 @@ div.backLink[formated] #pageTitle{
           #searchResults.jobResults .searchResult p.job-description{
             float: left;
             margin: 10px 0;
-            font-size: 14px;
+            font-size: 15px;
             width: 100%;
+            line-height: 22px;
           }
             #searchResults.jobResults .searchResult p.job-description br{
               display: none;
@@ -393,15 +415,15 @@ div.backLink[formated] #pageTitle{
               display:none;
             }
             #searchInfo #basicFilter #jobSearchForm fieldset .show-more .arrow{
-              width:16px;
-              height:16px;
-              background-position: -16px 0;
-              position: absolute;
-              right:0;
-              top:5px;
+              position           : absolute;
+              top                : 3px;
+              right              : -4px;
+              width              : 20px;
+              height             : 20px;
+              background-position: -20px 0;
             }
             #searchInfo #basicFilter #jobSearchForm fieldset .show-more.more .arrow{
-              background-position: -16px -16px;
+              background-position: -20px -20px;
             }
             /*Inside the job container*/
             #moreOptionsContainer{
@@ -600,13 +622,16 @@ li.group.expand legend .collapse .arrow {
   border-left-color: #969696;
 }
 .searchResult{
-  margin:15px 0;
+  margin: 20px 0 10px;
+  padding-bottom: 30px;
   float: left;
   width: 100%;
+  border-bottom: 1px solid rgba(0,0,0,0.08);
 }
 .searchResult.applied.collapsed{
   background-image:-webkit-linear-gradient(bottom,rgba(0,0,0,0) 20%,#E9E9E9 20%,#E9E9E9 80%,rgba(0,0,0,0) 80%);
   padding:3px;
+  border: none;
 }
 .searchResult .content .resultStatus{
     position: absolute;
@@ -659,9 +684,19 @@ li.group.expand legend .collapse .arrow {
         top: 8px;
         text-align: right;
     }
+.searchResult dl dt{
+  color: #858585;
+  font-weight: 400;
+  font-size: 14px;
+}
 .searchResult dl.details{
   margin:10px 0 0;
   float: left;
+  font-size: 14px;
+}
+.searchResult dl.details dt{
+  line-height: 22px;
+  margin: 0 10px 0 0;
 }
 .searchResult dl.skills{
   margin:10px 0 0;
@@ -670,11 +705,20 @@ li.group.expand legend .collapse .arrow {
 }
   .searchResult dl.skills dt{
     float: left;
-    line-height: 16px;
+    line-height: 22px;
     width: 45px;
+    margin: 0 10px 0 40px;
+  }
+  .searchResult dl.skills dt:before {
+    content:"|";
+    position: relative;
+    left: -20px;
+    color: #B5B5B5;
+    font-size: 20px;
   }
   .searchResult dl.skills dd.skill{
     float: left;
+    font-size: 14px;
   }
   .searchResult dl.skills .extra-skills-container{
     float: left;
@@ -690,6 +734,7 @@ li.group.expand legend .collapse .arrow {
       background-color: #D3E8FA;
       width:20px;
       position: relative;
+      font-size: 14px;
     }
       .searchResult dl.skills .extra-skills-container .skills-count .arrow{
         position: absolute;

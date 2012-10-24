@@ -131,7 +131,7 @@ $(function () {
       }
     }
 
-    function SearchResultsQualifications(object) {
+    function SearchResultsExtraInfo(object) {
       var cache             = object['cache'],
           job               = object['job'],
           qualifications    = cache.find('.col.col1of2:first table.oDescTable'),
@@ -144,7 +144,7 @@ $(function () {
       
       if (qualifications.size() > 0) {
         
-        extraInfoContent.prepend('<div class="arrow"></div>');
+        extraInfoContent.prepend('<div class="arrow sprite"></div>');
         dataContainer.find('.tableContainer').append(qualifications);
         
         if (warningNum > 0) {
@@ -287,7 +287,7 @@ $(function () {
 
           el.attr('format','');
           
-          SearchResultsQualifications(object);
+          SearchResultsExtraInfo(object);
           SearchResultsApplyBool(object);
           SearchResultsTimezoneTip(object);
           SearchResultsMoreText(object);
@@ -297,7 +297,7 @@ $(function () {
         });
         
         skillsFormat(el.find('dl.skills'));
-         
+        el.find('.similarJobs').addClass('btn').insertAfter(el.find('.skills:last'));
         /* Format the header */
       }
     }
