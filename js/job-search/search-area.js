@@ -189,17 +189,6 @@ $(function () {
       }
     }
 
-    function stripRedirect(text) {
-      var links = $(text).find('a');
-      if (links.size() > 0) {
-        links.each(function(){
-          var href = 'http://' + $(this).attr('href').replace('https://www.odesk.com/leaving_odesk.php?ref=http%253A%252F%252F','');
-          $(this).attr('href',href).html();
-        });
-      }
-      return text.html();
-    }
-
     function SearchResultsMoreText(object) {
       var cache         = object['cache'],
           job           = object['job'],
@@ -207,12 +196,12 @@ $(function () {
           moreBtn       = $('<span class="toggleDesc moreBtn">»</span>'),
           moreContainer = $('<span class="moreText"></span>'),
           lessBtn       = $('<span class="toggleDesc lessBtn">«</span>'),
-          fullDescStr   = stripRedirect(cache.find('.oMain.break article div.pam:first')),
+          fullDescStr   = cache.find('.oMain.break article div.pam:first').html(),
           fullDesc      = $('<p name class="job-description"></p>'),
           moreCreated   = false,
           maxLen        = 400;
 
-      if (fullDescStr.length > maxLen) {
+      if (typeof fullDescStr != 'undefined' && fullDescStr.length > maxLen) {
         var arr = $.trim(fullDescStr).split(' '),
             str = [],
             temp;
@@ -266,12 +255,19 @@ $(function () {
           heading         = job.find('.resultHeader h3 a'),
           headingShort    = heading.html(),
           maxHeadingLen   = 70;
+      heading.bind('click',function(e){
+        window.open(heading.attr('href'));
+        e.preventDefault();
+      });
       if (headingShort.length > maxHeadingLen) { 
         headingShort = headingShort.substring(0, maxHeadingLen) + "...";
       }
       heading.html(headingShort);
     }
-
+    var qualifications = {};
+    qualifications.all = function(cache) {
+      return cache.find('.oLayout .oMain .cols.pam .col1of2 article').html();
+    }
     function SearchResultsFormatting(el) {
       if (!el.attr('format')) {
         
@@ -281,19 +277,30 @@ $(function () {
         
         cache.load(link,function(response, status, xhr){
           
-          if (status == 'error') {
-            console.log('oDesk+: There was an error formating a job');
-          }
+          if (status == 'error') { console.log('oDesk+: There was an error formating a job'); }
 
           el.attr('format','');
           
+          /*var
+            job = {}
+            title = el.find('h3').html(),
+            subhead = cache.find('header.phs hgroup:first p.oText').html(),
+            job.overview = cache.find('aside article:nth-child(2)'),
+            extraInfo = qualifications.all(cache),
+            tmp = $('<div />');
+
+          pl_template.load({'id':'.searchResult','parent':tmp});
+          pl_template.process({'id':tmp,'keys':[{'title':title,'subhead':subhead,'extra-info':extraInfo}]},function() {
+            tmp.appendTo('#searchResults'); 
+          });*/
+
           SearchResultsExtraInfo(object);
           SearchResultsApplyBool(object);
           SearchResultsTimezoneTip(object);
           SearchResultsMoreText(object);
           SearchResultsStatusLine(object);
           SearchResultsHeading(object);
-
+        
         });
         
         skillsFormat(el.find('dl.skills'));

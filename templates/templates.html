@@ -1,0 +1,30 @@
+<div class="searchResult">
+  <h3>{{title}}</h3>
+  <p class="oText">{{subhead}}</p>
+  {{if extra-info}}
+  <div class="extraInfo">
+    <div class="icon sprite"></div>
+    <div class="extraContent">
+      <div class="arrow sprite"></div>
+      <div class="dataContainer">
+        <div class="tableContainer">
+          <div class="arrow sprite"></div>
+          {{extra-info}}
+        </div>
+      </div>
+    </div>
+  </div>
+  {{endif}}
+  <div class="timezone">
+    {{country}}
+    {{timezone}}
+  </div>
+  <article>{{description}}</article>
+  <div class="details">
+    <p>Client: {{paid}} {{feedback}}</p>
+  </div>
+  <div class="skills"> 
+    <p>Skills: {{skills}}</p>
+  </div>
+  {{similar}}
+</div>

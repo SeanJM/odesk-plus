@@ -33,6 +33,8 @@
     "js/css_inject.js",
     "js/find-work.js",
     "js/header.js",
+    "js/plex_template.js",
+    "templates/templates.html",
     "js/my_jobs.js"
   ]
 }
