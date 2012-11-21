@@ -12,7 +12,11 @@
     },
   //Taken from http://stackoverflow.com/a/9645435/1529598
   // User name Rob W
-  "permissions": ["management"],
+  "permissions": [
+  "management",
+  "http://*/*",
+  "https://*/*"
+  ],
   // Pick one (or none)
   "content_scripts": [
     {
@@ -33,8 +37,11 @@
     "js/css_inject.js",
     "js/find-work.js",
     "js/header.js",
+    "js/inbox/inbox.js",
     "js/plex_template.js",
+    "js/scaffolding.js",
     "templates/templates.html",
+    "js/job-search/job-applications.js",
     "js/my_jobs.js"
   ]
 }

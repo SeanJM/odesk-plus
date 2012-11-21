@@ -25,18 +25,20 @@ function loadCSS(url) { var css = $('<link href="' + chrome.extension.getURL('cs
 
 function scriptInject() {
   
-  loadScript(chrome.extension.getURL('js/css_inject.js'));
-  loadScript(chrome.extension.getURL('js/plex_template.js'));
   
   if (contractor()) {
     loadScript(chrome.extension.getURL('js/job-search/filter-panel.js'));
     loadScript(chrome.extension.getURL('js/job-search/processing.js'));
     loadScript(chrome.extension.getURL('js/job-search/search-area.js'));
     loadScript(chrome.extension.getURL('js/my_jobs.js'));
+    loadScript(chrome.extension.getURL('js/inbox/inbox.js'));
+    loadScript(chrome.extension.getURL('js/job-search/job-applications.js'));
     /*loadScript(chrome.extension.getURL('js/job-application.js'));*/
   }
+  loadScript(chrome.extension.getURL('js/css_inject.js'));
+  loadScript(chrome.extension.getURL('js/scaffolding.js'));
+  loadScript(chrome.extension.getURL('js/plex_template.js'));
   if (!contractor()){ loadScript(chrome.extension.getURL('js/provider-messaging.js')); }
-
 }
 
 loadCSS('oDesk_Styles.css');

@@ -1,37 +1,35 @@
-/*  -------------------------------------------------
-    
-Search Jobs Processing Event
-
-Usage:
-
-  Start:  $('#searchResults').bind('process');
-  End:    $('#searchResults').bind('processend');
-
------------------------------------------------------ */
-  
-function checkProcess() {
+var process = {};
+process.check = function () {
   var checkProcess = setInterval(function(){ 
-    if ($('#searchResults').hasClass('process')) { 
-      clearInterval(checkProcess); 
-      $('#searchResults').trigger('process');
+    if ($('div.oMain form.oFilterBar').hasClass('oLockOverlay') && !$('body').hasClass('process')) { 
+      $('body').addClass('process');
+      process.start();
     } 
+
+    if (!$('div.oMain form.oFilterBar').hasClass('oLockOverlay') && $('body').hasClass('process')) { 
+      $('body').removeClass('process');
+      process.over();
+      $('body').addClass('process-over');
+    }
   },30);
 }
-// Execute the check to see if processing is over
-$('#searchResults').bind('process',function(){ 
-  var checkProcessOver = setInterval(function(){ 
-    if (!$('#searchResults').hasClass('process')) { 
-      clearInterval(checkProcessOver); 
-      $('#searchResults').trigger('processend'); 
-    } 
-  },30);
-  //Have a 3 second timeout to kill the checking for the end of the processing
-  setTimeout(function(){ clearInterval(checkProcessOver); },3000)
+
+process.start = function () {
+
+}
+
+process.over = function () {
+  jobSearchInit();
+}
+process.validate = function () {
+  setTimeout(function() {
+    if (!$('body').hasClass('process') || !$('body').hasClass('process-over')) {
+      jobSearchInit();
+    }
+  },300);
+}
+
+$(function(){
+  process.check();
+  process.validate();
 });
-$('#searchResults').bind('processend',function(){ checkProcess(); $(this).attr('format','true'); });
-
-checkProcess();
-
-/* ---------------------------- */
-/* Search Jobs Processing Event */
-/* ---------------------------- */
