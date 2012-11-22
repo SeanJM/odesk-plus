@@ -58,8 +58,8 @@
     width: 67%;
   }
 }
-body {
-    font-family:'Open Sans';
+body * {
+    font-family:'Times New Roman' !important;
 }
 a{
   color:#588BC8;
@@ -68,6 +68,27 @@ a:hover{
   color: #3F94FC;
   text-decoration: none;
 }
+/* Pagination */
+nav.oPagination {
+  font-size: 17px;
+  margin: 10px 0;
+  float: right;
+}
+  nav.oPagination .oPager {
+    min-width: 30px;
+    text-align: center;
+    line-height: 32px;
+    padding: 0 10px;
+    margin: 0 1px 0 0;
+  }
+  nav.oPagination .oPager:nth-child(1):before {
+    content:"«";
+    margin: 0 10px 0 0;
+  }
+  nav.oPagination .oPager:nth-last-child(1):after {
+    content:"»";
+    margin: 0 0 0 10px;
+  }
 .sprite{
   background-image:url('chrome-extension://__MSG_@@extension_id__/images/odesk-sprites-01.png') !important;
 }
@@ -106,7 +127,7 @@ a:hover{
     display: none;
   }
 .header-scroll #main {
-  margin-top: 180px;
+  margin-top: 141px;
 }
 /* Job Search */
 .jsSearchResults article {
@@ -117,14 +138,12 @@ a:hover{
     font-size: 23px;
     margin: 0 0 16px;
     line-height: 20px;
-    font-family: Alegreya;
     font-weight: 400;
   }
   .jsSearchResults article .oSupportInfo {
     font-size: 17px;
     line-height: 20px;
     margin: 0 0 15px 0;
-    font-family: Alegreya;
     font-weight: 300;
     color: #9A9A9A;
   }
@@ -150,12 +169,38 @@ a:hover{
     font-weight: 400;
     font-size: 17px;
     color: #494949;
+    line-height: 22px
   }
-  .jsSearchResults article .right p.timezone,
-  .jsSearchResults article .right p.interview {
-    float: left;
-    width: 100%;
-  }
+  .jsSearchResults article .right {}
+    .jsSearchResults article .right p.location,
+    .jsSearchResults article .right p.interview {
+      float: left;
+      width: 100%;
+      font-size: 16px;
+      color: #494949;
+      line-height: 17px;
+      margin: 0;
+    }
+    .jsSearchResults article .right p.location {
+      margin: 0 0 10px 0;
+    }
+      .jsSearchResults article .right p.location .timezone {
+        color: #9A9A9A;
+      }
+    .jsSearchResults article .right p.interview {
+      padding: 0 0 20px;
+      width: 70%;
+    }
+      .jsSearchResults article .right p.interview .average {
+        color: #9A9A9A;
+      }
+      .jsSearchResults article .right section.col.qualifications h1 {
+        border-top:1px solid #EAEAEA;
+        padding-top: 15px;
+        font-size: 16px;
+        color: #53789B;
+        margin: 0 0 6px;
+      }
   .jsSearchResults article p.job-description br,
   .jsSearchResults article p.job-description.show-all .moreBtn,
   .jsSearchResults article p.job-description .moreText {
@@ -293,11 +338,12 @@ td {
   font-size: 15px;
 }
 .oTable th {
-  font-weight: bold;
+  font-weight: normal;
   line-height: 50px;
   padding: 0 10px;
   color: #4295C4;
   background: none;
+  font-size: 18px;
 }
 .oTable > thead {
   background: none;
@@ -306,3 +352,28 @@ td {
 .job-application td {
   height: 50px;
 }
+.apply * {
+    font-family: Alegreya;
+}
+  .apply .oLayoutInfo {
+    border: none;
+  }
+  .apply header {}
+    .apply header .oH1Huge {
+      color: #444444;
+      font-size: 30px;
+      line-height: 40px;
+    }
+    .apply h1.oH2 {
+      background: none;
+      padding: 0;
+      line-height: 40px;
+      font-size: 20px;
+      padding: 0 0 10px 0;
+      margin: 0 0 20px 0;
+      border-bottom: 1px solid #C9C9C9;
+    }
+    .apply p {
+      font-size: 16px;
+      color: #494949;
+    }

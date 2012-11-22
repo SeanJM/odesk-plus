@@ -116,16 +116,19 @@ function jobFormat (job) {
     
     var qualifications = cache.find('#jobQualificationsSection').removeAttr('id').addClass('qualifications').removeClass('col1of2');
     
-    var timezone = findTimezone(cache.find('#jobsAboutBuyer ul.oPlainList li'));
-    findTimezone(cache.find('#jobsAboutBuyer ul.oPlainList li'));
-    var timezoneObject = $('<p class="timezone">' + timezone + '</p>');
+    var timezoneStr = findTimezone(cache.find('#jobsAboutBuyer ul.oPlainList li'));
+    timezone = timezoneStr.split('(')[0] + '<span class="timezone">(' + timezoneStr.split('(')[1] + '</span>';
+    var timezoneObject = $('<p class="location">' + timezone + '</p>');
 
     var interviewTable = cache.find('#jobActivitySection table');
     interviewTable.find('tr').each(function(){
       if ($(this).find('th').text() == 'Interviewing:') {
         var interview = $(this).find('td').text();
+        if (interview.split('(').length > 1) {
+          interview = interview.split('(')[0] + '<span class="average">(' + interview.split('(')[1] + '</span>'
+        }
         var interviewObject = $('<p class="interview"><span class="label">Interviewing:</span> ' + interview + '</p>')
-        right.append(timezoneObject).append(qualifications).append(interviewObject);
+        right.append(timezoneObject).append(interviewObject).append(qualifications);
       }
     });
 

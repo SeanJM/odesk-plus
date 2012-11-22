@@ -32,9 +32,9 @@ function scriptInject() {
     loadScript(chrome.extension.getURL('js/job-search/search-area.js'));
     loadScript(chrome.extension.getURL('js/my_jobs.js'));
     loadScript(chrome.extension.getURL('js/inbox/inbox.js'));
-    loadScript(chrome.extension.getURL('js/job-search/job-applications.js'));
     /*loadScript(chrome.extension.getURL('js/job-application.js'));*/
   }
+  loadScript(chrome.extension.getURL('js/job-search/job-applications.js'));
   loadScript(chrome.extension.getURL('js/css_inject.js'));
   loadScript(chrome.extension.getURL('js/scaffolding.js'));
   loadScript(chrome.extension.getURL('js/plex_template.js'));

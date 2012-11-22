@@ -63,5 +63,13 @@ $(function(){
     $('body').addClass('job-application');
     modifyTables();
   }
+  
+  function jobApplicationPage() {
+    $('body').addClass('apply');
+  }
+
+  if ($('aside article .oBtn.oBtnPrimary').text().trim() == "Apply to this Job") {
+    jobApplicationPage();
+  }
 
 });

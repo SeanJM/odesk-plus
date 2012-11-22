@@ -6,4 +6,8 @@ $(function(){
     $('#jobDetails .less').remove();
     $('#jobDetails .more').toggleClass('oHidden');
   }
+  if ($('aside article .oBtn .oBtnPrimary').text().trim() == 'Apply to this job') {
+    alert('job application page');
+  }
+  alert('job application page');
 });
