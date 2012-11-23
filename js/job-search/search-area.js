@@ -13,12 +13,23 @@ function formatSidebar() {
     var rating = $('<label class="oOpt oOptLbl"><input type="checkbox" id="hideJobRating">Hide Jobs higher ratings than mine <span class="oCount">' + myInfo.rating + '</span></label>');
   
     rates.bind('click',function(){
-      $('article.rateHigh').toggle();
-      $('article.interviewLow').toggle();
+      if ($(this).find('input').attr('checked') == 'checked') {
+        $('article.rateHigh').addClass('hidden');
+        $('article.interviewLow').addClass('hidden');
+      }
+      else {
+       $('article.rateHigh').removeClass('hidden');
+       $('article.interviewLow').removeClass('hidden'); 
+      }
     });
     
     rating.bind('click',function(){
-      $('article.ratingLow').toggle();
+      if ($(this).find('input').attr('checked') == 'checked') {
+        $('article.ratingLow').addClass('hidden');
+      }
+      else {
+        $('article.ratingLow').removeClass('hidden');
+      }
     });
 
     visibleObj.find('legend').after(rates).after(rating);
@@ -157,7 +168,7 @@ function jobFormat (job) {
           job.addClass('rateHigh');
           row.addClass('warning');
           if (job.is(':visible') && $('#hideJobRate').attr('checked') == 'checked') {
-            job.toggle();
+            job.toggleClass('hidden');
           }
         }
       }
@@ -167,7 +178,7 @@ function jobFormat (job) {
           job.addClass('ratingLow');
           row.addClass('warning');
           if (job.is(':visible') && $('#hideJobRating').attr('checked') == 'checked') {
-            job.toggle();
+            job.toggleClass('hidden');
           }
         }
       }
@@ -189,7 +200,7 @@ function jobFormat (job) {
           if (interviewPercent <= interviewDollarDistance) { 
             job.addClass('interviewLow');
             if (job.is(':visible') && $('#hideJobRate').attr('checked') == 'checked') {
-              job.toggle();
+              job.toggleClass('hidden');
             } 
           }
           interview = interview.split('(')[0] + '<span class="average">(' + interview.split('(')[1].trim().replace(')','') + ')</span>'

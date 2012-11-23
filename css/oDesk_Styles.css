@@ -92,6 +92,9 @@ nav.oPagination {
 .sprite{
   background-image:url('chrome-extension://__MSG_@@extension_id__/images/odesk-sprites-01.png') !important;
 }
+.hidden {
+  display: none;
+}
 .header-scroll header[role="banner"] {
   position: fixed;
   width: 100%;
@@ -201,6 +204,8 @@ nav.oPagination {
         color: #53789B;
         margin: 0 0 6px;
       }
+      .jsSearchResults article.interviewLow .right p.interview,
+      .jsSearchResults article.interviewLow .right p.interview .average,
       .jsSearchResults article .right tr.warning th,
       .jsSearchResults article .right tr.warning td {
         color: #C56464;
