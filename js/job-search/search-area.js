@@ -1,20 +1,39 @@
 // Initializations
 
 var myInfo = {};
-var jobInit = 0;
 function jobSearchInit() {
-    jobInit++; 
-    if (jobInit == 1) {
-      getMyInfo();
-    }
+  getMyInfo();
+}
+
+function formatSidebar() {
+  if ($('.visibilityFilter').size() == 0) {
+    var sidebar = $('#main aside.oSide form article.oWidget.jsSearchFormFilters');
+    var visibleObj = $('<div class="oPlusSide visibilityFilter"><div class="container"><legend class="oLabel">Visibility</legend></div></div>');
+    var rates = $('<label class="oOpt oOptLbl"><input type="checkbox" id="hideJobRate">Hide Jobs with low rates</label>');
+    var rating = $('<label class="oOpt oOptLbl"><input type="checkbox" id="hideJobRating">Hide Jobs higher ratings than mine <span class="oCount">' + myInfo.rating + '</span></label>');
+  
+    rates.bind('click',function(){
+      $('article.rateHigh').toggle();
+      $('article.interviewLow').toggle();
+    });
+    
+    rating.bind('click',function(){
+      $('article.ratingLow').toggle();
+    });
+
+    visibleObj.find('legend').after(rates).after(rating);
+
+    sidebar.after(visibleObj);
+  }
 }
 
 function getMyInfo() {
   var cache = $('<div></div>');
   cache.load('/d/view_profile.php #contractorInfo',function() {
-    myInfo.rate   = cache.find('.oRateLarge').text().split('/')[0].trim().replace('$','');
-    myInfo.rating = cache.find('.oStarsTotal').text().split('(')[1].split(')')[0];
+    myInfo.rate   = parseInt(cache.find('.oRateLarge').text().split('/')[0].trim().replace('$','') * 100);
+    myInfo.rating = parseInt(cache.find('.oStarsTotal').text().split('(')[1].split(')')[0] * 100);
     formatJobs();
+    formatSidebar();
   });
 }
 
@@ -133,17 +152,23 @@ function jobFormat (job) {
       var row = $(this),
           th  = row.find('th').text().trim();
       if (th == 'Hourly Rate:') {
-        var rate = row.find('td').text().split('-')[1].trim().split('/')[0].replace('$','');
+        var rate = parseInt(row.find('td').text().split('-')[1].trim().split('/')[0].replace('$','') * 100);
         if (myInfo.rate > rate) {
           job.addClass('rateHigh');
           row.addClass('warning');
+          if (job.is(':visible') && $('#hideJobRate').attr('checked') == 'checked') {
+            job.toggle();
+          }
         }
       }
       if (th == 'Feedback Score:') {
-        var rating = row.find('td').text().split(' ')[2];
+        var rating = parseInt(row.find('td').text().split(' ')[2] * 100);
         if (rating > myInfo.rating) {
           job.addClass('ratingLow');
           row.addClass('warning');
+          if (job.is(':visible') && $('#hideJobRating').attr('checked') == 'checked') {
+            job.toggle();
+          }
         }
       }
     });
@@ -154,9 +179,19 @@ function jobFormat (job) {
 
     var interviewTable = cache.find('#jobActivitySection table');
     interviewTable.find('tr').each(function(){
-      if ($(this).find('th').text() == 'Interviewing:') {
-        var interview = $(this).find('td').text();
+      var row = $(this);
+      if (row.find('th').text() == 'Interviewing:') {
+        var interview = row.find('td').text();
         if (interview.split('(').length > 1) {
+          var interviewDollars        = parseInt(interview.split('/')[0].split('$')[1] * 100),
+              interviewPercent        = parseInt(interviewDollars/myInfo.rate*100),
+              interviewDollarDistance = 60;
+          if (interviewPercent <= interviewDollarDistance) { 
+            job.addClass('interviewLow');
+            if (job.is(':visible') && $('#hideJobRate').attr('checked') == 'checked') {
+              job.toggle();
+            } 
+          }
           interview = interview.split('(')[0] + '<span class="average">(' + interview.split('(')[1].trim().replace(')','') + ')</span>'
         }
         var interviewObject = $('<p class="interview"><span class="label">Interviewing:</span> ' + interview + '</p>')
@@ -170,7 +205,9 @@ function jobFormat (job) {
 function formatJobs() {
   job = $('article.oJobTile');
   job.each(function(){
-    jobFormat($(this));
+    if ($(this).find('.right').size() == 0) {
+      jobFormat($(this));
+    }
   });
 }
 

@@ -203,7 +203,7 @@ nav.oPagination {
       }
       .jsSearchResults article .right tr.warning th,
       .jsSearchResults article .right tr.warning td {
-        color: #F31A1A;
+        color: #C56464;
       }
   .jsSearchResults article p.job-description br,
   .jsSearchResults article p.job-description.show-all .moreBtn,
@@ -220,6 +220,36 @@ nav.oPagination {
   .jsSearchResults article.applied * {
     display: none;
   }
+  aside form .oWidget.jsSearchFormFilters legend.oLabel,
+  aside .oPlusSide legend.oLabel,
+  aside form .oWidget.jsSearchFormFilters label.oLabel {
+    font-size: 17px;
+    line-height: 24px;
+    margin: 0 0 12px;
+    display: block;
+    width: 100%;
+    float: left;
+    text-align: left;
+  }
+  aside .oPlusSide .container label.oOpt,
+  aside form .oWidget.jsSearchFormFilters label.oOpt {
+    font-size: 16px;
+    line-height: 26px;
+    color: #494949;
+  }
+    aside .oPlusSide .container label.oOpt input,
+    aside form .oWidget.jsSearchFormFilters label.oOpt input[type="checkbox"] {
+      margin: 0 10px 0 0;
+    }
+  aside .oPlusSide {
+    border: 1px solid #B9BCC3;
+    border-radius: 4px;
+  }
+    .oWidget > .oBd,
+    aside .oPlusSide .container {
+      padding: 20px;
+    }
+/* ------------- End Job Search ----------- */
   .oPageCentered {
     width: 98%;
   }
