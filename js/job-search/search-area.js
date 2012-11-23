@@ -125,7 +125,7 @@ function jobFormat (job) {
       if ($(this).find('th').text() == 'Interviewing:') {
         var interview = $(this).find('td').text();
         if (interview.split('(').length > 1) {
-          interview = interview.split('(')[0] + '<span class="average">(' + interview.split('(')[1] + '</span>'
+          interview = interview.split('(')[0] + '<span class="average">(' + interview.split('(')[1].trim() + ')</span>'
         }
         var interviewObject = $('<p class="interview"><span class="label">Interviewing:</span> ' + interview + '</p>')
         right.append(timezoneObject).append(interviewObject).append(qualifications);

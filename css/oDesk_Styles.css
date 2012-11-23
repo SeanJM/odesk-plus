@@ -287,9 +287,7 @@ nav.oPagination {
   top          : 0;
   left         : 0;
   background   : #fff;
-  border       : 1px solid #CDCBC7;
-  box-shadow   :0 2px 3px rgba(0,0,0,0.3);
-  border-radius: 7px;
+  border       : 1px solid #E2E0DE;
 }
 .loading p {
   font-size: 15px;
