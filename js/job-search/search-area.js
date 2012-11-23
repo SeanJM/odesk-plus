@@ -2,7 +2,67 @@
 
 var myInfo = {};
 function jobSearchInit() {
-  getMyInfo();
+  var cache = $('<div></div>');
+  cache.load('/d/view_profile.php #main',function() {
+    myInfo.rate   = parseInt(cache.find('.oRateLarge').text().split('/')[0].trim().replace('$','') * 100);
+    myInfo.rating = parseInt(cache.find('.oStarsTotal').text().split('(')[1].split(')')[0] * 100);
+    cache.find('aside.oSide article.oSideSection table.oDescTable tr').each(function(){
+      var row = $(this);
+      if (row.find('th').text().trim() == 'Location') {
+        var num = row.find('td').text().split('(')[1].split(')')[0].replace('UTC','');
+        myInfo.utc = parseInt(num);
+        console.log(myInfo.utc);
+      }
+    })
+    formatJobs();
+    formatSidebar();
+  });
+}
+
+function jobShow(job) {
+  var check = 1;
+  var minDiff = parseInt($('.timeSlider .val').text());
+  if ($('#timeDifference').attr('checked') == 'checked' && parseInt(job.attr('timeDifference')) > minDiff) { check = 0; }
+  if (job.hasClass('ratingLow') && $('#hideJobRating').attr('checked') == 'checked') { check = 0; }
+  if (job.hasClass('interviewLow') && $('#hideJobRate').attr('checked') == 'checked') { check = 0; }
+  if (job.hasClass('rateHigh') && $('#hideJobRate').attr('checked') == 'checked') { check = 0; }
+  if (check == 1) { return true; }
+  return false;
+}
+
+function jobFilter() {
+  $('article').each(function(){
+    var job = $(this);
+    console.log(jobShow(job));
+    if (jobShow(job) == true) { job.removeClass('hidden'); }
+    else { job.addClass('hidden'); }
+  });
+}
+
+function timeSlide(object) {
+  slider = object.slider;
+  var container = slider.find('.sliderContainer');
+  container.bind('mousedown',function(){
+    $('body').addClass('timeSlide');
+  });
+  $('body').bind('mouseup',function(){
+    $('body').removeClass('timeSlide');
+    if ($('body').hasClass('timeSlide')) { jobFilter(); }
+  });
+  $('body').bind('mousemove',function(e){
+    if ($(this).hasClass('timeSlide')) {
+      var knob = slider.find('.knob');
+      var bubble = slider.find('.bubble');
+      var knobX = (e.pageX - slider.offset().left)-(knob.width()/2);
+      var bubbleX = (e.pageX - slider.offset().left);
+      var max = (slider.find('.slider').width()-knob.width());
+      if (knobX >= 0 && knobX < max) { 
+        knob.css('left',knobX); 
+        var val = Math.round(knobX/max*object.max);
+        bubble.css('left',bubbleX).find('.val').text(val);
+      }
+    }
+  });
 }
 
 function formatSidebar() {
@@ -10,43 +70,28 @@ function formatSidebar() {
     var sidebar = $('#main aside.oSide form article.oWidget.jsSearchFormFilters');
     var visibleObj = $('<div class="oPlusSide visibilityFilter"><div class="container"><legend class="oLabel">Visibility</legend></div></div>');
     var rates = $('<label class="oOpt oOptLbl"><input type="checkbox" id="hideJobRate">Hide Jobs with low rates</label>');
-    var rating = $('<label class="oOpt oOptLbl"><input type="checkbox" id="hideJobRating">Hide Jobs higher ratings than mine <span class="oCount">' + myInfo.rating + '</span></label>');
-  
-    rates.bind('click',function(){
+    var rating = $('<label class="oOpt oOptLbl"><input type="checkbox" id="hideJobRating">Hide Jobs higher ratings than mine</label>');
+    var timeDiff = $('<label class="oOpt oOptLbl"><input type="checkbox" id="timeDifference">Hide time differences larger than:</label>');
+    var timeSlider = $('<div class="timeSlider disabled"><div class="sliderContainer"><div class="slider"><div class="knob"></div></div><div class="bubble"><div class="arrow"><div class="face"></div></div><p class="val">0</p></div></div><div class="measure"><span>0</span><span>15</span></div></div>');
+    timeSlide({'slider':timeSlider,'min':0,'max':15});
+    timeDiff.find('input').bind('click',function(){
       if ($(this).find('input').attr('checked') == 'checked') {
-        $('article.rateHigh').addClass('hidden');
-        $('article.interviewLow').addClass('hidden');
+        timeSlider.removeClass('disabled');
       }
       else {
-       $('article.rateHigh').removeClass('hidden');
-       $('article.interviewLow').removeClass('hidden'); 
+        timeSlider.addClass('disabled');
       }
     });
-    
-    rating.bind('click',function(){
-      if ($(this).find('input').attr('checked') == 'checked') {
-        $('article.ratingLow').addClass('hidden');
-      }
-      else {
-        $('article.ratingLow').removeClass('hidden');
-      }
-    });
-
-    visibleObj.find('legend').after(rates).after(rating);
+    visibleObj.find('legend').after(rating).after(rates).after(timeSlider).after(timeDiff);
 
     sidebar.after(visibleObj);
+    
+    visibleObj.find('input').bind('click',function(){
+      jobFilter();
+    });
   }
 }
 
-function getMyInfo() {
-  var cache = $('<div></div>');
-  cache.load('/d/view_profile.php #contractorInfo',function() {
-    myInfo.rate   = parseInt(cache.find('.oRateLarge').text().split('/')[0].trim().replace('$','') * 100);
-    myInfo.rating = parseInt(cache.find('.oStarsTotal').text().split('(')[1].split(')')[0] * 100);
-    formatJobs();
-    formatSidebar();
-  });
-}
 
 var searchResults = $('section.jsSearchResults');
 
@@ -167,9 +212,6 @@ function jobFormat (job) {
         if (myInfo.rate > rate) {
           job.addClass('rateHigh');
           row.addClass('warning');
-          if (job.is(':visible') && $('#hideJobRate').attr('checked') == 'checked') {
-            job.toggleClass('hidden');
-          }
         }
       }
       if (th == 'Feedback Score:') {
@@ -177,18 +219,22 @@ function jobFormat (job) {
         if (rating > myInfo.rating) {
           job.addClass('ratingLow');
           row.addClass('warning');
-          if (job.is(':visible') && $('#hideJobRating').attr('checked') == 'checked') {
-            job.toggleClass('hidden');
-          }
         }
       }
     });
     
     var timezoneStr = findTimezone(cache.find('#jobsAboutBuyer ul.oPlainList li'));
     timezone = timezoneStr.split('(')[0] + '<span class="timezone">(' + timezoneStr.split('(')[1] + '</span>';
+    timeUTC = timezoneStr.split('(')[1].split(')')[0].replace('UTC','').replace(':','.');
+    if (timeUTC.split('').length == 0) { timeUTC = 0; }
     var timezoneObject = $('<p class="location">' + timezone + '</p>');
+    var timeDifference = myInfo.utc+parseInt(timeUTC)*-1;
+    if (timeDifference < 0) { timeDifference = timeDifference*-1; }
+    
+    job.attr('timeDifference',timeDifference);
 
     var interviewTable = cache.find('#jobActivitySection table');
+
     interviewTable.find('tr').each(function(){
       var row = $(this);
       if (row.find('th').text() == 'Interviewing:') {
@@ -199,9 +245,6 @@ function jobFormat (job) {
               interviewDollarDistance = 60;
           if (interviewPercent <= interviewDollarDistance) { 
             job.addClass('interviewLow');
-            if (job.is(':visible') && $('#hideJobRate').attr('checked') == 'checked') {
-              job.toggleClass('hidden');
-            } 
           }
           interview = interview.split('(')[0] + '<span class="average">(' + interview.split('(')[1].trim().replace(')','') + ')</span>'
         }
@@ -209,6 +252,7 @@ function jobFormat (job) {
         right.append(timezoneObject).append(interviewObject).append(qualifications);
       }
     });
+    if (jobShow(job) == false) { job.addClass('hidden'); }
 
   });
 }

@@ -225,9 +225,10 @@ nav.oPagination {
   .jsSearchResults article.applied * {
     display: none;
   }
-  aside form .oWidget.jsSearchFormFilters legend.oLabel,
-  aside .oPlusSide legend.oLabel,
-  aside form .oWidget.jsSearchFormFilters label.oLabel {
+  .jobs aside form .oWidget.jsSearchFormFilters legend.oLabel,
+  .jobs aside form .oWidget.jsSearchFormFilters legend.oLabel,
+  .jobs aside .oPlusSide legend.oLabel,
+  .jobs aside form .oWidget.jsSearchFormFilters label.oLabel {
     font-size: 17px;
     line-height: 24px;
     margin: 0 0 12px;
@@ -236,24 +237,113 @@ nav.oPagination {
     float: left;
     text-align: left;
   }
-  aside .oPlusSide .container label.oOpt,
-  aside form .oWidget.jsSearchFormFilters label.oOpt {
+  .jobs aside .oPlusSide .container label.oOpt,
+  .jobs aside form .oWidget.jsSearchFormFilters label.oOpt {
     font-size: 16px;
     line-height: 26px;
     color: #494949;
   }
-    aside .oPlusSide .container label.oOpt input,
-    aside form .oWidget.jsSearchFormFilters label.oOpt input[type="checkbox"] {
+    .jobs aside .oPlusSide .container label.oOpt input,
+    .jobs aside form .oWidget.jsSearchFormFilters label.oOpt input[type="checkbox"] {
       margin: 0 10px 0 0;
     }
-  aside .oPlusSide {
+  .jobs aside .oPlusSide {
     border: 1px solid #B9BCC3;
     border-radius: 4px;
   }
     .oWidget > .oBd,
-    aside .oPlusSide .container {
+    .jobs aside .oPlusSide .container {
       padding: 20px;
     }
+    .jobs .timeSlider {
+      margin: 10px 0 0 20px;
+      height: 48px;
+      position: relative;
+      width: 84%;
+    }
+    .jobs .timeSlider .sliderContainer {
+      background-image: -webkit-linear-gradient(top,#F3F3F3,#FFF);
+      border: 1px solid #E4E4E4;
+      height: 22px;
+      border-radius: 3px;
+    }
+      .jobs .timeSlider .sliderContainer .bubble {
+        background: #FFF;
+        border: 1px solid #E5E5E5;
+        position: absolute;
+        padding: 0 5px;
+        top: 25px;
+        z-index: 1;
+        text-align: center;
+        line-height: 20px;
+        height: 20px;
+        left: 5px;
+      }
+        .jobs .timeSlider .sliderContainer .bubble .arrow {
+          border: 7px solid transparent;
+          border-bottom-color: #E5E5E5;
+          margin: -14px auto 0;
+          position: relative;
+        }
+          .jobs .timeSlider .sliderContainer .bubble .arrow .face {
+            content: "";
+            border: 6px solid transparent;
+            border-bottom-color: #FFF;
+            position: absolute;
+            left: -6px;
+            top: -4px;
+          }
+        .jobs .timeSlider .sliderContainer .bubble .val {
+          color: #494949;
+        }
+      .jobs .timeSlider .slider,
+      .jobs .timeSlider .measure {
+        width: 90%;
+        left: 5%;
+        position: absolute;
+      }
+      .jobs .timeSlider .slider {
+        height: 2px;
+        background: #E2E2E2;
+        top: 10px;
+      }
+      .jobs .timeSlider .slider .knob {
+        width: 14px;
+        height: 14px;
+        background: #FFFFFF;
+        position: absolute;
+        top: -6px;
+        border: 1px solid #D3D3D3;
+        border-radius: 7px;
+      }
+      .jobs .timeSlider .measure {
+        top: 28px;
+        color: #B0B0B0;
+      }
+      .jobs .timeSlider .measure span {
+        display: block;
+        float: left;
+        text-align: center;
+        width: 14.28%;
+        height: 12px;
+      }
+        .jobs .timeSlider .measure span.line span {
+          background: #666666;
+          width: 1px;
+          margin: auto;
+        }
+      .jobs .timeSlider .measure span:nth-child(1),
+      .jobs .timeSlider .measure span:nth-last-child(1) {
+        width: 14.28%;
+      }
+      .jobs .timeSlider .measure span:nth-child(1) {
+        float: left;
+        text-align: left;
+      }
+      .jobs .timeSlider .measure span:nth-last-child(1) {
+        float: right;
+        text-align: right;
+      }
 /* ------------- End Job Search ----------- */
   .oPageCentered {
     width: 98%;
