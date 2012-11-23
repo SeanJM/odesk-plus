@@ -46,8 +46,8 @@ function timeSlide(object) {
     $('body').addClass('timeSlide');
   });
   $('body').bind('mouseup',function(){
-    $('body').removeClass('timeSlide');
     if ($('body').hasClass('timeSlide')) { jobFilter(); }
+    $('body').removeClass('timeSlide');
   });
   $('body').bind('mousemove',function(e){
     if ($(this).hasClass('timeSlide')) {
