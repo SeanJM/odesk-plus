@@ -1,7 +1,21 @@
 // Initializations
 
+var myInfo = {};
+var jobInit = 0;
 function jobSearchInit() {
+    jobInit++; 
+    if (jobInit == 1) {
+      getMyInfo();
+    }
+}
+
+function getMyInfo() {
+  var cache = $('<div></div>');
+  cache.load('/d/view_profile.php #contractorInfo',function() {
+    myInfo.rate   = cache.find('.oRateLarge').text().split('/')[0].trim().replace('$','');
+    myInfo.rating = cache.find('.oStarsTotal').text().split('(')[1].split(')')[0];
     formatJobs();
+  });
 }
 
 var searchResults = $('section.jsSearchResults');
@@ -115,6 +129,24 @@ function jobFormat (job) {
     if (applied) { job.addClass('applied'); }
     
     var qualifications = cache.find('#jobQualificationsSection').removeAttr('id').addClass('qualifications').removeClass('col1of2');
+    qualifications.find('tr').each(function(){
+      var row = $(this),
+          th  = row.find('th').text().trim();
+      if (th == 'Hourly Rate:') {
+        var rate = row.find('td').text().split('-')[1].trim().split('/')[0].replace('$','');
+        if (myInfo.rate > rate) {
+          job.addClass('rateHigh');
+          row.addClass('warning');
+        }
+      }
+      if (th == 'Feedback Score:') {
+        var rating = row.find('td').text().split(' ')[2];
+        if (rating > myInfo.rating) {
+          job.addClass('ratingLow');
+          row.addClass('warning');
+        }
+      }
+    });
     
     var timezoneStr = findTimezone(cache.find('#jobsAboutBuyer ul.oPlainList li'));
     timezone = timezoneStr.split('(')[0] + '<span class="timezone">(' + timezoneStr.split('(')[1] + '</span>';
@@ -125,7 +157,7 @@ function jobFormat (job) {
       if ($(this).find('th').text() == 'Interviewing:') {
         var interview = $(this).find('td').text();
         if (interview.split('(').length > 1) {
-          interview = interview.split('(')[0] + '<span class="average">(' + interview.split('(')[1].trim() + ')</span>'
+          interview = interview.split('(')[0] + '<span class="average">(' + interview.split('(')[1].trim().replace(')','') + ')</span>'
         }
         var interviewObject = $('<p class="interview"><span class="label">Interviewing:</span> ' + interview + '</p>')
         right.append(timezoneObject).append(interviewObject).append(qualifications);

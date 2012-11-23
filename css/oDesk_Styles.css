@@ -201,6 +201,10 @@ nav.oPagination {
         color: #53789B;
         margin: 0 0 6px;
       }
+      .jsSearchResults article .right tr.warning th,
+      .jsSearchResults article .right tr.warning td {
+        color: #F31A1A;
+      }
   .jsSearchResults article p.job-description br,
   .jsSearchResults article p.job-description.show-all .moreBtn,
   .jsSearchResults article p.job-description .moreText {
