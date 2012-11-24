@@ -56,7 +56,7 @@ function timeSlide(object) {
       var knobX = (e.pageX - slider.offset().left)-(knob.width()/2);
       var bubbleX = (e.pageX - slider.offset().left);
       var max = (slider.find('.slider').width()-knob.width());
-      if (knobX >= 0 && knobX < max) { 
+      if (knobX >= 0-(knob.width()/2) && knobX < max) { 
         knob.css('left',knobX); 
         var val = Math.round(knobX/max*object.max);
         bubble.css('left',bubbleX).find('.val').text(val);
@@ -70,9 +70,9 @@ function formatSidebar() {
     var sidebar = $('#main aside.oSide form article.oWidget.jsSearchFormFilters');
     var visibleObj = $('<div class="oPlusSide visibilityFilter"><div class="container"><legend class="oLabel">Visibility</legend></div></div>');
     var rates = $('<label class="oOpt oOptLbl"><input type="checkbox" id="hideJobRate">Hide Jobs with low rates</label>');
-    var rating = $('<label class="oOpt oOptLbl"><input type="checkbox" id="hideJobRating">Hide Jobs higher ratings than mine</label>');
+    var rating = $('<label class="oOpt oOptLbl"><input type="checkbox" id="hideJobRating">Hide Jobs with higher ratings than mine</label>');
     var timeDiff = $('<label class="oOpt oOptLbl"><input type="checkbox" id="timeDifference">Hide time differences larger than:</label>');
-    var timeSlider = $('<div class="timeSlider disabled"><div class="sliderContainer"><div class="slider"><div class="knob"></div></div><div class="bubble"><div class="arrow"><div class="face"></div></div><p class="val">0</p></div></div><div class="measure"><span>0</span><span>15</span></div></div>');
+    var timeSlider = $('<div class="timeSlider disabled"><div class="sliderContainer"><div class="slider"><div class="knob"><div class="face"></div></div></div><div class="bubble"><div class="arrow"><div class="face"></div></div><p class="val">0</p></div></div><div class="measure"><span>0</span><span>15</span></div></div>');
     timeSlide({'slider':timeSlider,'min':0,'max':15});
     timeDiff.find('input').bind('click',function(){
       if ($(this).find('input').attr('checked') == 'checked') {
