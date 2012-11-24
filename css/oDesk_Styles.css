@@ -256,30 +256,32 @@ nav.oPagination {
       padding: 20px;
     }
     .jobs .timeSlider {
-      margin: 10px 0 10px 20px;
+      margin: 5px 0 5px 20px;
       height: 48px;
       position: relative;
       width: 84%;
     }
     .jobs .timeSlider .sliderContainer {
       background-image: -webkit-linear-gradient(bottom,#EAEAEA 0%,#FFF 16%);
-      border: 1px solid #D4D4D4;
-      height: 22px;
+      border: 1px solid #C9C9C9;
+      height: 19px;
       border-radius: 4px;
+      box-shadow:0 2px 4px rgba(0,0,0,0.1);
+      -webkit-user-select: none;
     }
       .jobs .timeSlider .sliderContainer .bubble {
         background: #FFF;
         border: 1px solid #E5E5E5;
         position: absolute;
         padding: 0 5px;
-        top: 25px;
+        top: 23px;
         z-index: 1;
         text-align: center;
         height: 22px;
         left: 5px;
         border-radius: 3px;
         background-image: -webkit-linear-gradient(bottom,#E6E6E6 0%,#FFF 20%);
-        box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        box-shadow: 0 3px 6px rgba(0,0,0,0.2);
       }
         .jobs .timeSlider .sliderContainer .bubble .arrow {
           border: 7px solid transparent;
@@ -301,21 +303,30 @@ nav.oPagination {
         }
       .jobs .timeSlider .slider,
       .jobs .timeSlider .measure {
-        width: 90%;
-        left: 5%;
+        width: 96%;
+        left: 2%;
         position: absolute;
       }
       .jobs .timeSlider .slider {
-        height: 1px;
-        background-image: -webkit-linear-gradient(left,#B2B2B2,#EFEFEF);
-        top: 11px;
+        height: 9px;
+        background-image: -webkit-linear-gradient(bottom,#F9F9F9,#E8E8E8);
+        top: 5px;
+        box-shadow:inset 0 0 3px rgba(0,0,0,0.2);
+        border-radius: 2px;
       }
+        .jobs .timeSlider .slider .fill {
+          background-image: -webkit-linear-gradient(bottom,#3376DB,#6AADF7);
+          height: 100%;
+          width: 0;
+          border-radius: 2px;
+          box-shadow:inset 0 0 2px rgba(0,0,0,0.6);
+        }
       .jobs .timeSlider .slider .knob {
         width: 14px;
         height: 14px;
         background-image: -webkit-linear-gradient(bottom,#E6E6E6,#FFF);
         position: absolute;
-        top: -6px;
+        top: -3px;
         border: 1px solid #B9B9B9;
         border-radius: 7px;
       }
