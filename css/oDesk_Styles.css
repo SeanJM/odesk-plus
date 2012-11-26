@@ -74,16 +74,25 @@ nav.oPagination {
   margin: 10px 0;
   float: right;
 }
+  nav.oPagination .oPagerSpace,
   nav.oPagination .oPager {
-    min-width: 30px;
-    text-align: center;
-    line-height: 32px;
-    padding: 0 10px;
-    margin: 0 1px 0 0;
+    display         : inline-block;
+    height          : 32px;
+    margin          : 0 3px 0 0;
+    padding         : 0 10px;
+    min-width       : 30px;
+    border          : 1px solid #D5E3F2;
+    text-align      : center;
+    line-height     : 32px;
     background-image: -webkit-linear-gradient(bottom,#F0F0F0,#FFF 20%);
   }
+  nav.oPagination .oPagerSpace {
+    margin: 0;
+  }
   nav.oPagination .oPager.isCurrent {
-    background-image: -webkit-linear-gradient(bottom,#2E6AB1,#4584CF 10%,#4584CF 95%,#68B1DD 100%);
+    background-image: -webkit-linear-gradient(bottom,#2E6AB1,#4584CF 10%,#4FA1E2 95%);
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.4);
+    border: 1px solid #2E6AB1;
   }
   nav.oPagination .oPager:nth-child(1):before {
     content:"«";
