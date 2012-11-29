@@ -136,7 +136,7 @@ function moreText(object) {
   var
       text          = object.description.html(),
       job           = object.job,
-      jobDesc       = job.find('p.jsDescription'),
+      jobDesc       = job.find('.jsDescription'),
       moreBtn       = $('<span class="toggleDesc moreBtn">»</span>'),
       moreContainer = $('<span class="moreText"></span>'),
       lessBtn       = $('<span class="toggleDesc lessBtn">«</span>'),

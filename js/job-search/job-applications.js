@@ -68,7 +68,7 @@ $(function(){
     $('body').addClass('apply');
   }
 
-  if ($('aside article .oBtn.oBtnPrimary').text().trim() == "Apply to this Job") {
+  if ($('aside .oSideSection .oBtn.oBtnPrimary').text().trim().split(' ')[0] == 'Apply') {
     jobApplicationPage();
   }
 
