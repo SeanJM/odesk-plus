@@ -16,7 +16,9 @@ function thisWeeksEarnings() {
       console.log(tmp.html());
       keys['week-earnings'] = tmp.text();
       template.get({'template':'dashboard','src':dir('templates/templates.html')},function (html) {
-        $(template.insert({'template':html,'keys':keys})).prependTo(header);
+        var processed = $(template.insert({'template':html,'keys':keys}));
+        gooe.init(processed);
+        processed.prependTo(header);
       });
     });
   });

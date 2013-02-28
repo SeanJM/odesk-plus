@@ -1,0 +1,8 @@
+/* Dropdowns */
+.dropdown .dropdown-menu {
+  visibility: hidden;
+}
+
+.dropdown.active .dropdown-menu {
+  visibility: visible;
+}

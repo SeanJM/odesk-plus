@@ -92,10 +92,12 @@
 <div template="dashboard">
   <div class="oPageCentered">
     <div class="dashboard">
-      <div class="dashbox">
-        <h1>Earnings</h1>
-        <p>{{week-total}}</p>
-        <div class="dropdown">{{week-table}}</div>
+      <div class="dropdown dashbox">
+        <div class="dropdown-trigger">
+          <h1>Earnings</h1>
+          <p>{{week-total}}</p>
+          <div class="dropdown-menu">{{week-table}}</div>
+        </div>
       </div>
       <div class="dashbox">
         <h1>Available</h1>

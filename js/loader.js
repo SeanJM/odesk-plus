@@ -22,13 +22,13 @@ function scriptInject() {
   
   
   if (contractor()) {
-    loadScript(chrome.extension.getURL('js/job-search/filter-panel.js'));
     loadScript(chrome.extension.getURL('js/find-work-home.js'));
     /*loadScript(chrome.extension.getURL('js/job-application.js'));*/
   }
   loadScript(chrome.extension.getURL('js/apply.js'));
   loadScript(chrome.extension.getURL('js/reports.js'));
   loadScript(chrome.extension.getURL('js/odesk-plus.js'));
+  loadScript(chrome.extension.getURL('js/gooe.js'));
   loadScript(chrome.extension.getURL('js/job-search/job-applications.js'));
   loadScript(chrome.extension.getURL('js/template.js'));
 }
@@ -36,7 +36,7 @@ function scriptInject() {
 $(function(){
   loadCSS('oDesk_Styles.css');
   loadCSS('header.css');
-  loadCSS('source-sans-pro/font.css');
+  loadCSS('gooe.css');
   dir();
   scriptInject();
 });

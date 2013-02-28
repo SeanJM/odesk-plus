@@ -151,8 +151,7 @@
       color      : #FFF;
     }
 
-  .oHeader .dashbox .dropdown {
-    display      : none;
+  .oHeader .dashbox .dropdown-menu {
     z-index      : 1;
     position     : absolute;
     top          : 100%;
@@ -164,10 +163,6 @@
     background   : #fff;
     box-shadow   : 0 2px 0 rgba(0,0,0,0.05);
     cursor       : default;
-  }
-
-  .oHeader .dashbox .dropdown.active {
-    display: block;
   }
 
 /* Job Search */
