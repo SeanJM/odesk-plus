@@ -29,19 +29,14 @@
     "images/odesk-sprites-01.png",
     "css/oDesk_Styles.css",
     "css/header.css",
-    "js/job-search/search-area.js",
-    "js/job-search/filter-panel.js",
-    "js/job-search/processing.js",
     "js/job-search/job-applications.js",
-    "js/job-application.js",
-    "js/provider-messaging.js",
-    "js/css_inject.js",
-    "js/find-work.js",
+    "js/find-work-home.js",
+    "js/reports.js",
+    "js/odesk-plus.js",
     "js/header.js",
+    "js/apply.js",
     "js/inbox/inbox.js",
-    "js/plex_template.js",
-    "js/scaffolding.js",
-    "templates/templates.html",
-    "js/my_jobs.js"
+    "js/template.js",
+    "templates/templates.html"
   ]
 }

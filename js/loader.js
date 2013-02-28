@@ -1,3 +1,4 @@
+var dir = function () { $('html').attr('directory',chrome.extension.getURL('')); }
 
 function contractor() {
   var val = false;
@@ -7,18 +8,12 @@ function contractor() {
   return val;
 }
 
-function loadTemplates() {
-  var cache           = $('<div style="display:none;"></div>').attr('id','templates'),
-      templateAddress = chrome.extension.getURL('templates/templates.html');
-
-  cache.load(templateAddress,function () { cache.appendTo('body'); });
-}
-
 function loadScript(url, callback) {
   if ($('script[src="' + url + '"]').size() < 1) {
     var script = $('<script src="' + url +'"></script>')
     $('head').append(script);
   }
+  console.log('* Loaded Script: ' + url);
 }
 
 function loadCSS(url) { var css = $('<link href="' + chrome.extension.getURL('css/' + url) + '" rel="stylesheet" type="text/css">'); $('head').append(css); }
@@ -28,21 +23,20 @@ function scriptInject() {
   
   if (contractor()) {
     loadScript(chrome.extension.getURL('js/job-search/filter-panel.js'));
-    loadScript(chrome.extension.getURL('js/job-search/processing.js'));
-    loadScript(chrome.extension.getURL('js/job-search/search-area.js'));
-    loadScript(chrome.extension.getURL('js/my_jobs.js'));
-    loadScript(chrome.extension.getURL('js/inbox/inbox.js'));
+    loadScript(chrome.extension.getURL('js/find-work-home.js'));
     /*loadScript(chrome.extension.getURL('js/job-application.js'));*/
   }
+  loadScript(chrome.extension.getURL('js/apply.js'));
+  loadScript(chrome.extension.getURL('js/reports.js'));
+  loadScript(chrome.extension.getURL('js/odesk-plus.js'));
   loadScript(chrome.extension.getURL('js/job-search/job-applications.js'));
-  loadScript(chrome.extension.getURL('js/css_inject.js'));
-  loadScript(chrome.extension.getURL('js/scaffolding.js'));
-  loadScript(chrome.extension.getURL('js/plex_template.js'));
-  if (!contractor()){ loadScript(chrome.extension.getURL('js/provider-messaging.js')); }
+  loadScript(chrome.extension.getURL('js/template.js'));
 }
 
-loadCSS('oDesk_Styles.css');
-loadCSS('header.css');
-
-scriptInject();
-loadTemplates();
+$(function(){
+  loadCSS('oDesk_Styles.css');
+  loadCSS('header.css');
+  loadCSS('source-sans-pro/font.css');
+  dir();
+  scriptInject();
+});

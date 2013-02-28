@@ -1,24 +1,61 @@
-@import url(http://fonts.googleapis.com/css?family=Alegreya:400,700,900);
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,300);
+/* -------------------------- Base */
+
+.sprite{
+  background-image:url('chrome-extension://__MSG_@@extension_id__/images/odesk-sprites-01.png') !important;
+}
+
+.hidden {
+  display: none;
+}
+
+.btn-blue {
+  display      : inline-block;
+  padding      : 0 5px;
+  border-radius: 0;
+  border-radius: 6px;
+  text-align   : center;
+  font-size    : 15px;
+  line-height  : 30px;
+  color        : #FFF;
+  background   : #00AEEC;
+  box-shadow   : 0 -1px 0 #0092D6 inset;
+  cursor       : pointer;
+}
+
+.btn-blue:hover {
+  background   : #11BDFF;
+}
+
+/* -------------------------- Layout */
+  .oPageCentered {
+    width: 940px;
+    position: relative;
+  }
+  .col3of4, .oLayoutSearch > .oMain {
+    float: right;
+  }
 
 @media screen and (min-width: 1200px) {
+  .oPageCentered {
+    width: 1180px;
+  }
   .jsSearchResults article .left {
-    width: 70%;
+    width: 62%;
   }
     .jsSearchResults article .left .content {
       padding: 0 30px 0 0;
     }
   .jsSearchResults article .right {
-    width: 28%;
+    width: 35%;
   }
   .col1of4, .oLayoutSearch > .oSide {
-    width: 22%;
-    margin-left: 1%;
+    width: 26%;
   }
-  .col3of4, .jobs .oLayoutSearch > .oMain {
-    width: 76%;
+  .col3of4, .oLayoutSearch > .oMain {
+    width: 73%;
   }
 }
+
 @media screen and (min-width: 900px) {
   .jsSearchResults article .left{
     float: left;
@@ -28,6 +65,7 @@
     float: right;
   }
 }
+
 @media screen and (max-width: 900px) {
  .jsSearchResults article .left{
     float: left;
@@ -40,6 +78,7 @@
     padding: 15px 0 0 0;
   } 
 }
+
 @media screen and (max-width: 1200px) and (min-width: 900px) {
   .jsSearchResults article .left{
     width: 65%;
@@ -58,286 +97,305 @@
     width: 67%;
   }
 }
-body *,
-.oH1, 
-.oH1Huge, 
-h1, 
-.oLeftNavHeading {
-    font-family:'Times New Roman';
+
+
+/* -------------------------- Module */
+
+.oHeader {
+  position: relative;
+  padding-top: 46px;
 }
-a{
-  color:#588BC8;
-}
-a:hover{
-  color: #3F94FC;
-  text-decoration: none;
-}
-/* Pagination */
-nav.oPagination {
-  font-size: 17px;
-  margin: 10px 0;
-  float: right;
-}
-  nav.oPagination .oPagerSpace,
-  nav.oPagination .oPager {
-    display         : inline-block;
-    height          : 32px;
-    margin          : 0 3px 0 0;
-    padding         : 0 10px;
-    min-width       : 30px;
-    border          : 1px solid #D5E3F2;
-    text-align      : center;
-    line-height     : 32px;
-    background-image: -webkit-linear-gradient(bottom,#F0F0F0,#FFF 20%);
+
+/* ------------ Earnings */
+
+  .oHeader .dashboard {
+    position     : absolute;
+    top          : -31px;
+    right        : 0px;
   }
-  nav.oPagination .oPagerSpace {
-    margin: 0;
+  .oHeader .dashbox {
+    width        : 120px;
+    height       : 60px;
+    padding      : 10px;
+    border-radius: 10px;
+    background   : rgba(0,0,0,0.1);
+    cursor       : pointer;
+    display: inline-block;
   }
-  nav.oPagination .oPager.isCurrent {
-    background-image: -webkit-linear-gradient(bottom,#2E6AB1,#4584CF 10%,#4FA1E2 95%);
-    text-shadow: 0 -1px 0 rgba(0,0,0,0.4);
-    border: 1px solid #2E6AB1;
-  }
-  nav.oPagination .oPager:nth-child(1):before {
-    content:"«";
-    margin: 0 10px 0 0;
-  }
-  nav.oPagination .oPager:nth-last-child(1):after {
-    content:"»";
-    margin: 0 0 0 10px;
-  }
-.sprite{
-  background-image:url('chrome-extension://__MSG_@@extension_id__/images/odesk-sprites-01.png') !important;
-}
-.hidden {
-  display: none;
-}
-  .col3of4, .jobs .oLayoutSearch > .oMain {
-    float: right;
-  }
-.header-scroll header[role="banner"] {
-  position: fixed;
-  width: 100%;
-  z-index: 100;
-  top: 0;
-  height: 50px;
-  border-bottom: 1px solid #CEE8FF;
-}
-  .header-scroll header[role="banner"] .oCompanyDropdown {
-    position: absolute;
-    top: 9px;
-  }
-  .header-scroll header[role="banner"] .navTop {
-    position: absolute;
-  }
-  .header-scroll header[role="banner"] .oLogo {
-    position: absolute;
-    right: 230px;
-    top: 5px;
-  }
-  .header-scroll header[role="banner"] nav[role="navigation"] {
-    position: absolute;
-  }
-  .header-scroll header[role="banner"] ul.oNavTablist {
-    display: none;
-  }
-  .header-scroll header[role="banner"] ul.oInlineList {
-    position: absolute;
-    top: 14px;
-    right: 10px;
-  }
-  .header-scroll header[role="banner"] .oNavTabpanel {
-    display: none;
-  }
-.header-scroll #main {
-  margin-top: 141px;
-}
-/* Job Search */
-.jsSearchResults article {
-  padding: 20px 0;
-  margin: 10px 0;
-}
-  .jsSearchResults article h1.oRowTitle {
-    font-size: 23px;
-    margin: 0 0 16px;
-    line-height: 20px;
-    font-weight: 400;
-  }
-  .jsSearchResults article .oSupportInfo {
-    font-size: 17px;
-    line-height: 20px;
-    margin: 0 0 15px 0;
-    font-weight: 300;
-    color: #9A9A9A;
-  }
-  .jsSearchResults article .oSupportInfo .jsPaid {
-    font-weight: 300;
-    margin-right: 10px;
-  }
-  .jsSearchResults article .oSupportInfo .jsFeedback {
-    margin-right: 10px;
-  }
-  .jsSearchResults article .oSupportInfo .jsSkills a:nth-child(1) {
+
+  .oHeader .dashbox + .dashbox {
     margin-left: 10px;
   }
-  .jsSearchResults article .oSupportInfo .jsSkills .qualifications {
-    display: none;
+
+  .oHeader .dashbox:hover {
+    background: rgba(255,255,255,0.15);
   }
-  .jsSearchResults article p {
-    font-size: 14px;
-    line-height: 20px;
+
+    .oHeader .dashbox h1 {
+      display    : inline-block;
+      width      : 100%;
+      margin     : 3px 0 0;
+      padding    : 0;
+      text-align : center;
+      font-size  : 13px;
+      line-height: 10px;
+      color      : #FFF;
+    }
+    .oHeader .dashbox p {
+      display    : inline-block;
+      width      : 100%;
+      margin     : -2px 0 0 0;
+      text-align : center;
+      text-align : center;
+      font-size  : 20px;
+      color      : #FFF;
+    }
+
+  .oHeader .dashbox .dropdown {
+    display      : none;
+    z-index      : 1;
+    position     : absolute;
+    top          : 100%;
+    right        : 0;
+    width        : 500px;
+    padding      : 10px;
+    border       : 2px solid rgba(0,0,0,0.1);
+    border-radius: 10px;
+    background   : #fff;
+    box-shadow   : 0 2px 0 rgba(0,0,0,0.05);
+    cursor       : default;
   }
-  .jsSearchResults article p.job-description {
-    font-family: Alegreya;
-    font-weight: 400;
-    font-size: 17px;
-    color: #494949;
-    line-height: 22px
+
+  .oHeader .dashbox .dropdown.active {
+    display: block;
   }
+
+/* Job Search */
+
+  .jsSearchResults article {
+    margin: 10px 0;
+    padding: 20px 0;
+  }
+
+    .jsSearchResults article p {
+      font-size: 14px;
+      line-height: 20px;
+    }
+
+    .jsSearchResults article h1.oRowTitle {
+      margin: 0 0 16px;
+      font-size: 23px;
+      line-height: 25px;
+    }
+
+    .jsSearchResults article .oSupportInfo {
+      float      : left;
+      width      : 100%;
+      margin     : 0 0 15px 0;
+      font-size  : 17px;
+      font-weight: 300;
+      line-height: 20px;
+      color      : #9A9A9A;
+    }
+
+      .jsSearchResults article .oSupportInfo .jsPaid {
+        margin-right: 10px;
+        font-weight : 300;
+      }
+
+      .jsSearchResults article .oSupportInfo .jsFeedback {
+        margin-right: 10px;
+      }
+
+        .jsSearchResults article .oSupportInfo .jsSkills a:nth-child(1) {
+          margin-left: 10px;
+        }
+
+  /* Job Description */
+
+    .jsSearchResults article .job-description {
+      float      : left;
+      font-size  : 17px;
+      line-height: 22px;
+      color      : #494949;
+    }
+
+      .jsSearchResults article .job-description p {
+        margin-bottom: 10px;
+      }
+
+      .jsSearchResults article .job-description .lessBtn {
+        display: inline-block;
+      }
+
+      .jsSearchResults article .job-description.moreText-true .more,
+      .jsSearchResults article .job-description.show-more .less,
+      .jsSearchResults article .job-description.moreText-true .lessBtn,
+      .jsSearchResults article .job-description.moreText-false .toggleDesc {
+        display: none;
+      }
+
+      .jsSearchResults article .job-description.show-more .more,
+      .jsSearchResults article .job-description.moreText-false .more {
+        display: block;
+      }
+
+      /* Toggle Buttons */
+      .jsSearchResults article .job-description.show-more .lessBtn,
+      .jsSearchResults article .job-description.moreText-true .moreBtn {
+        display      : block;
+        width        : 90px;
+        margin       : 0 auto 20px;
+      }
+
+      .jsSearchResults article .job-description.show-more .moreBtn {
+        display: none;
+      }
+
+  /* Right Side Job Info */
   .jsSearchResults article .right {}
-    .jsSearchResults article .right p.location,
-    .jsSearchResults article .right p.interview {
+    
+    .jsSearchResults article .right p {
       float: left;
       width: 100%;
-      font-size: 16px;
+      font-size: 15px;
       color: #494949;
       line-height: 17px;
-      margin: 0;
+      margin: 0 0 15px;
     }
-    .jsSearchResults article .right p.location {
-      margin: 0 0 10px 0;
+
+    .jsSearchResults article .right p .label {
+      display: inline-block;
+      width: 132px;
     }
-      .jsSearchResults article .right p.location .timezone {
-        color: #9A9A9A;
-      }
-    .jsSearchResults article .right p.interview {
-      padding: 0 0 20px;
-      width: 70%;
-    }
-      .jsSearchResults article .right p.interview .average {
-        color: #9A9A9A;
-      }
-      .jsSearchResults article .right section.col.qualifications h1 {
-        border-top:1px solid #EAEAEA;
-        padding-top: 15px;
-        font-size: 16px;
-        color: #53789B;
-        margin: 0 0 6px;
-      }
-      .jsSearchResults article.interviewLow .right p.interview,
-      .jsSearchResults article.interviewLow .right p.interview .average,
-      .jsSearchResults article .right tr.warning th,
+    
+      .jsSearchResults article.highRate-true .right .rate,
+      .jsSearchResults article.avgRateLow-true .right .avg-rate,
+      .jsSearchResults article.lowFeedback-true .right .feedback,
+      .jsSearchResults article.amtHighestLow-true .right .highest-amt,
       .jsSearchResults article .right tr.warning td {
         color: #C56464;
       }
-  .jsSearchResults article p.job-description br,
-  .jsSearchResults article p.job-description.show-all .moreBtn,
-  .jsSearchResults article p.job-description .moreText {
-    display:none;
+  
+  .jsSearchResults .job-description.show-all .moreText .less {
+    display: inline;
   }
-  .jsSearchResults article p.job-description.show-all br,
-  .jsSearchResults article p.job-description.show-all .moreText {
-    display: block;
-  }
+  
   .jsSearchResults article.applied {
    display: none;
   }
+  
   .jsSearchResults article.applied * {
     display: none;
   }
-  .jobs aside form .oWidget.jsSearchFormFilters legend.oLabel,
-  .jobs aside form .oWidget.jsSearchFormFilters legend.oLabel,
-  .jobs aside .oPlusSide legend.oLabel,
-  .jobs aside form .oWidget.jsSearchFormFilters label.oLabel {
-    font-size: 17px;
+  
+  aside form .oWidget.jsSearchFormFilters legend.oLabel,
+  aside form .oWidget.jsSearchFormFilters legend.oLabel,
+  aside .oPlusSide legend.oLabel,
+  aside form .oWidget.jsSearchFormFilters label.oLabel {
+    display    : block;
+    float      : left;
+    width      : 100%;
+    margin     : 0 0 12px;
+    text-align : left;
+    font-size  : 17px;
     line-height: 24px;
-    margin: 0 0 12px;
-    display: block;
-    width: 100%;
-    float: left;
-    text-align: left;
   }
-  .jobs aside .oPlusSide .container label.oOpt,
-  .jobs aside form .oWidget.jsSearchFormFilters label.oOpt {
-    font-size: 16px;
+
+  aside .oPlusSide .container label.oOpt,
+  aside form .oWidget.jsSearchFormFilters label.oOpt {
+    font-size  : 15px;
     line-height: 26px;
-    color: #494949;
+    color      : #494949;
   }
-    .jobs aside .oPlusSide .container label.oOpt input,
-    .jobs aside form .oWidget.jsSearchFormFilters label.oOpt input[type="checkbox"] {
+
+    aside .oPlusSide .container label.oOpt input,
+    aside form .oWidget.jsSearchFormFilters label.oOpt input[type="checkbox"] {
       margin: 0 10px 0 0;
     }
-  .jobs aside .oPlusSide {
-    border: 1px solid #B9BCC3;
-    border-radius: 4px;
+
+  aside .oPlusSide {
+    border: 3px solid #F0F0ED;
+    border-radius: 8px;
   }
+
     .oWidget > .oBd,
-    .jobs aside .oPlusSide .container {
+    aside .oPlusSide .container {
       padding: 20px;
     }
-    .jobs .timeSlider {
+
+    .timeSlider {
       margin: 5px 0 5px 20px;
       height: 42px;
       position: relative;
       width: 84%;
     }
-    .jobs .timeSlider .sliderContainer {
+
+    .timeSlider .sliderContainer {
       height: 17px;
       -webkit-user-select: none;
     }
-      .jobs .timeSlider .sliderContainer .bubble {
-        background: #FFF;
-        border: 1px solid #D1D1D1;
-        position: absolute;
-        padding: 0 5px;
-        top: 21px;
-        z-index: 1;
-        text-align: center;
-        height: 22px;
-        left: 5px;
-        border-radius: 3px;
-        background-image: -webkit-linear-gradient(bottom,#E6E6E6 0%,#FFF 20%);
-        box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+
+      .timeSlider .sliderContainer .bubble {
+        z-index         : 1;
+        position        : absolute;
+        top             : 21px;
+        left            : 5px;
+        height          : 22px;
+        padding         : 0 5px;
+        border          : 1px solid #D1D1D1;
+        border-radius   : 3px;
+        text-align      : center;
+        background      : #FFF;
+        background-image: -webkit-linear-gradient(bottom,#E6E6E6 0,#FFF 20%);
+        box-shadow      : 0 3px 6px rgba(0,0,0,0.2);
       }
-        .jobs .timeSlider .sliderContainer .bubble .arrow {
-          border: 7px solid transparent;
+
+        .timeSlider .sliderContainer .bubble .arrow {
+          position           : relative;
+          margin             : -14px auto 0;
+          border             : 7px solid transparent;
           border-bottom-color: #E5E5E5;
-          margin: -14px auto 0;
-          position: relative;
         }
-          .jobs .timeSlider .sliderContainer .bubble .arrow .face {
-            content: "";
-            border: 6px solid transparent;
+
+          .timeSlider .sliderContainer .bubble .arrow .face {
+            content            : "";
+            position           : absolute;
+            top                : -4px;
+            left               : -6px;
+            border             : 6px solid transparent;
             border-bottom-color: #FFF;
-            position: absolute;
-            left: -6px;
-            top: -4px;
           }
-        .jobs .timeSlider .sliderContainer .bubble .val {
+
+        .timeSlider .sliderContainer .bubble .val {
           color: #676767;
           line-height: 22px;
         }
-      .jobs .timeSlider .slider,
-      .jobs .timeSlider .measure {
+
+      .timeSlider .slider,
+      .timeSlider .measure {
         width: 97%;
         left: 1.5%;
         position: absolute;
       }
-      .jobs .timeSlider .slider {
-        height: 9px;
+
+      .timeSlider .slider {
+        top             : 4px;
+        height          : 9px;
+        border-radius   : 2px;
         background-image: -webkit-linear-gradient(bottom,#F9F9F9,#E8E8E8);
-        top: 4px;
-        box-shadow:inset 0 0 3px rgba(0,0,0,0.2);
-        border-radius: 2px;
+        box-shadow      : inset 0 0 3px rgba(0,0,0,0.2);
       }
-        .jobs .timeSlider .slider .fill {
+
+        .timeSlider .slider .fill {
           background-image: -webkit-linear-gradient(bottom,#3376DB,#6AADF7);
           height: 100%;
           width: 0;
           border-radius: 2px;
           box-shadow:inset 0 0 2px rgba(0,0,0,0.6);
         }
-      .jobs .timeSlider .slider .knob {
+
+      .timeSlider .slider .knob {
         width: 14px;
         height: 14px;
         background-image: -webkit-linear-gradient(bottom,#E6E6E6,#FFF);
@@ -346,51 +404,50 @@ nav.oPagination {
         border: 1px solid #B9B9B9;
         border-radius: 7px;
       }
-      .timeSlide.jobs .timeSlider .slider .knob {
+
+      .timeSlide.timeSlider .slider .knob {
         border: 1px solid #74B8EF;
       }
-        .jobs .timeSlider .slider .knob .face {
-           width: 10px;
-          height: 10px;
-          background-image: -webkit-linear-gradient(bottom,#FFF,#DDDDDD);
-          position: absolute;
-          top: 1px;
-          left: 1px;
-          border-radius: 5px;
+
+        .timeSlider .slider .knob .face {
+          position        : absolute;
+          top             : 1px;
+          left            : 1px;
+          width           : 10px;
+          height          : 10px;
+          border-radius   : 5px;
+          background-image: -webkit-linear-gradient(bottom,#FFF,#DDD);
         }
-      .jobs .timeSlider .measure {
+
+      .timeSlider .measure {
         top: 19px;
         color: #B0B0B0;
       }
-      .jobs .timeSlider .measure span {
+      .timeSlider .measure span {
         display: block;
         float: left;
         text-align: center;
         width: 14.28%;
         height: 12px;
       }
-        .jobs .timeSlider .measure span.line span {
+        .timeSlider .measure span.line span {
           background: #666666;
           width: 1px;
           margin: auto;
         }
-      .jobs .timeSlider .measure span:nth-child(1),
-      .jobs .timeSlider .measure span:nth-last-child(1) {
+      .timeSlider .measure span:nth-child(1),
+      .timeSlider .measure span:nth-last-child(1) {
         width: 14.28%;
       }
-      .jobs .timeSlider .measure span:nth-child(1) {
+      .timeSlider .measure span:nth-child(1) {
         float: left;
         text-align: left;
       }
-      .jobs .timeSlider .measure span:nth-last-child(1) {
+      .timeSlider .measure span:nth-last-child(1) {
         float: right;
         text-align: right;
       }
 /* ------------- End Job Search ----------- */
-  .oPageCentered {
-    width: 98%;
-    position: relative;
-  }
 .notify td {
   line-height: 40px;
   font-size: 15px;
@@ -558,7 +615,7 @@ h1.oH1Huge {
 }
 /* Job Application */
 .oFieldValue {}
-  .jobs #jobDetails .oFieldValue:nth-child(2) strong {
+  #jobDetails .oFieldValue:nth-child(2) strong {
     font-size: 28px;
     color: #494949;
     display: block;

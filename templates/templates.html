@@ -1,30 +1,106 @@
-<div class="searchResult">
-  <h3>{{title}}</h3>
-  <p class="oText">{{subhead}}</p>
-  {{if extra-info}}
-  <div class="extraInfo">
-    <div class="icon sprite"></div>
-    <div class="extraContent">
-      <div class="arrow sprite"></div>
-      <div class="dataContainer">
-        <div class="tableContainer">
-          <div class="arrow sprite"></div>
-          {{extra-info}}
+<div template="job-filters">
+  <div class="oPlusSide visibilityFilter">
+    <div class="container">
+      <legend class="oLabel">Visibility</legend>
+      <label class="oOpt oOptLbl">
+        <input type="checkbox" id="timeDifference">Hide time differences larger than:
+      </label>
+      <div class="timeSlider disabled">
+        <div class="sliderContainer">
+          <div class="slider">
+            <div class="knob">
+              <div class="face"></div>
+            </div>
+            <div class="fill"></div>
+          </div>
+          <div class="bubble">
+            <div class="arrow">
+              <div class="face"></div>
+            </div>
+            <p class="val">0</p>
+          </div>
         </div>
+        <div class="measure">
+          <span>0</span>
+          <span>15</span>
+        </div>
+      </div>
+      <label class="oOpt oOptLbl">
+        <input type="checkbox" id="hideJobRate">Hide Jobs with low rates
+      </label>
+      <label class="oOpt oOptLbl">
+        <input type="checkbox" id="hideJobRating">Hide Jobs with higher ratings than mine
+      </label>
+      <label class="oOpt oOptLbl">
+        <input type="checkbox" id="hideAvgRate">Hide Jobs with low average rates
+      </label>
+    </div>
+  </div>
+</div>
+
+<div template="job">  
+  <article class="oMed oJobTile jsSimilarTile highRate-{{rate-high}} warning-{{warning}} avgRateLow-{{amt-avg-low}} lowFeedback-{{feedback-high}} amtHighestLow-{{amt-highest-low}}" timedifference="{{time-difference}}">
+    <div class="left">
+      <div class="content">
+        <h1 class="oRowTitle oH3">
+          <a href="{{url}}">{{title}}</a>
+        </h1>
+        <div class="oSupportInfo">
+          <strong>{{type}}</strong> - {{duration}} - Posted: {{posted}}
+        </div>
+        {{description}}  
+      </div>
+      <div class="oSupportInfo">
+        <strong class="ib jsPaid">
+          Client: 
+          <span class="oSpendIndicator">
+            <i class="oSpendIcon {{spending}}"> </i> 
+          </span>
+        </strong>
+        <div class="ib jsFeedback">
+          <div class="oStarsContainer oStarsSmall" title="5.00 stars, based on 4 reviews">
+            <div class="oStarsValue" style="width:100%"></div>
+          </div>
+        </div>
+        <span class="jsSkills">
+          Skills: {{skills}}
+        </span>
+      </div>
+    </div>
+    <div class="right">
+      <div class="padding20">
+        {{if {{average-rate}} <p class="avg-rate"><span class="label">Average Rate Paid:</span> {{average-rate}}</p> end}}
+        {{if {{highest-paid}} <p class="highest-amt"><span class="label">Highest Rate Paid:</span> {{highest-paid}} / {{highest-paid-hours}} hours</p> end}}
+        {{if {{hourly-rate}} <p class="rate"><span class="label">Hourly Rate:</span> {{hourly-rate}}</p> end}}
+        <p><span class="label">Location:</span> {{location}} <span class="timezone">({{timezone}})</span></p>
+        {{if {{interview}} <p><span class="label">Interviewing:</span> {{interview}}</p> end}}
+        {{if {{feedback}} <p class="feedback"><span class="label">Feedback Rating:</span> {{feedback}}</p> end}}
+      </div>
+    </div>
+  </article>
+</div>
+
+<div template="job-desc">
+  <div class="job-description moreText-{{more-text}}">
+    <div class="more">{{text}}</div>
+    <p class="less">{{less}}</p>
+    <span class="toggleDesc moreBtn btn-blue">Read More</span>
+    <span class="toggleDesc lessBtn btn-blue">Read Less</span>
+  </div>
+</div>
+
+<div template="dashboard">
+  <div class="oPageCentered">
+    <div class="dashboard">
+      <div class="dashbox">
+        <h1>Earnings</h1>
+        <p>{{week-total}}</p>
+        <div class="dropdown">{{week-table}}</div>
+      </div>
+      <div class="dashbox">
+        <h1>Available</h1>
+        <p>{{week-earnings}}</p>
       </div>
     </div>
   </div>
-  {{endif}}
-  <div class="timezone">
-    {{country}}
-    {{timezone}}
-  </div>
-  <article>{{description}}</article>
-  <div class="details">
-    <p>Client: {{paid}} {{feedback}}</p>
-  </div>
-  <div class="skills"> 
-    <p>Skills: {{skills}}</p>
-  </div>
-  {{similar}}
 </div>
