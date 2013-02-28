@@ -3,6 +3,6 @@
   visibility: hidden;
 }
 
-.dropdown.active .dropdown-menu {
+.dropdown.gactive .dropdown-menu {
   visibility: visible;
 }

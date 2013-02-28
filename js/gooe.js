@@ -3,7 +3,7 @@ var gooe = {};
 gooe.expander = function (el) {
   el.find('.expander-btn').each(function (){
     $(this).bind('click',function (e){
-      $(this).closest('.expander').toggleClass('active');
+      $(this).closest('.expander').toggleClass('gactive');
       e.stopPropagation();
     });
   });
@@ -16,8 +16,8 @@ gooe.expander = function (el) {
 
       expander.find('[name="' + name + '"]').each(function () {
         $(this).bind('click',function (e){
-          if (radioTrigger.is(':checked')) { expander.addClass('active'); }
-          else { expander.removeClass('active'); }
+          if (radioTrigger.is(':checked')) { expander.addClass('gactive'); }
+          else { expander.removeClass('gactive'); }
           e.stopPropagation();
         });
       });
@@ -26,7 +26,7 @@ gooe.expander = function (el) {
     
     else {
       $(this).bind('click',function (e) { 
-        $(this).closest('.expander').toggleClass('active');
+        $(this).closest('.expander').toggleClass('gactive');
         e.stopPropagation();
       });
     }
@@ -36,8 +36,11 @@ gooe.expander = function (el) {
 
 gooe.dropdown = function (el) {
   el.find('.dropdown-trigger').each(function (e) {
-    $(this).bind('click',function () {
-      $(this).closest('.dropdown').toggleClass('active');
+    $(this).bind('click',function (event) {
+      console.log($(event.target).parents('.gactive').size());
+      if ($(event.target).parents('.dropdown-menu').size() < 1) {
+        $(this).closest('.dropdown').toggleClass('gactive');
+      }
     });
   });
 }
@@ -46,3 +49,15 @@ gooe.init = function (el) {
   gooe.dropdown(el);
   gooe.expander(el);
 }
+
+gooe.offClick = function () {
+  $('html').bind('click',function (event) {
+    if ($(event.target).closest('.gactive').size() < 1) {
+      $('.gactive').removeClass('gactive');
+    }
+  });
+}
+
+$(function () {
+  gooe.offClick();
+});
