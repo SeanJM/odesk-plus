@@ -46,9 +46,14 @@ var myInfo = {};
 
 myInfo.get = function (callback) {
   var cache = $('<div></div>');
+  var rating;
   cache.load('/d/view_profile.php #main',function() {
     myInfo.rate   = parseInt(cache.find('.oRateLarge').text().split('/')[0].trim().replace('$','') * 100);
-    myInfo.rating = parseInt(cache.find('.oStarsTotal').text().split('(')[1].split(')')[0] * 100);
+    myInfo.rating = 5;
+    rating = cache.find('.oStarsTotal').text();
+    if (typeof rating != 'undefined' && rating.length > 0) { 
+      myInfo.rating = parseInt(rating.split('(')[1].split(')')[0] * 100);
+    }
     cache.find('aside.oSide section table.oDescTable tr').each(function(){
       var row = $(this);
       if (row.find('th').text().trim() == 'Location') {
