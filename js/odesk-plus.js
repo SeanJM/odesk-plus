@@ -88,7 +88,6 @@ function formatSidebar() {
       });
 
       element.find('input').bind('click',function(){ jobFilter(); });
-
       element.insertAfter('.oSide .jsSearchFormFilters');
     }
   });
@@ -96,21 +95,24 @@ function formatSidebar() {
 
 function timeSlide(object) {
   slider = object.slider;
+  var bubble    = slider.find('.bubble');
   var container = slider.find('.sliderContainer');
+  var knob      = slider.find('.knob');
+
   container.bind('mousedown',function(){
     $('body').addClass('timeSlide');
   });
+  
   $('body').bind('mouseup',function(){
     if ($('body').hasClass('timeSlide')) { jobFilter(); }
     $('body').removeClass('timeSlide');
   });
+  
   $('body').bind('mousemove',function(e){
     if ($(this).hasClass('timeSlide')) {
-      var knob = slider.find('.knob');
-      var bubble = slider.find('.bubble');
-      var knobX = (e.pageX - slider.offset().left)-(knob.width()/2);
+      var knobX   = (e.pageX - slider.offset().left)-(knob.width()/2);
       var bubbleX = (e.pageX - slider.offset().left-bubble.width()/2);
-      var max = (slider.find('.slider').width()-knob.width());
+      var max     = (slider.find('.slider').width()-knob.width());
       if (knobX >= 0-(knob.width()/2) && knobX < max+(knob.width()/3)) { 
         knob.css('left',knobX); 
         var val = Math.round(knobX/max*object.max);
