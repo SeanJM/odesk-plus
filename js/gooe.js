@@ -2,6 +2,7 @@ var gooe = {};
 
 gooe.expander = function (el) {
   el.find('.expander-btn').each(function (){
+    $(this).unbind('click');
     $(this).bind('click',function (e){
       $(this).closest('.expander').toggleClass('gactive');
       e.stopPropagation();
@@ -15,6 +16,7 @@ gooe.expander = function (el) {
           radioTrigger = expander.find('input[name="' + name + '"].expander-trigger');
 
       expander.find('[name="' + name + '"]').each(function () {
+        $(this).unbind('click');
         $(this).bind('click',function (e){
           if (radioTrigger.is(':checked')) { expander.addClass('gactive'); }
           else { expander.removeClass('gactive'); }
@@ -25,6 +27,7 @@ gooe.expander = function (el) {
     }
     
     else {
+      $(this).unbind('click'); 
       $(this).bind('click',function (e) { 
         $(this).closest('.expander').toggleClass('gactive');
         e.stopPropagation();
@@ -37,7 +40,6 @@ gooe.expander = function (el) {
 gooe.dropdown = function (el) {
   el.find('.dropdown-trigger').each(function (e) {
     $(this).bind('click',function (event) {
-      console.log($(event.target).parents('.gactive').size());
       if ($(event.target).parents('.dropdown-menu').size() < 1) {
         $(this).closest('.dropdown').toggleClass('gactive');
       }
@@ -58,6 +60,4 @@ gooe.offClick = function () {
   });
 }
 
-$(function () {
-  gooe.offClick();
-});
+$(function () { gooe.offClick(); });

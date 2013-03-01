@@ -1,27 +1,21 @@
 {
-  // Required
-  "name": "oDesk Injection",
-  "version": "0.5",
+  "name": "oDesk Plus",
+  "version": "0.6.1",
   "manifest_version": 2,
-  // Recommended
-  "description": "A content injection script to change the appearance and enhance usability of oDesk",
+  "description": "Enhance the usability of oDesk. See average rate paid by the provider, highest rate paid, timezone and country.",
   "icons": {
     "16": "/images/plugin-icon/odesk-icon_16x16.png",
     "48": "/images/plugin-icon/odesk-icon_48x48.png",
     "128": "/images/plugin-icon/odesk-icon_128x128.png"
     },
-  //Taken from http://stackoverflow.com/a/9645435/1529598
-  // User name Rob W
   "permissions": [
   "management",
   "http://*/*",
   "https://*/*"
   ],
-  // Pick one (or none)
   "content_scripts": [
     {
       "matches": ["https://www.odesk.com/*"],
-      /*"css": ["css/oDesk_Styles.css"],*/
       "js": ["js/jquery.js","js/loader.js"]
     }
   ],
@@ -31,7 +25,6 @@
     "css/header.css",
     "css/gooe.css",
     "js/job-search/job-applications.js",
-    "js/find-work-home.js",
     "js/reports.js",
     "js/odesk-plus.js",
     "js/gooe.js",
