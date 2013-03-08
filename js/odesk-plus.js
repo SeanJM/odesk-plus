@@ -1,35 +1,135 @@
-var dir = function(str) {
-  return $('html').attr('directory') + str;
+/* Returns the Chrome URL */
+
+function dir (str) { return $('html').attr('directory') + str; }
+template.dir = function() { return dir('../templates/templates.html'); }
+
+/* Site Map */
+
+var url = {
+  Applications: '/applications',
+  Home        : '/home',
+  Profile     : '',
+  Report      :
+  { Home      :'/reports',
+    Timelogs  :'/reports/timelogs' },
+  Wallet      : '/withdrawal-methods'
 }
+
+/* Clean Page */
+function removeContent() { $('body').children('remove'); }
+
+/* A general UI and Interaction library that is barebones */
+
+k = {};
+
+k.expander = function (el) {
+  el.find('.expander-btn').each(function (){
+    $(this).unbind('click');
+    $(this).bind('click',function (e){
+      $(this).closest('.expander').toggleClass('gactive');
+      e.stopPropagation();
+    });
+  });
+  
+  el.find('.expander-trigger').each(function (){
+    if ($(this).attr('type') == 'radio') {
+      var name         = $(this).attr('name'),
+          expander     = $(this).closest('.expander'),
+          radioTrigger = expander.find('input[name="' + name + '"].expander-trigger');
+
+      expander.find('[name="' + name + '"]').each(function () {
+        $(this).unbind('click');
+        $(this).bind('click',function (e){
+          if (radioTrigger.is(':checked')) { expander.addClass('gactive'); }
+          else { expander.removeClass('gactive'); }
+          e.stopPropagation();
+        });
+      });
+
+    }
+    
+    else {
+      $(this).unbind('click'); 
+      $(this).bind('click',function (e) { 
+        $(this).closest('.expander').toggleClass('gactive');
+        e.stopPropagation();
+      });
+    }
+  
+  });
+}
+
+k.dropdown = function (el) {
+  el.find('.dropdown-trigger').each(function (e) {
+    $(this).unbind('click');
+    $(this).bind('click',function (event) {
+      $('.gactive').removeClass('active');
+      if ($(event.target).parents('.dropdown-menu').size() < 1) {
+        $(this).closest('.dropdown').toggleClass('active');
+      }
+    });
+  });
+}
+
+k.offClick = function () {
+  $('html').unbind('click');
+  $('html').bind('click',function (event) {
+    if ($(event.target).closest('.active').size() < 1) {
+      $('dropdown.active').removeClass('active');
+      $('popup.active').removeClass('active');
+    }
+  });
+}
+
+k.init = function (el) {
+  k.dropdown(el);
+  k.expander(el);
+  k.offClick();
+}
+
 /* ----------------------------------------------------------------- */
 /* Find work home */
 /* ----------------------------------------------------------------- */
 
+cleanTable = function (obj) {
+  var table        = $(obj.table);
+  var tableClasses = table.attr('class');
+  var columns      = obj.columns;
+
+  table.find('tr').each(function () {
+    $(this).find('th,td').each(function(i) {
+      if ($.inArray(i,columns) > -1) {
+        $(this).remove();
+      }
+    });
+  });
+  return '<table class="' + tableClasses + '">' + table.html() + '</table>';
+}
+
 function thisWeeksEarnings() {
 
   var tmp = $('<div></div>');
-  var timelogs = '/reports/timelogs #hourly .oReportTable';
+  var timelogs = '/reports/timelogs #hourly .oReportTable:eq(0)';
   var earnings = '/withdrawal-methods table.oDescTable .oPos';
   var keys = {};
   var header = $('header:first');
 
   tmp.load(timelogs,function () {
     keys['week-total'] = tmp.find('.oFinCol:last').text();
-    keys['week-table'] = tmp.html();
-    keys['hours'] = tmp.find('.oSumRow td:eq(8)').text();
+    keys['week-table'] = cleanTable({table: tmp.html(),columns: [1,2,3,4,5,6,7,10]});
 
-    console.log(tmp.find('.oSumRow').text());
+    keys['hours'] = tmp.find('.oSumRow td:eq(8)').text();
+    if (keys['hours'].length < 1) { keys['hours'] = 0; }
 
     if (keys['week-total'].length <= 0) { keys['week-total'] = '$0.00'; }
-  
+
     tmp = $('<div></div>');
     tmp.load(earnings,function () {
-      console.log(tmp.html());
       keys['week-earnings'] = tmp.text();
       template.get({'template':'dashboard','src':dir('templates/templates.html')},function (html) {
         var processed = $(template.insert({'template':html,'keys':keys}));
-        gooe.init(processed);
         processed.prependTo(header);
+        k.init(processed);
       });
     });
   });
@@ -43,14 +143,14 @@ var jobs = {};
 var process = {};
 var checkProcess;
 process.check = function () {
-  checkProcess = setInterval(function(){ 
+  checkProcess = setInterval(function() {
     if ($('.oIndicatorMsg').size() > 0) {
-      if (!$('body').hasClass('process')) { 
+      if (!$('body').hasClass('process')) {
         $('body').addClass('process');
-      } 
-    } 
+      }
+    }
 
-    if ($('.oIndicatorMsg').size() == 0 && $('body').hasClass('process')) { 
+    if ($('.oIndicatorMsg').size() == 0 && $('body').hasClass('process')) {
       $('body').removeClass('process');
       $('body').addClass('process-over');
       console.log('Initiating Job Processing');
@@ -84,7 +184,7 @@ myInfo.get = function (callback) {
     myInfo.rate   = parseInt(cache.find('.oRateLarge').text().split('/')[0].trim().replace('$','') * 100);
     myInfo.rating = 5;
     rating = cache.find('.oStarsTotal').text();
-    if (typeof rating != 'undefined' && rating.length > 0) { 
+    if (typeof rating != 'undefined' && rating.length > 0) {
       myInfo.rating = parseInt(rating.split('(')[1].split(')')[0] * 100);
     }
     cache.find('aside.oSide section table.oDescTable tr').each(function(){
@@ -115,7 +215,7 @@ function formatSidebar() {
       var timeSlider = element.find('.timeSlider');
 
       timeSlide({'slider':timeSlider,'min':0,'max':15});
-      
+
       timeDiff.bind('click',function(){
         if ($(this).attr('checked') == 'checked') {
           timeSlider.removeClass('disabled');
@@ -140,19 +240,19 @@ function timeSlide(object) {
   container.bind('mousedown',function(){
     $('body').addClass('timeSlide');
   });
-  
+
   $('body').bind('mouseup',function(){
     if ($('body').hasClass('timeSlide')) { jobFilter(); }
     $('body').removeClass('timeSlide');
   });
-  
+
   $('body').bind('mousemove',function(e){
     if ($(this).hasClass('timeSlide')) {
       var knobX   = (e.pageX - slider.offset().left)-(knob.width()/2);
       var bubbleX = (e.pageX - slider.offset().left-bubble.width()/2);
       var max     = (slider.find('.slider').width()-knob.width());
-      if (knobX >= 0-(knob.width()/2) && knobX < max+(knob.width()/3)) { 
-        knob.css('left',knobX); 
+      if (knobX >= 0-(knob.width()/2) && knobX < max+(knob.width()/3)) {
+        knob.css('left',knobX);
         var val = Math.round(knobX/max*object.max);
         bubble.css('left',bubbleX).find('.val').text(val);
         slider.find('.fill').css('width',knobX+knob.width()/2);
@@ -170,29 +270,37 @@ function getNextPage(nextPageURL,searchResults){
     console.log('oDesk+: Next page JSON loaded');
     var cache = $('<div/>');
     var items = [];
-    
+
     $.each(data, function(key, val) {
-      if (val != '[object Object]') {
+      if (val != '[object Object]' && !/null/i.test(val)) {
         var output = '<div class="' + key + '">' + val + '</div>';
         if (key == 'paginator_wrapper') { output = '<div class="' + key + '" style="display:none;">' + val + '</div>' }
         if (key != 'jobs_count' && key != 'query_string' && key != 'where_filter' && key != 'sub_cat' && key != 'group') { items.push(output); }
       }
     });
-    
+
     $(items.join('')).appendTo(cache);
-    
+
     cache = cache.replaceWith(cache.contents());
+
+    cache.find('header.oBreadcrumbBar').remove();
+    
+    cache.find('.oJobTile').each(function() { jobFormat($(this)); });
+
     cache.appendTo(searchResults);
 
   });
 }
 
 function searchResultsScroll(){
-  if($(window).scrollTop() + $(window).height() == $(document).height()) {
-    var paginator           = searchResults.find('nav.oPagination:last'),
-        nextPage            = paginator.find('.isCurrent').removeClass('isCurrent').next().addClass('isCurrent').attr('href');
-    getNextPage(nextPage,searchResults);
-  }
+  $(window).bind('scroll',function () {
+    var searchResults = $('section.jsSearchResults');
+    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+      var paginator           = $('#main').find('nav.oPagination:last'),
+          nextPage            = paginator.find('.isCurrent').removeClass('isCurrent').next().addClass('isCurrent').attr('href');
+      getNextPage(nextPage,searchResults);
+    }
+  })
 }
 
 /* ------------- Job Filters */
@@ -228,10 +336,10 @@ jobs.moreText = function (cache) {
   var maxLen         = 400;
   var less = "";
   var more = "";
-  
-  if (text.length > maxLen) { 
-    less = $(text).text().substring(0,maxLen); 
-    moreCreated = true; 
+
+  if (text.length > maxLen) {
+    less = $(text).text().substring(0,maxLen);
+    moreCreated = true;
   }
 
   var obj = {'more-text':moreCreated,'less':less,'text':text};
@@ -258,7 +366,7 @@ jobs.timeDifference = function (cache) {
   var timezoneStr    = findTimezone(cache.find('#jobsAboutBuyer ul.oPlainList li')),
       timeUTC        = timezoneStr.split('(')[1].split(')')[0].replace('UTC','').replace(':','.'),
       timeDifference = myInfo.utc+parseInt(timeUTC)*-1;
-  
+
   if (timeDifference < 0) { timeDifference = timeDifference*-1; }
   return timeDifference;
 }
@@ -276,7 +384,7 @@ jobs.location = function (cache) {
 jobs.applied = function (cache) {
   var applied = cache.find('#main .oMsg.oMsgSuccess').size();
   if (applied) { return true }
-  return false;  
+  return false;
 }
 
 /* Scan tables for matching headings */
@@ -326,7 +434,7 @@ jobs.feedback = function (cache) {
   jobs.tableScan({'table':table,'string':'Feedback Score:'}, function (obj) {
     rating = obj['value'].split(' ')[2];
   });
-  return rating; 
+  return rating;
 }
 
 jobs.qualWarning = function (cache) {
@@ -347,7 +455,7 @@ jobs.interview = function (cache) {
       var interviewDollars        = parseInt(interview.split('/')[0].split('$')[1] * 100),
           interviewPercent        = parseInt(interviewDollars/myInfo.rate*100),
           interviewDollarDistance = 60;
-      if (interviewPercent <= interviewDollarDistance) { 
+      if (interviewPercent <= interviewDollarDistance) {
         job.addClass('interviewLow');
       }
       interview = interview.split('(')[0] + interview.split('(')[1].trim().replace(')','');
@@ -392,10 +500,10 @@ jobs.duration = function (cache) { return cache.find('header #jobsJobsHeaderEngD
 
 /* Skills */
 
-jobs.skills = function (cache) { 
+jobs.skills = function (cache) {
   var skill = cache.find('#jobSkillsSection .oInlineList').html();
   if (skill) {
-    return cache.find('#jobSkillsSection .oInlineList').html(); 
+    return cache.find('#jobSkillsSection .oInlineList').html();
   }
   return 'N/A';
 }
@@ -415,7 +523,7 @@ jobs.rateStats = function (cache) {
   var hoursTotal      = 0;
   var i               = 0;
   var tmp;
-  
+
   cache.find('#jobHistorySection .cols').each(function () {
     tmp = $(this).find('.col:last').text();
     if (/@/.test(tmp)) {
@@ -428,24 +536,24 @@ jobs.rateStats = function (cache) {
       hoursTotal += hours;
       /* I multiply by 1 to minimally convert the type to a number */
       /*console.log(jobs.title(cache) + ' ' + tmp);*/
-      if (amt > amtHighest && hours > 0) { 
-        amtHighest      = amt; 
-        amtHighestHours = hours; 
+      if (amt > amtHighest && hours > 0) {
+        amtHighest      = amt;
+        amtHighestHours = hours;
       }
     }
   });
-  
+
   var amtAvg = Math.round(amtTotal/i)/100;
   if (isNaN(amtAvg)) { amtAvg = ''; }
-  else { 
+  else {
     if ((myInfo.rate*0.7) > amtAvg) { amtAvgLow = true; }
-    amtAvg = '$' + amtAvg; 
+    amtAvg = '$' + amtAvg;
   }
 
   if (amtHighest === 0) { amtHighest = ''; }
-  else { 
+  else {
     if ((myInfo.rate*0.7) > amtHighest) { amtHighestLow = true; }
-    amtHighest = '$' + amtHighest/100; 
+    amtHighest = '$' + amtHighest/100;
   }
 
   if (amtHighestHours === 0) { amtHighestHours = ''; }
@@ -458,12 +566,17 @@ jobs.rateStats = function (cache) {
 
 function jobFormat (job) {
   console.log('formatting ' + job.find('h1.oRowTitle a').text());
-  var 
+  var
       href  = job.find('h1.oRowTitle a').attr('href') + ' #main',
       cache = $('<div/>'),
       obj   = {},
       i     = 0;
+      processing = '<div class="processing-container"><div class="wheel"></div></div>'
+  
+  job.addClass('processing');
 
+  if (job.find('.processing-container').size() < 1) { job.append(processing); }
+  
   cache.load(href,function() {
     var rateStats = jobs.rateStats(cache);
     var jobDescKeys = jobs.moreText(cache);
@@ -524,26 +637,7 @@ $(function(){
   /* Job Search, checks if the jobs are loading */
   process.check();
   process.validate();
-
+  searchResultsScroll();
   thisWeeksEarnings();
-
-  if (body.hasClass('jobs')) {
-
-    /*body.bind('keyup',function(e) {
-      var paginator           = searchResults.find('nav.oPagination:last'),
-          nextPage            = paginator.find('.isCurrent').next().attr('href'),
-          prevPage            = paginator.find('.isCurrent').prev().attr('href');
-    
-      if (e.which == 39 && nextPage != 'undefined' && $('body').hasClass('jobs')) {
-        window.location = nextPage;
-      }
-      if (e.which == 37 && prevPage != 'undefined' && $('body').hasClass('jobs')) {
-        window.location = prevPage;
-      }
-    });*/
-  }
-  /*$(window).bind('scroll',function() {
-    searchResultsScroll();
-  });*/
 
 });

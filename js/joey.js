@@ -1,6 +1,8 @@
-var gooe = {};
+/* A general UI and Interaction library that is barebones */
 
-gooe.expander = function (el) {
+var joey = {};
+
+joey.expander = function (el) {
   el.find('.expander-btn').each(function (){
     $(this).unbind('click');
     $(this).bind('click',function (e){
@@ -37,9 +39,10 @@ gooe.expander = function (el) {
   });
 }
 
-gooe.dropdown = function (el) {
+joey.dropdown = function (el) {
   el.find('.dropdown-trigger').each(function (e) {
     $(this).bind('click',function (event) {
+      $('.gactive').removeClass('gactive');
       if ($(event.target).parents('.dropdown-menu').size() < 1) {
         $(this).closest('.dropdown').toggleClass('gactive');
       }
@@ -47,12 +50,12 @@ gooe.dropdown = function (el) {
   });
 }
 
-gooe.init = function (el) {
-  gooe.dropdown(el);
-  gooe.expander(el);
+joey.init = function (el) {
+  joey.dropdown(el);
+  joey.expander(el);
 }
 
-gooe.offClick = function () {
+joey.offClick = function () {
   $('html').bind('click',function (event) {
     if ($(event.target).closest('.gactive').size() < 1) {
       $('.gactive').removeClass('gactive');
@@ -60,4 +63,7 @@ gooe.offClick = function () {
   });
 }
 
-$(function () { gooe.offClick(); });
+$(function () { 
+  joey.offClick(); 
+  joey.init($('body'));
+});
