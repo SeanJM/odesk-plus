@@ -1,3 +1,37 @@
+
+/* --------------------------------------- // Database */
+
+var db = {};
+
+db.init = function(name) {
+  var val;
+  db.value = {};
+  console.log(db);
+  /* ------------- job search */
+  db.value.jobsearch = {};
+  db.value.jobsearch.sidemenu = {};
+
+  console.log('Does databas exist?');
+  if (localStorage.getItem(name) != 'undefined') {
+    console.log('- Yes: loading database');
+    val = JSON.parse(localStorage.getItem(name));
+
+    if (val) { db.value = val; }
+  }
+  else {
+    console.log('- No: Initializing first start');
+    firststart();
+  }
+}
+
+db.save = function(name) {
+  console.log('- Saving database');
+  localStorage.setItem(name,JSON.stringify(db.value)); 
+}
+
+/* First start */
+function firststart() { }
+
 /* Returns the Chrome URL */
 
 function dir (str) { return $('html').attr('directory') + str; }
@@ -20,13 +54,23 @@ function removeContent() { $('body').children('remove'); }
 
 /* A general UI and Interaction library that is barebones */
 
-k = {};
+w = {};
 
-k.expander = function (el) {
+w.expander = function (el,arg) {
+
+  function expand(el) {
+    var expander = el.closest('.expander');
+    
+    expander.toggleClass('active');
+    
+    if (expander.hasClass('active') & typeof arg.open === 'function') { arg.open(expander); }
+    else if (!expander.hasClass('active') & typeof arg.close === 'function') { arg.close(expander); }
+  }
+
   el.find('.expander-btn').each(function (){
     $(this).unbind('click');
     $(this).bind('click',function (e){
-      $(this).closest('.expander').toggleClass('gactive');
+      expand($(this));
       e.stopPropagation();
     });
   });
@@ -40,8 +84,8 @@ k.expander = function (el) {
       expander.find('[name="' + name + '"]').each(function () {
         $(this).unbind('click');
         $(this).bind('click',function (e){
-          if (radioTrigger.is(':checked')) { expander.addClass('gactive'); }
-          else { expander.removeClass('gactive'); }
+          if (radioTrigger.is(':checked')) { expander.addClass('active'); }
+          else { expander.removeClass('active'); }
           e.stopPropagation();
         });
       });
@@ -51,7 +95,7 @@ k.expander = function (el) {
     else {
       $(this).unbind('click'); 
       $(this).bind('click',function (e) { 
-        $(this).closest('.expander').toggleClass('gactive');
+        expand($(this));
         e.stopPropagation();
       });
     }
@@ -59,11 +103,11 @@ k.expander = function (el) {
   });
 }
 
-k.dropdown = function (el) {
+w.dropdown = function (el) {
   el.find('.dropdown-trigger').each(function (e) {
     $(this).unbind('click');
     $(this).bind('click',function (event) {
-      $('.gactive').removeClass('active');
+      $('.active').removeClass('active');
       if ($(event.target).parents('.dropdown-menu').size() < 1) {
         $(this).closest('.dropdown').toggleClass('active');
       }
@@ -71,7 +115,7 @@ k.dropdown = function (el) {
   });
 }
 
-k.offClick = function () {
+w.offClick = function () {
   $('html').unbind('click');
   $('html').bind('click',function (event) {
     if ($(event.target).closest('.active').size() < 1) {
@@ -81,10 +125,10 @@ k.offClick = function () {
   });
 }
 
-k.init = function (el) {
-  k.dropdown(el);
-  k.expander(el);
-  k.offClick();
+w.init = function (el) {
+  w.dropdown(el);
+  w.expander(el);
+  w.offClick();
 }
 
 /* ----------------------------------------------------------------- */
@@ -129,7 +173,7 @@ function thisWeeksEarnings() {
       template.get({'template':'dashboard','src':dir('templates/templates.html')},function (html) {
         var processed = $(template.insert({'template':html,'keys':keys}));
         processed.prependTo(header);
-        k.init(processed);
+        w.init(processed);
       });
     });
   });
@@ -207,6 +251,30 @@ jobs.init = function () {
 
 /* ------------- Search results filters */
 
+function oJobFilters(el) {
+  el.find('.oFormField').each(function () {
+    if ($(this).find('.expander-btn').size() < 1) {
+      var btn = '<div class="expander-btn"></div>';
+      var id = $(this).find('.oLabel').text().split(' ').join('-').toLowerCase();
+      $(this).addClass('expander').attr('id',id);
+      $(this).find('.oLabel').prepend(btn);
+      $(this).find('.oLabel').nextAll().wrap('<div class="expander-section"></div>');
+      if (db.value['jobsearch']['sidemenu'][id] == 'active') { $(this).addClass('active'); }
+      
+      w.expander($(this),{
+        open:function () {
+          db.value['jobsearch']['sidemenu'][id] = 'active';
+          db.save('odeskplus');
+        },
+        close:function () {
+          db.value['jobsearch']['sidemenu'][id] = '';
+          db.save('odeskplus');
+        }
+      });
+    }
+  });
+}
+
 function formatSidebar() {
   template.get({'src':dir('templates/templates.html'),'template':'job-filters'},function(element) {
     if ($('.visibilityFilter').size() == 0) {
@@ -229,6 +297,8 @@ function formatSidebar() {
       element.insertAfter('.oSide .jsSearchFormFilters');
     }
   });
+
+  oJobFilters($('div.oBd.oFormTop.oFilterPanel'));
 }
 
 function timeSlide(object) {
@@ -295,11 +365,17 @@ function getNextPage(nextPageURL,searchResults){
 function searchResultsScroll(){
   $(window).bind('scroll',function () {
     var searchResults = $('section.jsSearchResults');
-    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+    var side = $('aside.oSide');
+    var top = $(window).scrollTop();
+
+    if (top + $(window).height() > ($(document).height() - 360)) {
       var paginator           = $('#main').find('nav.oPagination:last'),
           nextPage            = paginator.find('.isCurrent').removeClass('isCurrent').next().addClass('isCurrent').attr('href');
       getNextPage(nextPage,searchResults);
     }
+
+    if (top > side.offset().top) { side.addClass('fixed'); }
+    else if (top < side.offset().top) { side.removeClass('fixed'); }
   })
 }
 
@@ -313,6 +389,7 @@ function jobShow(element) {
   if (element.hasClass('interviewLow') && $('#hideJobRate').attr('checked') == 'checked') { check = 0; }
   if (element.hasClass('highRate-true') && $('#hideJobRate').attr('checked') == 'checked') { check = 0; }
   if (element.hasClass('avgRateLow-true') && $('#hideAvgRate').attr('checked') == 'checked') { check = 0; }
+  if (element.hasClass('applied-true') && $('#hideApplied').attr('checked') == 'checked') { check = 0; }
   if (check == 1) { return true; }
   return false;
 }
@@ -382,8 +459,8 @@ jobs.location = function (cache) {
 }
 
 jobs.applied = function (cache) {
-  var applied = cache.find('#main .oMsg.oMsgSuccess').size();
-  if (applied) { return true }
+  var applied = cache.find('#main .oMsg.oMsgSuccess').text();
+  if (/applied/i.test(applied)) { return true }
   return false;
 }
 
@@ -639,5 +716,6 @@ $(function(){
   process.validate();
   searchResultsScroll();
   thisWeeksEarnings();
+  db.init('odeskplus');
 
 });

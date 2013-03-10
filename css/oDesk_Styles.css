@@ -1,9 +1,5 @@
 /* -------------------------- Base */
 
-.sprite{
-  background-image:url('chrome-extension://__MSG_@@extension_id__/images/odesk-sprites-01.png') !important;
-}
-
 .hidden {
   display: none;
 }
@@ -24,6 +20,28 @@
 
 .btn-blue:hover {
   background   : #11BDFF;
+}
+
+.expander .expander-section {
+  display: none;
+}
+
+.expander.active .expander-section {
+  display: block;
+}
+
+.expander-btn {
+  display         : inline-block;
+  width           : 16px;
+  height          : 16px;
+  background-image: url('chrome-extension://__MSG_@@extension_id__/images/sprites_ui.png');
+  margin-right: 8px;
+  position: relative;
+  top: 2px;
+}
+
+.expander.active .expander-btn {
+  background-position: 0 -16px;
 }
 
 /* -------------------------- Layout */
@@ -178,6 +196,10 @@
 
 /* Job Search */
 
+  .oLayoutSearch .oFilterBar {
+    margin-top: 67px;
+  }
+
   .jsSearchResults article {
     margin: 10px 0;
     padding: 20px 0;
@@ -329,6 +351,12 @@
     display: none;
   }
   
+  aside.fixed form {
+    position: fixed;
+    top: 20px;
+    width: 15%;
+  }
+
   aside form .oWidget.jsSearchFormFilters legend.oLabel,
   aside form .oWidget.jsSearchFormFilters legend.oLabel,
   aside .oPlusSide legend.oLabel,
@@ -336,10 +364,14 @@
     display    : block;
     float      : left;
     width      : 100%;
-    margin     : 0 0 12px;
+    margin     : 0 0 6px;
     text-align : left;
-    font-size  : 17px;
+    font-size  : 15px;
     line-height: 24px;
+  }
+
+  .oFormField {
+    margin-bottom: 13px;
   }
 
   aside .oPlusSide .container label.oOpt,
@@ -488,6 +520,10 @@
         float: right;
         text-align: right;
       }
+
+aside .jsSearchFormFilters select {
+  width: 100%;
+}
 /* ------------- End Job Search ----------- */
 .notify td {
   line-height: 40px;

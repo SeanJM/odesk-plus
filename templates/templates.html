@@ -34,12 +34,15 @@
       <label class="oOpt oOptLbl">
         <input type="checkbox" id="hideAvgRate">Hide Jobs with low average rates
       </label>
+      <label class="oOpt oOptLbl">
+        <input type="checkbox" id="hideApplied">Hide Jobs I've applied for
+      </label>
     </div>
   </div>
 </div>
 
 <div template="job">  
-  <article class="oMed oJobTile jsSimilarTile highRate-{{rate-high}} warning-{{warning}} avgRateLow-{{amt-avg-low}} lowFeedback-{{feedback-high}} amtHighestLow-{{amt-highest-low}}" timedifference="{{time-difference}}">
+  <article class="applied-{{applied}} oMed oJobTile jsSimilarTile highRate-{{rate-high}} warning-{{warning}} avgRateLow-{{amt-avg-low}} lowFeedback-{{feedback-high}} amtHighestLow-{{amt-highest-low}}" timedifference="{{time-difference}}">
     <div class="left">
       <div class="content">
         <h1 class="oRowTitle oH3">
