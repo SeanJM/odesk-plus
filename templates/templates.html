@@ -2,38 +2,14 @@
   <div class="oPlusSide visibilityFilter">
     <div class="container">
       <legend class="oLabel">Visibility</legend>
-      <label class="oOpt oOptLbl">
-        <input type="checkbox" id="timeDifference">Hide time differences larger than:
-      </label>
-      <div class="timeSlider disabled">
-        <div class="sliderContainer">
-          <div class="slider">
-            <div class="knob">
-              <div class="face"></div>
-            </div>
-            <div class="fill"></div>
-          </div>
-          <div class="bubble">
-            <div class="arrow">
-              <div class="face"></div>
-            </div>
-            <p class="val">0</p>
-          </div>
-        </div>
-        <div class="measure">
-          <span>0</span>
-          <span>15</span>
-        </div>
-      </div>
-      <label class="oOpt oOptLbl">
-        <input type="checkbox" id="hideJobRate">Hide Jobs with low rates
-      </label>
-      <label class="oOpt oOptLbl">
-        <input type="checkbox" id="hideJobRating">Hide Jobs with higher ratings than mine
-      </label>
-      <label class="oOpt oOptLbl">
-        <input type="checkbox" id="hideAvgRate">Hide Jobs with low average rates
-      </label>
+      <label class="oOpt oOptLbl">Timezone Difference Range:</label>
+      <div class="range-slider" range="0,16" on="rangeFilter" id="timezone-range"></div>
+      <label class="oOpt oOptLbl">Rate range:</label>
+      <div class="range-slider" range="$0,$84" on="rangeFilter" id="rate-range"></div>
+      <label class="oOpt oOptLbl">Average Rate</label>
+      <div class="range-slider" range="$0,$98" on="rangeFilter" id="average-rate-range"></div>
+      <label class="oOpt oOptLbl">Highest Rate Paid:</label>
+      <div class="range-slider" range="$0,$98" on="rangeFilter" id="highest-rate-paid"></div>
       <label class="oOpt oOptLbl">
         <input type="checkbox" id="hideApplied">Hide Jobs I've applied for
       </label>
@@ -42,7 +18,7 @@
 </div>
 
 <div template="job">  
-  <article class="applied-{{applied}} oMed oJobTile jsSimilarTile highRate-{{rate-high}} warning-{{warning}} avgRateLow-{{amt-avg-low}} lowFeedback-{{feedback-high}} amtHighestLow-{{amt-highest-low}}" timedifference="{{time-difference}}">
+  <article class="applied-{{applied}} oMed oJobTile jsSimilarTile highRate-{{rate-high}} warning-{{warning}} avgRateLow-{{amt-avg-low}} lowFeedback-{{feedback-high}} amtHighestLow-{{amt-highest-low}}" timedifference="{{time-difference}}" rate="{{hourly-rate-min}},{{hourly-rate-max}}" avgrate="{{average-rate}}" hirate="{{highest-paid}}">
     <div class="left">
       <div class="content">
         <h1 class="oRowTitle oH3">
@@ -72,9 +48,10 @@
     </div>
     <div class="right">
       <div class="padding20">
+        {{if {{budget}}}} <p class="budget"><span class="label">Budget:</span> {{budget}}</p> end}}
         {{if {{average-rate}} <p class="avg-rate"><span class="label">Average Rate Paid:</span> {{average-rate}}</p> end}}
         {{if {{highest-paid}} <p class="highest-amt"><span class="label">Highest Rate Paid:</span> {{highest-paid}} / {{highest-paid-hours}} hours</p> end}}
-        {{if {{hourly-rate}} <p class="rate"><span class="label">Hourly Rate:</span> {{hourly-rate}}</p> end}}
+        {{if {{hourly-rate-min}} <p class="rate"><span class="label">Hourly Rate:</span> <span minRate="{{hourly-rate-min}}">${{hourly-rate-min}}</span> - <span maxRate="{{hourly-rate-max}}">${{hourly-rate-max}}</span></p> end}}
         <p><span class="label">Location:</span> {{location}} <span class="timezone">({{timezone}})</span></p>
         {{if {{interview}} <p><span class="label">Interviewing:</span> {{interview}}</p> end}}
         {{if {{feedback}} <p class="feedback"><span class="label">Feedback Rating:</span> {{feedback}}</p> end}}
@@ -100,11 +77,11 @@
         <p>{{hours}}</p>
       </div>
       
-      <div class="dropdown dashbox">
-        <div class="dropdown-trigger">
+      <div class="popout dashbox">
+        <div class="popout-trigger">
           <h1>Earnings</h1>
           <p>{{week-total}}</p>
-          <div class="dropdown-menu">{{week-table}}</div>
+          <div class="popout-menu">{{week-table}}</div>
         </div>
       </div>
 

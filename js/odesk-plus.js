@@ -1,5 +1,7 @@
 
-/* --------------------------------------- // Database */
+/* --------------------------------------- */
+/* // Database */
+/* --------------------------------------- */
 
 var db = {};
 
@@ -29,15 +31,15 @@ db.save = function(name) {
   localStorage.setItem(name,JSON.stringify(db.value)); 
 }
 
-/* First start */
+/* --------------------------// First start */
 function firststart() { }
 
-/* Returns the Chrome URL */
+/* --------------------------// Return the Chrome URL */
 
 function dir (str) { return $('html').attr('directory') + str; }
 template.dir = function() { return dir('../templates/templates.html'); }
 
-/* Site Map */
+/* --------------------------// Site Map */
 
 var url = {
   Applications: '/applications',
@@ -49,12 +51,27 @@ var url = {
   Wallet      : '/withdrawal-methods'
 }
 
+/* --------------------------// Is page */
+function cleanURL() {
+  var href = window.location.href;
+      href = href.split('/');
+      href = href.splice(3,href.length).join('/');
+  return href;
+}
+
+var is           = {}
+    is.joblist   = function () { if (/find-work-home/.test(cleanURL())) { return true; } return false; }
+    is.jobsearch = function () { if (/jobs/.test(cleanURL()) && !/jobs\s*(.*?)main/.test(cleanURL())) { return true; } return false; }
+    is.apply     = function () { if (/jobs/.test(cleanURL()) && /jobs\s*(.*?)main/.test(cleanURL())) { return true; } return false; }
+
 /* Clean Page */
 function removeContent() { $('body').children('remove'); }
 
 /* A general UI and Interaction library that is barebones */
 
 w = {};
+
+w.fn = {}
 
 w.expander = function (el,arg) {
 
@@ -103,31 +120,179 @@ w.expander = function (el,arg) {
   });
 }
 
-w.dropdown = function (el) {
-  el.find('.dropdown-trigger').each(function (e) {
+w.popout = function (el) {
+  el.find('.popout-trigger').each(function (e) {
     $(this).unbind('click');
     $(this).bind('click',function (event) {
-      $('.active').removeClass('active');
-      if ($(event.target).parents('.dropdown-menu').size() < 1) {
-        $(this).closest('.dropdown').toggleClass('active');
+      var target = $(event.target);
+      var popout = target.closest('.popout');
+      if (target.parents('.popout-menu').size() < 1) {
+        popout.toggleClass('active');
       }
+      popout.bind('blur',function (event) {
+        popout.removeClass('active'); 
+      })
     });
+  });
+}
+
+w.range = function (el) {
+  el.find('.range-slider').each(function() {
+    var container      = $(this);
+    var currency       = '';
+    var percentage     = '';
+    var containerRange = container.attr('range').replace(/%|\$/ig,'').split(',');
+    var range          = {
+      min: parseInt(containerRange[0]),
+      max: parseInt(containerRange[1])
+    }
+    var rangeHTML     = $('<div class="range"><div class="slider"><div class="slider-fill"><div class="knob knob-min"><div class="face"></div></div><div class="knob knob-max"><div class="face"></div></div><div class="range-popup"></div></div></div></div>');
+    var knob          = rangeHTML.find('.knob');
+    var slider        = rangeHTML.find('.slider');
+    var fill          = rangeHTML.find('.slider-fill');
+    var fn            = container.attr('on');
+    var id            = $(this).attr('id');
+    var selectedRange = {};
+
+
+    if (/\$/ig.test(container.attr('range'))) { currency = '$'; }
+    if (/%/ig.test(container.attr('range'))) { percentage = '%'; }
+
+    knob.css('position','absolute').css('cursor','pointer');
+    fill.css('position','relative').css('cursor','pointer');
+    container.css('-webkit-user-select', 'none'); 
+
+    fill.css('margin-left',parseInt(db.value.jobFilters[id].x)).css('width',parseInt(db.value.jobFilters[id].w));
+
+    container.bind('slide',function(e,mouseX) {
+      var knob = {
+        active: container.find('.knob.active'),
+        max: container.find('.knob-max'),
+        min: container.find('.knob-min')
+      };
+
+      
+      if (knob.min.hasClass('active')) { 
+        var minX = mouseX - slider.offset().left;
+        var maxY = fill.width() - (minX - parseInt(fill.css('margin-left')));
+      }
+
+      if (knob.max.hasClass('active')) { 
+        var minX = parseInt(fill.offset().left - slider.offset().left);
+        var maxY = mouseX - (fill.offset().left);
+      }
+
+      selectedRange = {
+        min: Math.round((minX / slider.width()) * (range.max - range.min)),
+        max: Math.round(((maxY+minX) / slider.width()) * range.max)
+      }
+      if (selectedRange.max > range.max) { selectedRange.max = range.max; }
+      if (selectedRange.min < range.min) { selectedRange.min = range.min; }
+
+      function setRange(obj) {
+        /* ------------- Convert Ranges to X & W coordinates for fill */
+        var x = ((obj.sMin - obj.min) / obj.max) * slider.width();
+        var w = ((obj.sMax - obj.sMin) / obj.max) * slider.width();
+        var text = "<p><span class='min span10 center'>" + obj.before + obj.sMin + obj.after + "</span><span class='span4 center'>to</span><span class='max span10 center'>" + obj.before + obj.sMax + obj.after + "</span></p>";
+  
+        /* ------------- Popup */
+        var popup = container.find('.range-popup');
+        popup.html(text);
+        
+        /* ------------- Control Fill */
+        fill.css('margin-left',parseInt(x)).css('width',parseInt(w));
+        
+        if (typeof db.value.jobFilters == 'undefined') { db.value.jobFilters = {}; }
+        db.value.jobFilters[id] = {
+          x: x,
+          w: w
+        };
+      }
+
+      setRange({
+        before: currency,
+        after: percentage,
+        min: range.min,
+        max: range.max,
+        sMin: selectedRange.min,
+        sMax: selectedRange.max
+      });
+    
+    });
+
+    container.bind('slideup',function() {
+      container.attr('range',selectedRange.min + ',' + selectedRange.max);
+      /* Check if function is attached, convert to object literal */
+      if (typeof eval('w.fn.' + fn) == 'function') {
+        eval('w.fn.' + fn + '({element: container,range: selectedRange})'); 
+      }
+      db.save('odeskplus');
+    });
+
+    knob.unbind('mousedown');
+    knob.bind('mousedown',function () {
+      container.addClass('active');
+      $('html').addClass('sliding');
+      $(this).addClass('active');
+    });
+    
+    container.css('position','relative').html(rangeHTML);
+
+    /* ------------- Table */
+    var table = $('<table><tr></tr></table>')
+      .css('table-layout','fixed')
+      .css('text-align','center')
+      .css('position','relative');
+
+    for (i = range.min;i<=range.max;i++) {
+      if (i % Math.round(range.max/7) == 0) {
+        table.find('tr').append('<td>' + currency + i + percentage + '</td>');
+      }
+    }
+    /* ------------- Table Width */
+    var totalTD = table.find('td').size();
+    var cellWidth = slider.width()/totalTD;
+    var cellCenter = cellWidth/2;
+    var newCellWidth = cellWidth+((cellCenter)/(totalTD/2));
+    var tableWidth = ((newCellWidth*totalTD)+(cellCenter/totalTD));
+    var TablePercent = Math.round((tableWidth/slider.width())*100) + '%';
+    console.log(TablePercent);
+
+    table.css('width',TablePercent).css('right',cellCenter);
+
+    rangeHTML.append(table);
   });
 }
 
 w.offClick = function () {
   $('html').unbind('click');
   $('html').bind('click',function (event) {
-    if ($(event.target).closest('.active').size() < 1) {
-      $('dropdown.active').removeClass('active');
-      $('popup.active').removeClass('active');
+    if ($(event.target).closest('.popout.active').size() < 1) {
+      $('.popout.active').removeClass('active');
+    }
+  });
+
+  $('html').unbind('mouseup');
+  $('html').bind('mouseup',function (event) {
+    var activeSlider = $('.range-slider.active');
+    if (activeSlider.size() > 0) {
+      activeSlider.removeClass('active').find('.knob.active').removeClass('active');
+      $(this).removeClass('sliding');
+      activeSlider.trigger('slideup',[event]);
+    }
+  });
+
+  $('html').bind('mousemove',function (event) {
+    if ($(this).hasClass('sliding')) {
+      $('.range-slider.active').trigger('slide',[event.pageX]);
     }
   });
 }
 
 w.init = function (el) {
-  w.dropdown(el);
+  w.popout(el);
   w.expander(el);
+  w.range(el);
   w.offClick();
 }
 
@@ -151,12 +316,11 @@ cleanTable = function (obj) {
 }
 
 function thisWeeksEarnings() {
-
-  var tmp = $('<div></div>');
+  var tmp      = $('<div></div>');
   var timelogs = '/reports/timelogs #hourly .oReportTable:eq(0)';
   var earnings = '/withdrawal-methods table.oDescTable .oPos';
-  var keys = {};
-  var header = $('header:first');
+  var keys     = {};
+  var header   = $('header:first');
 
   tmp.load(timelogs,function () {
     keys['week-total'] = tmp.find('.oFinCol:last').text();
@@ -250,6 +414,81 @@ jobs.init = function () {
 }
 
 /* ------------- Search results filters */
+var filter = {}
+
+/* Convert string value to obj range */
+function strToRange(str) {
+  /* Clean String */
+  if (typeof str != 'undefined') {
+    str = str.replace(/%|\$/ig,'');
+
+    var obj = {
+      min: parseInt(Math.round(str)),
+      max: parseInt(Math.round(str))
+    };
+    
+    if (str.split(',').length > 1) { 
+      obj.min = parseInt(Math.round(str.split(',')[0])); 
+      obj.max = parseInt(Math.round(str.split(',')[1]));
+    }
+
+    return obj;
+  }
+}
+
+/* Return true if value is within range, otherwise return false */
+isRange = function (val,rangeDefinition) {
+  if (isNaN(val.min) || isNaN(val.max) || isNaN(rangeDefinition.min) || isNaN(rangeDefinition.max)) { return true; }
+  else if (val.min >= rangeDefinition.min && val.max <= rangeDefinition.max) { return true; }
+  return false;
+}
+
+/* Return if the timezone is within range */
+filter.timezone = function (element) {
+  var rangeDefinition = strToRange($('#timezone-range').attr('range'));
+  var val = strToRange(element.attr('timedifference'));
+
+  return isRange(val,rangeDefinition);
+}
+
+filter.rate = function (element) {
+  var rangeDefinition = strToRange($('#rate-range').attr('range'));
+  var val = strToRange(element.attr('rate'));
+
+  return isRange(val,rangeDefinition);
+}
+
+filter.avgrate = function (element) {
+  var rangeDefinition = strToRange($('#average-rate-range').attr('range'));
+  var val = strToRange(element.attr('avgrate'));
+  return isRange(val,rangeDefinition);
+}
+
+filter.hirate = function (element) {
+  var rangeDefinition = strToRange($('#highest-rate-paid').attr('range'));
+  var val = strToRange(element.attr('hirate'));
+  return isRange(val,rangeDefinition);
+}
+
+function jobShow(element) {
+  if (filter.timezone(element) == false) { return false; }
+  if (filter.rate(element) == false) { return false; }
+  if (filter.avgrate(element) == false) { return false; }
+  return true;
+}
+
+function jobFilterAll() {
+  $('.jsSearchResults article').each(function(){ 
+    if (jobShow($(this))) { $(this).removeClass('hidden'); }
+    else { $(this).addClass('hidden'); }
+  });
+}
+
+/* Range Functions */
+w.fn.filter = {}
+w.fn.rangeFilter = function(obj) {
+  jobFilterAll();
+}
 
 function oJobFilters(el) {
   el.find('.oFormField').each(function () {
@@ -279,63 +518,23 @@ function formatSidebar() {
   template.get({'src':dir('templates/templates.html'),'template':'job-filters'},function(element) {
     if ($('.visibilityFilter').size() == 0) {
       var element = $(element);
-      var timeDiff = element.find('#timeDifference');
-      var timeSlider = element.find('.timeSlider');
-
-      timeSlide({'slider':timeSlider,'min':0,'max':15});
-
-      timeDiff.bind('click',function(){
-        if ($(this).attr('checked') == 'checked') {
-          timeSlider.removeClass('disabled');
-        }
-        else {
-          timeSlider.addClass('disabled');
-        }
-      });
-
-      element.find('input').bind('click',function(){ jobFilter(); });
       element.insertAfter('.oSide .jsSearchFormFilters');
+      w.init(element);
     }
   });
 
   oJobFilters($('div.oBd.oFormTop.oFilterPanel'));
 }
 
-function timeSlide(object) {
-  slider = object.slider;
-  var bubble    = slider.find('.bubble');
-  var container = slider.find('.sliderContainer');
-  var knob      = slider.find('.knob');
-
-  container.bind('mousedown',function(){
-    $('body').addClass('timeSlide');
-  });
-
-  $('body').bind('mouseup',function(){
-    if ($('body').hasClass('timeSlide')) { jobFilter(); }
-    $('body').removeClass('timeSlide');
-  });
-
-  $('body').bind('mousemove',function(e){
-    if ($(this).hasClass('timeSlide')) {
-      var knobX   = (e.pageX - slider.offset().left)-(knob.width()/2);
-      var bubbleX = (e.pageX - slider.offset().left-bubble.width()/2);
-      var max     = (slider.find('.slider').width()-knob.width());
-      if (knobX >= 0-(knob.width()/2) && knobX < max+(knob.width()/3)) {
-        knob.css('left',knobX);
-        var val = Math.round(knobX/max*object.max);
-        bubble.css('left',bubbleX).find('.val').text(val);
-        slider.find('.fill').css('width',knobX+knob.width()/2);
-      }
-    }
-  });
-}
-
 /* ------------- Job Search Main Area */
 
 /* Infinite Scroll */
 
-function getNextPage(nextPageURL,searchResults){
+function getNextPage(){
+  var paginator           = $('#main').find('nav.oPagination:last'),
+      nextPageURL            = paginator.find('.isCurrent').removeClass('isCurrent').next().addClass('isCurrent').attr('href'),
+      searchResults = $('section.jsSearchResults');
+
   $.getJSON(nextPageURL,function(data){
     console.log('oDesk+: Next page JSON loaded');
     var cache = $('<div/>');
@@ -364,43 +563,16 @@ function getNextPage(nextPageURL,searchResults){
 
 function searchResultsScroll(){
   $(window).bind('scroll',function () {
-    var searchResults = $('section.jsSearchResults');
     var side = $('aside.oSide');
     var top = $(window).scrollTop();
 
-    if (top + $(window).height() > ($(document).height() - 360)) {
-      var paginator           = $('#main').find('nav.oPagination:last'),
-          nextPage            = paginator.find('.isCurrent').removeClass('isCurrent').next().addClass('isCurrent').attr('href');
-      getNextPage(nextPage,searchResults);
-    }
+    if (top + $(window).height() > ($(document).height() - 360)) getNextPage();
 
     if (top > side.offset().top) { side.addClass('fixed'); }
     else if (top < side.offset().top) { side.removeClass('fixed'); }
   })
 }
 
-/* ------------- Job Filters */
-
-function jobShow(element) {
-  var check = 1;
-  var minDiff = parseInt($('.timeSlider .val').text());
-  if ($('#timeDifference').attr('checked') == 'checked' && parseInt(element.attr('timeDifference')) > minDiff) { check = 0; }
-  if (element.hasClass('lowFeedback-true') && $('#hideJobRating').attr('checked') == 'checked') { check = 0; }
-  if (element.hasClass('interviewLow') && $('#hideJobRate').attr('checked') == 'checked') { check = 0; }
-  if (element.hasClass('highRate-true') && $('#hideJobRate').attr('checked') == 'checked') { check = 0; }
-  if (element.hasClass('avgRateLow-true') && $('#hideAvgRate').attr('checked') == 'checked') { check = 0; }
-  if (element.hasClass('applied-true') && $('#hideApplied').attr('checked') == 'checked') { check = 0; }
-  if (check == 1) { return true; }
-  return false;
-}
-
-function jobFilter() {
-  $('article').each(function(){
-    var job = $(this);
-    if (jobShow(job) == true) { job.removeClass('hidden'); }
-    else { job.addClass('hidden'); }
-  });
-}
 
 /* ------------- Job results formatting */
 
@@ -551,13 +723,18 @@ jobs.title = function (cache) { return cache.find('header h1.oH1Huge').text().tr
 jobs.hourlyRate = function (cache) {
   var val = '';
   var table = cache.find('#jobsAdditionalInfo #jobQualificationsSection table.oDescTable');
-  var rate;
+  var rate = {};
+  var tmp;
 
   jobs.tableScan({'table':table,'string':'Hourly Rate:'},function (rateObj) {
-    rate = rateObj['value'];
+    tmp = rateObj['value'].replace(/\/hr/gi,'').replace(/\$/gi,'').split('-');
+    rate = {
+      min: $.trim(tmp[0]),
+      max: $.trim(tmp[1])
+    }
   });
 
-  if (typeof rate != 'undefined') { val = rate; };
+  if (typeof rate.min != 'undefined') { val = rate; };
 
   return val;
 }
@@ -639,6 +816,16 @@ jobs.rateStats = function (cache) {
   return obj;
 }
 
+/* ------------- Job Budget */
+jobs.budget = function(cache) {
+  var budget = '';
+  var type = cache.find('#jobsJobsHeaderType');
+  if (/fixed/i.test(type.text())) {
+    budget = cache.find('#jobsJobsHeaderAmount').text();
+  }
+  return budget;
+}
+
 /* ------------- Main Format Function */
 
 function jobFormat (job) {
@@ -655,8 +842,9 @@ function jobFormat (job) {
   if (job.find('.processing-container').size() < 1) { job.append(processing); }
   
   cache.load(href,function() {
-    var rateStats = jobs.rateStats(cache);
+    var rateStats   = jobs.rateStats(cache);
     var jobDescKeys = jobs.moreText(cache);
+    var hourlyRate  = jobs.hourlyRate(cache);
     i++;
     if (i < 2) {
       obj['amt-avg-low']        = rateStats['amt-avg-low'];
@@ -668,7 +856,8 @@ function jobFormat (job) {
       obj['highest-paid']       = rateStats['highest-paid'];
       obj['highest-paid-hours'] = rateStats['highest-paid-hours'];
       obj['amt-highest-low']    = rateStats['amt-highest-low'];
-      obj['hourly-rate']        = jobs.hourlyRate(cache);
+      obj['hourly-rate-min']    = hourlyRate.min;
+      obj['hourly-rate-max']    = hourlyRate.max;
       obj['interview']          = jobs.interview(cache);
       obj['location']           = jobs.location(cache);
       obj['posted']             = jobs.posted(cache);
@@ -680,8 +869,8 @@ function jobFormat (job) {
       obj['title']              = jobs.title(cache);
       obj['type']               = jobs.type(cache);
       obj['url']                = href;
-      obj['visibility']         = jobShow(job);
       obj['warning']            = jobs.qualWarning(cache);
+      obj['budget']             = jobs.budget(cache);
 
       template.get({'src':dir('templates/templates.html'),'template':'job'},function(element) {
         template.get({'src':dir('templates/templates.html'),'template':'job-desc'},function (jobDesc) {
@@ -691,7 +880,9 @@ function jobFormat (job) {
           processed = $(template.insert({'template':element,'keys':obj}));
           jobs.moreTextBind(processed);
           job.replaceWith(processed);
-          if (jobShow(processed) == false) { processed.addClass('hidden'); }
+
+          /* Hide or Display Processed Job based on filters */
+          if (!jobShow(processed)) { processed.addClass('hidden'); };
         });
       });
     }
@@ -712,10 +903,12 @@ $(function(){
   var body = $('body');
 
   /* Job Search, checks if the jobs are loading */
-  process.check();
-  process.validate();
-  searchResultsScroll();
+  if (is.jobsearch()) {
+    process.check();
+    process.validate();
+    searchResultsScroll();
+  }
   thisWeeksEarnings();
   db.init('odeskplus');
-
+  console.log(is.apply());
 });
