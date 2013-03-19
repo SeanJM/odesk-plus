@@ -1,5 +1,5 @@
 <div template="job-filters">
-  <div class="oPlusSide visibilityFilter">
+  <div class="oPlusSide visibilityFilter" id="plusFilters">
     <div class="container">
       <legend class="oLabel">Visibility</legend>
       <label class="oOpt oOptLbl">Timezone Difference Range:</label>
@@ -18,9 +18,9 @@
 </div>
 
 <div template="job">  
-  <article class="applied-{{applied}} oMed oJobTile jsSimilarTile highRate-{{rate-high}} warning-{{warning}} avgRateLow-{{amt-avg-low}} lowFeedback-{{feedback-high}} amtHighestLow-{{amt-highest-low}}" timedifference="{{time-difference}}" rate="{{hourly-rate-min}},{{hourly-rate-max}}" avgrate="{{average-rate}}" hirate="{{highest-paid}}">
-    <div class="left">
-      <div class="content">
+  <article class="span24 padding30 notop noside job-item applied-{{applied}} oJobTile jsSimilarTile highRate-{{rate-high}} warning-{{warning}} avgRateLow-{{amt-avg-low}} lowFeedback-{{feedback-high}} amtHighestLow-{{amt-highest-low}}" timedifference="{{time-difference}}" rate="{{hourly-rate-min}},{{hourly-rate-max}}" avgrate="{{average-rate}}" hirate="{{highest-paid}}">
+    <div class="span16">
+      <div class="content padding30 noside">
         <h1 class="oRowTitle oH3">
           <a href="{{url}}">{{title}}</a>
         </h1>
@@ -46,15 +46,15 @@
         </span>
       </div>
     </div>
-    <div class="right">
+    <div class="span8">
       <div class="padding20">
-        {{if {{budget}}}} <p class="budget"><span class="label">Budget:</span> {{budget}}</p> end}}
-        {{if {{average-rate}} <p class="avg-rate"><span class="label">Average Rate Paid:</span> {{average-rate}}</p> end}}
-        {{if {{highest-paid}} <p class="highest-amt"><span class="label">Highest Rate Paid:</span> {{highest-paid}} / {{highest-paid-hours}} hours</p> end}}
-        {{if {{hourly-rate-min}} <p class="rate"><span class="label">Hourly Rate:</span> <span minRate="{{hourly-rate-min}}">${{hourly-rate-min}}</span> - <span maxRate="{{hourly-rate-max}}">${{hourly-rate-max}}</span></p> end}}
-        <p><span class="label">Location:</span> {{location}} <span class="timezone">({{timezone}})</span></p>
-        {{if {{interview}} <p><span class="label">Interviewing:</span> {{interview}}</p> end}}
-        {{if {{feedback}} <p class="feedback"><span class="label">Feedback Rating:</span> {{feedback}}</p> end}}
+        {{if {{budget}}}} <p class="budget"><span class="span10 left">Budget:</span><span class="span14">{{budget}}</span></p> end}}
+        {{if {{average-rate}} <p class="avg-rate"><span class="span10 left">Avg. Rate Paid:</span><span class="span14">{{average-rate}}</span></p> end}}
+        {{if {{highest-paid}} <p class="highest-amt"><span class="span10 left">Highest Rate Paid:</span><span class="span14">{{highest-paid}} / {{highest-paid-hours}} hours</span></p> end}}
+        {{if {{hourly-rate-min}} <p class="rate"><span class="span10 left">Hourly Rate:</span><span class="span14"><span minRate="{{hourly-rate-min}}">${{hourly-rate-min}}</span> - <span maxRate="{{hourly-rate-max}}">${{hourly-rate-max}}</span></span></p> end}}
+        <p><span class="span10 left">Location:</span><span class="span14">{{location}} <span class="timezone">({{timezone}})</span></span></p>
+        {{if {{interview}} <p><span class="span10 left">Interviewing:</span><span class="span14">{{interview}}</span></p> end}}
+        {{if {{feedback}} <p class="feedback"><span class="span10 left">Feedback Rating:</span><span class="span14">{{feedback}}</span></p> end}}
       </div>
     </div>
   </article>

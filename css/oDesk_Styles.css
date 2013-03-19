@@ -179,6 +179,38 @@ th[class^="span"] {
 .right { text-align: right; }
 .left { text-align: left; }
 
+[class*="padding"].notop { padding-top: 0; }
+
+[class*="padding"] p.notop,
+[class*="margin"].notop { margin-top: 0; }
+
+[class*="padding"].nobottom { padding-bottom: 0; }
+
+[class*="padding"] p.nobottom,
+[class*="margin"].nobottom { margin-bottom: 0; }
+
+[class*="padding"].notopbottom { padding-top: 0; padding-bottom: 0; }
+
+[class*="padding"] p.notopbottom,
+[class*="margin"].notopbottom { margin-top: 0; margin-bottom: 0; }
+
+[class*="padding"].noside { padding-left: 0; padding-right: 0; }
+
+[class*="padding"] p.noside,
+[class*="margin"].noside { margin-left: 0; margin-right: 0; }
+
+[class*="padding"].noleft {padding-left: 0; }
+
+[class*="padding"] p.noleft,
+[class*="margin"].noleft { margin-left: 0; }
+
+[class*="padding"].noright { padding-right: 0; }
+
+[class*="padding"] p.noright,
+[class*="margin"].noright { margin-right: 0; }
+
+/* --------------------------- */
+
   .oPageCentered {
     width: 940px;
     position: relative;
@@ -191,65 +223,7 @@ th[class^="span"] {
   .oPageCentered {
     width: 1180px;
   }
-  .jsSearchResults article .left {
-    width: 62%;
-  }
-    .jsSearchResults article .left .content {
-      padding: 0 30px 0 0;
-    }
-  .jsSearchResults article .right {
-    width: 35%;
-  }
-  .col1of4, .oLayoutSearch > .oSide {
-    width: 26%;
-  }
-  .col3of4, .oLayoutSearch > .oMain {
-    width: 73%;
-  }
 }
-
-@media screen and (min-width: 900px) {
-  .jsSearchResults article .left{
-    float: left;
-    border-right: 1px solid #E8E8E8;
-  }
-  .jsSearchResults article .right{
-    float: right;
-  }
-}
-
-@media screen and (max-width: 900px) {
- .jsSearchResults article .left{
-    float: left;
-    width: 100%;
-  }
-  .jsSearchResults article .right{
-    border-top: 1px solid #E8E8E8;
-    float: left;
-    width: 100%;
-    padding: 15px 0 0 0;
-  } 
-}
-
-@media screen and (max-width: 1200px) and (min-width: 900px) {
-  .jsSearchResults article .left{
-    width: 65%;
-  }
-    .jsSearchResults article .left .content {
-      padding: 0 20px 0 0;
-    }
-  .jsSearchResults article .right {
-    width: 33%;
-  }
-  .col1of4, .oLayoutSearch > .oSide {
-    width: 28%;
-    margin-left: 1%;
-  }
-  .col3of4, .oLayoutSearch > .oMain {
-    width: 67%;
-  }
-}
-
 
 /* -------------------------- Module */
 
@@ -329,15 +303,11 @@ th[class^="span"] {
   }
 
 /* --------------------------// Job Search */
-
+.job-item {
+  font-size: 0;
+}
   .oLayoutSearch .oFilterBar {
     margin-top: 67px;
-  }
-
-  .jsSearchResults article {
-    margin: 10px 0;
-    padding: 20px 0;
-    position: relative;
   }
 
     .jsSearchResults article.processing {
@@ -488,7 +458,7 @@ th[class^="span"] {
   aside.fixed form {
     position: fixed;
     top: 20px;
-    width: 15%;
+    width: 14.3%;
   }
 
   aside form .oWidget.jsSearchFormFilters legend.oLabel,
@@ -583,14 +553,15 @@ th[class^="span"] {
     margin: 0 auto;
     background: #FFFFFF;
     border: 2px solid #E9E9E9;
-    z-index: 1;
+    z-index: -1000;
     font-size: 0;
-    -webkit-transition: all 0.5s;
+    overflow: hidden;
+    -webkit-transition: opacity 0.5s;
   }
 
   .range-slider.active .range-popup {
+    z-index: 1;
     opacity: 1;
-    display: block;
   }
 
     .range-popup p {

@@ -1,6 +1,6 @@
 {
   "name": "oDesk Plus",
-  "version": "0.6.6",
+  "version": "0.7.2.1",
   "manifest_version": 2,
   "description": "Enhance the usability of oDesk. See average rate paid by the provider, highest rate paid, timezone and country.",
   "icons": {

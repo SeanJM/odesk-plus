@@ -62,7 +62,7 @@ function cleanURL() {
 var is           = {}
     is.joblist   = function () { if (/find-work-home/.test(cleanURL())) { return true; } return false; }
     is.jobsearch = function () { if (/jobs/.test(cleanURL()) && !/jobs\s*(.*?)main/.test(cleanURL())) { return true; } return false; }
-    is.apply     = function () { if (/jobs/.test(cleanURL()) && /jobs\s*(.*?)main/.test(cleanURL())) { return true; } return false; }
+    is.apply     = function () { return /apply/.test(cleanURL()) ? true :false; }
 
 /* Clean Page */
 function removeContent() { $('body').children('remove'); }
@@ -136,7 +136,17 @@ w.popout = function (el) {
   });
 }
 
+w.rangeFn = function(container,range) {
+  var fn = container.attr('on');
+  container.attr('range',range.sMin + ',' + range.sMax);
+  /* Check if function is attached, convert to object literal */
+  if (typeof eval('w.fn.' + fn) == 'function') {
+    eval('w.fn.' + fn + '({element: container,range: range})'); 
+  }
+}
+
 w.range = function (el) {
+  
   el.find('.range-slider').each(function() {
     var container      = $(this);
     var currency       = '';
@@ -150,10 +160,8 @@ w.range = function (el) {
     var knob          = rangeHTML.find('.knob');
     var slider        = rangeHTML.find('.slider');
     var fill          = rangeHTML.find('.slider-fill');
-    var fn            = container.attr('on');
     var id            = $(this).attr('id');
     var selectedRange = {};
-
 
     if (/\$/ig.test(container.attr('range'))) { currency = '$'; }
     if (/%/ig.test(container.attr('range'))) { percentage = '%'; }
@@ -162,7 +170,23 @@ w.range = function (el) {
     fill.css('position','relative').css('cursor','pointer');
     container.css('-webkit-user-select', 'none'); 
 
-    fill.css('margin-left',parseInt(db.value.jobFilters[id].x)).css('width',parseInt(db.value.jobFilters[id].w));
+    function setRange(obj) {
+      console.log('Set Range...');
+      /* ------------- Convert Ranges to X & W coordinates for fill */
+      var x = ((obj.sMin - obj.min) / obj.max) * slider.width();
+      var w = ((obj.sMax - obj.sMin) / obj.max) * slider.width();
+      var text = "<p><span class='min span10 center'>" + obj.before + obj.sMin + obj.after + "</span><span class='span4 center'>to</span><span class='max span10 center'>" + obj.before + obj.sMax + obj.after + "</span></p>";
+
+      /* ------------- Popup */
+      var popup = container.find('.range-popup');
+      popup.html(text);
+      
+      /* ------------- Control Fill */
+      fill.css('margin-left',parseInt(x)).css('width',parseInt(w));
+      
+      db.value.jobFilters[id] = obj;
+
+    }
 
     container.bind('slide',function(e,mouseX) {
       var knob = {
@@ -186,28 +210,10 @@ w.range = function (el) {
         min: Math.round((minX / slider.width()) * (range.max - range.min)),
         max: Math.round(((maxY+minX) / slider.width()) * range.max)
       }
+
       if (selectedRange.max > range.max) { selectedRange.max = range.max; }
       if (selectedRange.min < range.min) { selectedRange.min = range.min; }
 
-      function setRange(obj) {
-        /* ------------- Convert Ranges to X & W coordinates for fill */
-        var x = ((obj.sMin - obj.min) / obj.max) * slider.width();
-        var w = ((obj.sMax - obj.sMin) / obj.max) * slider.width();
-        var text = "<p><span class='min span10 center'>" + obj.before + obj.sMin + obj.after + "</span><span class='span4 center'>to</span><span class='max span10 center'>" + obj.before + obj.sMax + obj.after + "</span></p>";
-  
-        /* ------------- Popup */
-        var popup = container.find('.range-popup');
-        popup.html(text);
-        
-        /* ------------- Control Fill */
-        fill.css('margin-left',parseInt(x)).css('width',parseInt(w));
-        
-        if (typeof db.value.jobFilters == 'undefined') { db.value.jobFilters = {}; }
-        db.value.jobFilters[id] = {
-          x: x,
-          w: w
-        };
-      }
 
       setRange({
         before: currency,
@@ -221,11 +227,7 @@ w.range = function (el) {
     });
 
     container.bind('slideup',function() {
-      container.attr('range',selectedRange.min + ',' + selectedRange.max);
-      /* Check if function is attached, convert to object literal */
-      if (typeof eval('w.fn.' + fn) == 'function') {
-        eval('w.fn.' + fn + '({element: container,range: selectedRange})'); 
-      }
+      w.rangeFn(container,{sMin: selectedRange.min, sMax: selectedRange.max});
       db.save('odeskplus');
     });
 
@@ -250,17 +252,35 @@ w.range = function (el) {
       }
     }
     /* ------------- Table Width */
-    var totalTD = table.find('td').size();
-    var cellWidth = slider.width()/totalTD;
-    var cellCenter = cellWidth/2;
+    var totalTD      = table.find('td').size();
+    var cellWidth    = slider.width()/totalTD;
+    var cellCenter   = cellWidth/2;
     var newCellWidth = cellWidth+((cellCenter)/(totalTD/2));
-    var tableWidth = ((newCellWidth*totalTD)+(cellCenter/totalTD));
+    var tableWidth   = ((newCellWidth*totalTD)+(cellCenter/totalTD));
     var TablePercent = Math.round((tableWidth/slider.width())*100) + '%';
-    console.log(TablePercent);
 
-    table.css('width',TablePercent).css('right',cellCenter);
+    table.css('width',TablePercent).css('right',cellCenter).css('-webkit-user-select','none');
 
     rangeHTML.append(table);
+
+    /* --------------- Set the range up to settings */
+    if (typeof db.value.jobFilters == 'undefined') { db.value.jobFilters = {}; }
+    if (typeof db.value.jobFilters[id] != 'undefined') {
+      
+      console.log('getting settings from history');
+
+      var obj = db.value.jobFilters[id];
+      console.log(obj);
+
+      setRange({
+        before: obj.currency,
+        after: obj.percentage,
+        min: obj.min,
+        max: obj.max,
+        sMin: obj.sMin,
+        sMax: obj.sMax
+      });
+    }
   });
 }
 
@@ -438,9 +458,12 @@ function strToRange(str) {
 
 /* Return true if value is within range, otherwise return false */
 isRange = function (val,rangeDefinition) {
-  if (isNaN(val.min) || isNaN(val.max) || isNaN(rangeDefinition.min) || isNaN(rangeDefinition.max)) { return true; }
-  else if (val.min >= rangeDefinition.min && val.max <= rangeDefinition.max) { return true; }
-  return false;
+  if (typeof val == 'undefined') { return true }
+  else {
+    if (isNaN(val.min) || isNaN(val.max) || isNaN(rangeDefinition.min) || isNaN(rangeDefinition.max)) { return true; }
+    else if (val.min >= rangeDefinition.min && val.max <= rangeDefinition.max) { return true; }
+    return false;
+  }
 }
 
 /* Return if the timezone is within range */
@@ -474,6 +497,7 @@ function jobShow(element) {
   if (filter.timezone(element) == false) { return false; }
   if (filter.rate(element) == false) { return false; }
   if (filter.avgrate(element) == false) { return false; }
+  if (filter.hirate(element) == false) { return false; }
   return true;
 }
 
@@ -487,6 +511,7 @@ function jobFilterAll() {
 /* Range Functions */
 w.fn.filter = {}
 w.fn.rangeFilter = function(obj) {
+  console.log('Range Filter');
   jobFilterAll();
 }
 
@@ -536,7 +561,6 @@ function getNextPage(){
       searchResults = $('section.jsSearchResults');
 
   $.getJSON(nextPageURL,function(data){
-    console.log('oDesk+: Next page JSON loaded');
     var cache = $('<div/>');
     var items = [];
 
@@ -789,7 +813,6 @@ jobs.rateStats = function (cache) {
       amtTotal   += amt;
       hoursTotal += hours;
       /* I multiply by 1 to minimally convert the type to a number */
-      /*console.log(jobs.title(cache) + ' ' + tmp);*/
       if (amt > amtHighest && hours > 0) {
         amtHighest      = amt;
         amtHighestHours = hours;
@@ -886,6 +909,14 @@ function jobFormat (job) {
         });
       });
     }
+    $('#plusFilters').find('.range-slider').each(function () { 
+      var id = $(this).attr('id');
+      var selectedRange = {
+        sMin: db.value.jobFilters[id].sMin,
+        sMax: db.value.jobFilters[id].sMax
+      }
+      w.rangeFn($(this),selectedRange); 
+    });
   });
 }
 
