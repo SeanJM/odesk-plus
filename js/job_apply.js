@@ -81,11 +81,9 @@ dingo.click = {
       edit.removeClass('advanced-editor_edit-mode_is-on');
     }
     else if (options.type === 'add') {
-      console.log('add');
+      value = textarea.val()+'\n\n';
       if (coverText.val().length > 0) {
-        value = coverText.val()+'\n'+textarea.val();
-      } else {
-        value = textarea.val();
+        value = coverText.val()+'\n'+value;
       }
       coverText.val(value);
     }
