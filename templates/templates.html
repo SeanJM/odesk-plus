@@ -19,7 +19,7 @@
 
 <div template="job">  
   <article class="span24 padding30 notop noside job-item applied-{{applied}} oJobTile jsSimilarTile highRate-{{rate-high}} warning-{{warning}} avgRateLow-{{amt-avg-low}} lowFeedback-{{feedback-high}} amtHighestLow-{{amt-highest-low}}" timedifference="{{time-difference}}" rate="{{hourly-rate-min}},{{hourly-rate-max}}" avgrate="{{average-rate}}" hirate="{{highest-paid}}">
-    <div class="span16">
+    <div class="span15">
       <div class="content padding30 noside">
         <h1 class="oRowTitle oH3">
           <a href="{{url}}">{{title}}</a>
@@ -46,15 +46,20 @@
         </span>
       </div>
     </div>
-    <div class="span8">
-      <div class="padding20">
-        {{if {{budget}}}} <p class="budget"><span class="span10 left">Budget:</span><span class="span14">{{budget}}</span></p> end}}
-        {{if {{average-rate}} <p class="avg-rate"><span class="span10 left">Avg. Rate Paid:</span><span class="span14">{{average-rate}}</span></p> end}}
-        {{if {{highest-paid}} <p class="highest-amt"><span class="span10 left">Highest Rate Paid:</span><span class="span14">{{highest-paid}} / {{highest-paid-hours}} hours</span></p> end}}
-        {{if {{hourly-rate-min}} <p class="rate"><span class="span10 left">Hourly Rate:</span><span class="span14"><span minRate="{{hourly-rate-min}}">${{hourly-rate-min}}</span> - <span maxRate="{{hourly-rate-max}}">${{hourly-rate-max}}</span></span></p> end}}
-        <p><span class="span10 left">Location:</span><span class="span14">{{location}} <span class="timezone">({{timezone}})</span></span></p>
-        {{if {{interview}} <p><span class="span10 left">Interviewing:</span><span class="span14">{{interview}}</span></p> end}}
-        {{if {{feedback}} <p class="feedback"><span class="span10 left">Feedback Rating:</span><span class="span14">{{feedback}}</span></p> end}}
+    <div class="span9">
+      <div class="padding30 noright">
+        <div class="box">
+          <p><span class="span10 left grey">Location:</span><span class="span14">{{location}} <span class="timezone">({{timezone}})</span></span></p>
+          {{if {{budget}}}} <hr><p class="budget"><span class="span10 left grey">Budget:</span><span class="span14">{{budget}}</span></p> end}}
+          {{if {{average-rate}} <hr><p class="avg-rate"><span class="span10 left grey">Avg. Rate Paid:</span><span class="span14">{{average-rate}}</span></p> end}}
+          {{if {{highest-paid}} <hr><p class="highest-amt"><span class="span10 left grey">Highest Paid:</span><span class="span14">{{highest-paid}} / {{highest-paid-hours}} hours</span></p> end}}
+          {{if {{hourly-rate-min}} <hr><p class="rate"><span class="span10 left grey">Hourly Rate:</span><span class="span14"><span minRate="{{hourly-rate-min}}">${{hourly-rate-min}}</span> - <span maxRate="{{hourly-rate-max}}">${{hourly-rate-max}}</span></span></p> end}}
+          {{if {{interview}} <hr><p><span class="span10 left grey">Interviewing:</span><span class="span14">{{interview}}</span></p> end}}
+          {{if {{feedback}} <hr><p class="feedback"><span class="span10 left grey">Feedback Rating:</span><span class="span14">{{feedback}}</span></p> end}}
+          <hr>
+          <div class="btn btn-block">Applicants <span class='badge'>{{app-numbers}}</span></div>
+          <div class="btn btn-block">Previous Jobs <span class='badge'>{{job-numbers}}</span></div>
+        </div>
       </div>
     </div>
   </article>
@@ -64,8 +69,8 @@
   <div class="job-description moreText-{{more-text}}">
     <div class="more">{{text}}</div>
     <p class="less">{{less}}</p>
-    <span class="toggleDesc moreBtn btn-blue">Read More</span>
-    <span class="toggleDesc lessBtn btn-blue">Read Less</span>
+    <span class="btn-blue toggleDesc moreBtn">Read More</span>
+    <span class="btn-blue toggleDesc lessBtn">Read Less</span>
   </div>
 </div>
 

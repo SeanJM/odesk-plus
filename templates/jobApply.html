@@ -1,0 +1,41 @@
+<div>
+  <div id="advanced-editor" class="advanced-editor">
+    <div class="advanced-editor_module">
+      <div class="advanced-editor_top-control">
+        <div class="btn-grey" data-dingo="advanced-editor_item-add{item:.advanced-editor_list-item}">Add New</div>
+      </div>
+      <div class="advanced-editor_workarea">
+        <ul class="advanced-editor_list"></ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Template -->
+  <div id="advanced-editor_list">
+    <li class="advanced-editor_list-item" id="advanced-editor_list_%id">
+      <span class="advanced-editor_default-mode">
+        <span class="btn-blue advanced-editor_edit-btn" data-dingo="advanced-editor_item-edit{type:edit;item:#advanced-editor_list_%id}">Edit</span>
+        <span class="btn-green advanced-editor_add-btn" data-dingo="advanced-editor_item-edit{type:add;item:#advanced-editor_list_%id;textarea:#advanced-editor_textarea_%id;id:%id}">Add</span>
+        <span class="expander-container">
+          <span class="expander-trigger" data-dingo="expander">
+            <span class="expander-trigger_arrow"></span>
+          </span>
+          <span class="advanced-editor_short-text" id="advanced-editor_short-text_%id">
+            %text
+          </span>
+          <span class="expander-section">
+            <span class="advanced-editor_long-text" id="advanced-editor_long-text_%id">
+              %text
+            </span>
+          </span>
+        </span>
+      </span>
+      <span class="advanced-editor_edit-mode">
+        <textarea id="advanced-editor_textarea_%id">%text</textarea>
+        <span class="advanced-edit_control">
+          <span class="btn-green" data-dingo="advanced-editor_item-edit{type:save;item:#advanced-editor_list_%id;textarea:#advanced-editor_textarea_%id;id:%id}">Save</span>
+        </span>
+      </span>
+    </li>
+  </div>
+</div>

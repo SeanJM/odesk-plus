@@ -20,18 +20,17 @@
     }
   ],
   "web_accessible_resources": [
+    "images/sprites_icons.png",
     "images/sprites_ui.png",
-    "css/oDesk_Styles.css",
-    "css/header.css",
-    "css/joey.css",
-    "js/job-search/job-applications.js",
-    "js/reports.js",
-    "js/odesk-plus.js",
-    "js/joey.js",
+    "css/styles.css",
+    "js/db.js",
+    "js/init.js",
     "js/header.js",
-    "js/apply.js",
-    "js/inbox/inbox.js",
+    "js/isPage.js",
+    "js/job_search.js",
+    "js/job_apply.js",
     "js/template.js",
+    "templates/jobApply.html",
     "templates/templates.html"
   ]
 }

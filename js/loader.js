@@ -1,40 +1,54 @@
-var dir = function () { $('html').attr('directory',chrome.extension.getURL('')); }
+/* ======================================================= */
+/* Chrome Directory ====================================== */
+/* ======================================================= */
 
-function contractor() {
-  var val = false;
-  if ($('a[href="/find-work-home/"]').size() > 0) {
-    var val = true;
-  }
-  return val;
+var setDir = function () {
+  $('html').attr('directory',chrome.extension.getURL(''));
 }
 
-function loadScript(url, callback) {
-  if ($('script[src="' + url + '"]').size() < 1) {
-    var script = $('<script src="' + url +'"></script>')
-    $('head').append(script);
+/* ======================================================= */
+/* Loader ================================================ */
+/* ======================================================= */
+
+var load = {
+  css: function (callback) {
+    load.init({type: 'css',tag: '<link href="%url" rel="stylesheet" type="text/css">',files: [
+      'styles'
+    ]},callback);
+  },
+  javascript: function (callback) {
+    load.init({type: 'js',tag: '<script src="%url"></script>',files: [
+      'header',
+      'db',
+      'isPage',
+      'job_apply',
+      'init'
+    ]},callback);
+  },
+  init: function (options,callback) {
+    var url,
+        tag,
+        regexp;
+    for (var i=0;i<options.files.length;i++) {
+      url    = chrome.extension.getURL(options.type+'/'+options.files[i]+'.'+options.type);
+      tag    = options.tag.replace(/%url/g,url);
+      regexp = new RegExp(tag);
+      if (!$('head').html().match(regexp)) {
+        $('head').append($(tag));
+      }
+    }
+    if (typeof callback === 'function') {
+      callback();
+    }
   }
-  console.log('* Loaded Script: ' + url);
 }
 
-function loadCSS(url) { var css = $('<link href="' + chrome.extension.getURL('css/' + url) + '" rel="stylesheet" type="text/css">'); $('head').append(css); }
-
-function scriptInject() {
-  
-  
-  if (contractor()) {
-    /*loadScript(chrome.extension.getURL('js/job-application.js'));*/
-  }
-  loadScript(chrome.extension.getURL('js/template.js'));
-  loadScript(chrome.extension.getURL('js/apply.js'));
-  loadScript(chrome.extension.getURL('js/reports.js'));
-  loadScript(chrome.extension.getURL('js/joey.js'));
-  loadScript(chrome.extension.getURL('js/job-search/job-applications.js'));
-  loadScript(chrome.extension.getURL('js/odesk-plus.js'));
-}
+/* ======================================================= */
+/* Scripts =============================================== */
+/* ======================================================= */
 
 $(function(){
-  loadCSS('oDesk_Styles.css');
-  loadCSS('header.css');
-  dir();
-  scriptInject();
+  setDir();
+  load.css();
+  load.javascript();
 });
