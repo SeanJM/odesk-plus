@@ -4,7 +4,7 @@ var dingo = {
   trigger: function (dingoEvent,options) {
     var events = ['click','mouseup','mouseenter','mousemove','keyup','keydown','keypress'];
     $.each(events,function (i,k) {
-      if (typeof dingo[k][dingoEvent] === 'function') {
+      if (typeof dingo[k] === 'object' && typeof dingo[k][dingoEvent] === 'function') {
         options.el.off(k);
         options.el.on(k,function (event) {
           options.event = event;
