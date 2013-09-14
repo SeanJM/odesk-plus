@@ -19,7 +19,9 @@ dingo.click = {
     var shortText = $('#advanced-editor_short-text_'+options.id);
     var longText  = $('#advanced-editor_long-text_'+options.id);
     var coverText = $('#coverLetter');
+    var item      = $('#advanced-editor_list_'+options.id);
     var value;
+    var arr;
 
     if (options.type === 'edit') {
       def.addClass('advanced-editor_default-mode_is-off');
@@ -40,6 +42,15 @@ dingo.click = {
       }
       coverText.val(value);
     }
+    else if (options.type === 'delete') {
+      arr = db.get('jobApply');
+      arr.pop(options.id);
+      db.set('jobApply',arr);
+      item.addClass('advanced-editor_list-item_is-deleted');
+      setTimeout(function () {
+        item.remove();
+      },500);
+    }
   },
   'expander': function (options) {
     section   = options.el.closest('.expander-container').find('.expander-section').eq(0);
@@ -52,7 +63,7 @@ dingo.click = {
   }
 }
 
-jobApply = {
+var jobApply = {
   addItem: function (i) {
     return jobApplyTemplates.find('#advanced-editor_list').html().replace(/%[a-zA-Z]+/g,function (m) {
       if (m === '%id') return i;

@@ -11,19 +11,19 @@ select {
 
 [class^="btn"] {
   display      : inline-block;
-  padding      : 0 10px;
+  padding      : 0 17px;
   text-align   : center;
-  font-size    : 15px;
+  font-size    : 13px;
   line-height  : 30px;
   color        : #FFF;
   background   : #A09B97;
   cursor       : pointer;
-  border-radius: 5px;
+  border-radius: 3px;
 }
 
 .btn-blue {
   color        : #FFF;
-  background   : #00AEEC;
+  background   : #11A2E6;
 }
 
 .btn-blue:hover {
@@ -31,12 +31,21 @@ select {
 }
 
 .btn-green {
-  color        : #FFF;
-  background   : #1fb52d;
+  color        : #F0FFF5;
+  background   : #17A857;
 }
 
 .btn-green:hover {
-  background   : #1cda44;
+  background   : #38ce5a;
+}
+
+.btn-red {
+  color        : #FFF;
+  background   : #CE515B;
+}
+
+.btn-red:hover {
+  background   : #f04759;
 }
 
 .btn-block {
@@ -506,16 +515,31 @@ h1.oH1Huge {
   line-height: 16px;
   padding: 0 20px;
   position: relative;
+  overflow: hidden;
+  background: #fff;
+  opacity: 1;
+  max-height: 180px;
+  -webkit-transition: opacity 0.5s,background 0.2s,max-height 0.3s;
 }
 
 .advanced-editor_list-item + .advanced-editor_list-item {
-  border-top: 1px solid #bdbdbd;
+  border-top: 1px solid #E9E9E9;
 }
 
 .advanced-editor_list-item .expander-trigger {
   position: absolute;
   left: 8px;
   top: 8px;
+}
+
+.advanced-editor_list-item textarea {
+  height: 100px;
+}
+
+.advanced-editor_list-item_is-deleted {
+  opacity: 0;
+  background: #feb9bd;
+  max-height: 0px;
 }
 
 .advanced-editor_module {
@@ -565,13 +589,13 @@ h1.oH1Huge {
 }
 
 .advanced-editor_add-btn {
-  right: 52px;
+  right: 63px;
 }
 
 .advanced-editor_long-text,
 .advanced-editor_short-text {
   display: block;
-  padding-right: 90px;
+  padding-right: 103px;
   line-height: 16px;
   margin: 10px 0 10px 12px;
   -webkit-transition: height 0.2s;
