@@ -44,7 +44,7 @@ dingo.click = {
     }
     else if (options.type === 'delete') {
       arr = db.get('jobApply');
-      arr.splice(options.id,options.id);
+      arr.splice(options.id,1);
       console.log(arr);
       db.set('jobApply',arr);
       item.addClass('advanced-editor_list-item_is-deleted');
