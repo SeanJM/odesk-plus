@@ -45,11 +45,10 @@ dingo.click = {
     else if (options.type === 'delete') {
       arr = db.get('jobApply');
       arr.splice(options.id,1);
-      console.log(arr);
       db.set('jobApply',arr);
       item.addClass('advanced-editor_list-item_is-deleted');
       setTimeout(function () {
-        item.remove();
+        jobApply.advancedEdit();
       },600);
     }
   },
@@ -74,6 +73,11 @@ var jobApply = {
   shorten: function (string) {
     return string.substring(0,200);
   },
+  remove: function () {
+    if ($('#advanced-editor').size() > 0) {
+      $('#advanced-editor').remove();
+    }
+  },
   advancedEdit: function () {
     var coverTextarea  = $('#coverLetter');
     var coverContainer = $('#oFormField-coverLetter');
@@ -91,6 +95,7 @@ var jobApply = {
         items.push(item);
       }
       advanced.find('.advanced-editor_list').append($(items.join('')));
+      jobApply.remove();
       coverContainer.append(advanced);
       dingo.init(advanced);
     });
