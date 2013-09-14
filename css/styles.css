@@ -32,11 +32,11 @@ select {
 
 .btn-green {
   color        : #F0FFF5;
-  background   : #17A857;
+  background: #36B317;
 }
 
 .btn-green:hover {
-  background   : #38ce5a;
+  background   : #38cd15;
 }
 
 .btn-red {
@@ -518,7 +518,7 @@ h1.oH1Huge {
   overflow: hidden;
   background: #fff;
   opacity: 1;
-  max-height: 180px;
+  max-height: 200px;
   -webkit-transition: opacity 0.5s,background 0.2s,max-height 0.3s;
 }
 
@@ -533,7 +533,7 @@ h1.oH1Huge {
 }
 
 .advanced-editor_list-item textarea {
-  height: 100px;
+  height: 120px;
 }
 
 .advanced-editor_list-item_is-deleted {

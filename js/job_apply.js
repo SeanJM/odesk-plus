@@ -44,12 +44,13 @@ dingo.click = {
     }
     else if (options.type === 'delete') {
       arr = db.get('jobApply');
-      arr.pop(options.id);
+      arr.splice(options.id,options.id);
+      console.log(arr);
       db.set('jobApply',arr);
       item.addClass('advanced-editor_list-item_is-deleted');
       setTimeout(function () {
         item.remove();
-      },500);
+      },600);
     }
   },
   'expander': function (options) {
